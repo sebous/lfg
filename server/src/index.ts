@@ -9,16 +9,20 @@ import cors from "cors";
 dotenv.config();
 
 (async () => {
-    await createConnection();
+  await createConnection();
 
-    const app = express();
+  const app = express();
 
-    // middlewares
-    app.use(cors({
-        credentials: true,
-        origin: process.env.CLIENT_URL,
-    }));
+  // middlewares
+  app.use(
+    cors({
+      credentials: true,
+      origin: process.env.CLIENT_URL
+    })
+  );
 
-    const port = process.env.PORT;
-    app.listen(port, () => console.log(`graphql server started on http://localhost:${port}/graphql`));
+  const port = process.env.PORT;
+  app.listen(port, () =>
+    console.log(`graphql server started on http://localhost:${port}/graphql`)
+  );
 })();

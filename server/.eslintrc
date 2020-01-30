@@ -1,0 +1,11 @@
+{
+    "extends": "airbnb-typescript-prettier",
+    "parserOptions": {
+        "ecmaVersion": 2017
+    },
+    "parser": "@typescript-eslint/parser",
+    "rules": {
+        "no-console": "off",
+        "import/prefer-default-export": "off"
+    }
+}
