@@ -22,11 +22,17 @@ export const PeopleInQueue: React.FC = () => {
       border="bottom"
     >
       {dummyPeople.map(({ username, picUrl }, i) => (
+        // row wrapper
         <Box key={i} direction="column" alignContent="start" height={{ max: "100%" }}>
+          {/* card wrapper */}
           <Box pad={{ left: "small", right: "small", top: "small" }}>
+            {/* image */}
             <Box pad={{ bottom: "small" }}>
-              <Image src={picUrl} fit="contain" width="100%"></Image>
+              <Box border={{ color: "brand", size: "small" }} elevation="small" round={{ size: "small" }}>
+                <Image src={picUrl} fit="cover" width="100%"></Image>
+              </Box>
             </Box>
+            {/* username */}
             <Box pad={{ bottom: "small" }} align="center">
               <Text>{username}</Text>
             </Box>

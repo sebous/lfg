@@ -1,7 +1,7 @@
 import React from "react";
 import { RouteProps, Route, Redirect } from "react-router-dom";
 
-export const AUTHENTICATION_PATH = "/login";
+export const AUTHENTICATION_PATH = "/";
 
 export interface PrivateRouteProps extends RouteProps {
   isAuthenticated: boolean;
@@ -9,10 +9,13 @@ export interface PrivateRouteProps extends RouteProps {
 }
 
 export const PrivateRoute: React.FC<PrivateRouteProps> = props => {
-  const redirectPath = !props.isAuthenticated
-    ? AUTHENTICATION_PATH
-    : props.restrictedPath;
-
-  const renderComponent = () => <Redirect to={{ pathname: redirectPath }} />;
-  return <Route {...props} component={renderComponent} render={undefined} />;
+  console.log(props);
+  const { restrictedPath } = props;
+  if (props.isAuthenticated) {
+    return (
+      <Route {...props} component={() => <Redirect to={{ pathname: restrictedPath }} />} />
+    )
+  } else {
+    return <Redirect to={{ pathname: AUTHENTICATION_PATH }} />
+  }
 };
