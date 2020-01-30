@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { PrivateRoute } from "./PrivateRoute";
 import { useGlobalState } from "../../lib/state";
 import { DummyAuthButton } from "../auth/DummyAuthButton";
-import { Dashbaord } from "../layout/Dashboard";
+import { Dashbaord } from "../dashboard/Dashboard";
 
 export const Router: React.FC = () => {
   const [isAuth] = useGlobalState("isAuthorized");
