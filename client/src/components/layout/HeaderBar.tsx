@@ -1,5 +1,5 @@
 import React from "react";
-import { useGlobalState } from "../common/state";
+import { useGlobalState } from "../../common/state";
 import { Menu } from "semantic-ui-react";
 
 export const HeaderBar: React.FC = () => {
