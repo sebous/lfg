@@ -1,12 +1,10 @@
 import React from "react";
-import { Box, Grommet } from "grommet";
+import { Container as div } from "semantic-ui-react";
 import { HeaderBar } from "../HeaderBar";
 
 export const AppLayout: React.FC = ({ children }) => (
-  <Grommet plain>
-    <Box fill>
-      <HeaderBar />
-      <Box>{children}</Box>
-    </Box>
-  </Grommet>
+  <div style={{ height: "100vh" }}>
+    <HeaderBar />
+    {children}
+  </div>
 );

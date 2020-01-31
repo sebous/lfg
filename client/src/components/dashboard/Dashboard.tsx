@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { Box } from "grommet";
 import { PeopleInQueue } from "./PeopleInQueue";
+import { Container } from "semantic-ui-react";
 
 export const Dashbaord: React.FC = () => {
   return (
-    <Box height="calc(100vh - 36px)">
-      <Box height="20%"><PeopleInQueue /></Box>
-      <Box height="60%"></Box>
-      <Box height="20%"></Box>
-    </Box>
+    <Container fluid style={{ height: "calc(100vh - 36px)" }}>
+      test
+    </Container>
   );
 };
