@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { PeopleInQueue } from "./PeopleInQueue";
-import { Container } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
+import { PlacesDataList } from "./PlacesDataList";
 
 export const Dashbaord: React.FC = () => {
   return (
-    <Container fluid style={{ height: "calc(100vh - 36px)" }}>
-      test
-    </Container>
+    <div style={{ height: "calc(100vh - 36px)" }}>
+      <div style={{ height: "16%", borderBottom: "1px solid" }}>
+        <PeopleInQueue />
+      </div>
+
+      <div style={{ height: "68%", overflow: "auto", padding: "1em 0 2em" }}>
+        <PlacesDataList />
+      </div>
+      <div style={{ height: "16%" }}></div>
+    </div>
   );
 };

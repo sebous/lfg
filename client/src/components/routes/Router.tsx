@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import { PrivateRoute } from "./PrivateRoute";
-import { useGlobalState } from "../../lib/state";
+import { useGlobalState } from "../../common/state";
 import { Dashbaord } from "../dashboard/Dashboard";
 import { Home } from "../home/Home";
 
