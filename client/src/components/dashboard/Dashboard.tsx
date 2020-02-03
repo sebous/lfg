@@ -1,7 +1,6 @@
 import React from "react";
 import { PeopleInQueue } from "./PeopleInQueue";
-import { Divider } from "semantic-ui-react";
-import { PlacesDataList } from "./PlacesDataList";
+import { PlacesDataList } from "./placesFeed/PlacesDataList";
 import { DashboardBottomBar } from "./bottomBar/DashboardBottomBar";
 
 export const Dashbaord: React.FC = () => {
