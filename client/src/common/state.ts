@@ -1,18 +1,16 @@
 import { createGlobalState } from "react-hooks-global-state";
-
-interface User {
-  username: string;
-  userId: string;
-}
+import { User, Place } from "./types";
 
 interface GlobalState {
   isAuthorized: boolean;
   user: User | undefined;
+  activePlaces: Place[];
 }
 
 const defaultState: GlobalState = {
   isAuthorized: false,
-  user: undefined
+  user: undefined,
+  activePlaces: []
 };
 
 export const { useGlobalState } = createGlobalState(defaultState);

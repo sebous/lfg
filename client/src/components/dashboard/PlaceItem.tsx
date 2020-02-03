@@ -11,7 +11,7 @@ interface PlaceItemProps {
 export const PlaceItem: React.FC<PlaceItemProps> = props => {
   return (
     <Card onClick={props.clickHandler}>
-      <Card.Content header="Music Lab" />
+      <Card.Content header={props.name} />
       <Card.Content extra>
         <Icon name="user" />
         {props.peopleCount} boys would smash this
