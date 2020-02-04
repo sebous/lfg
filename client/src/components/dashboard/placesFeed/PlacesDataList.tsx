@@ -2,10 +2,11 @@ import React from "react";
 import _ from "lodash";
 import { Container, Grid } from "semantic-ui-react";
 import { PlaceItem } from "./PlaceItem";
-import { useGlobalState } from "../../common/state";
-import { Place } from "../../common/types";
-import { placeFactory } from "../../common/factories";
+import { useGlobalState } from "../../../common/state";
+import { Place } from "../../../common/types";
+import { placeFactory } from "../../../common/factories";
 
+// for development purposes only
 const dummyData: Place[] = _.range(12).map(() => placeFactory("Music Lab"));
 
 export const PlacesDataList: React.FC = () => {
