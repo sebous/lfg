@@ -1,8 +1,10 @@
 import React from "react";
-import { useGlobalState } from "../../common/state";
 import { useHistory } from "react-router-dom";
 import uuid from "uuid";
 import { Button, Icon } from "semantic-ui-react";
+import { uniqueNamesGenerator, starWars } from "unique-names-generator";
+import { useGlobalState } from "../../common/state";
+import { dummyUserFactory } from "../../common/factories";
 
 export const DummyAuthButton: React.FC = () => {
   const [, setAuthStatus] = useGlobalState("isAuthorized");
@@ -11,7 +13,11 @@ export const DummyAuthButton: React.FC = () => {
 
   const loginAsDummy = () => {
     setAuthStatus(true);
-    setUser({ username: "Dummy user", userId: uuid.v4() });
+    setUser(
+      dummyUserFactory(
+        uniqueNamesGenerator({ dictionaries: [starWars], length: 1 })
+      )
+    );
     history.push("/dashboard");
   };
 

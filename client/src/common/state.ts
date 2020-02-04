@@ -5,12 +5,14 @@ interface GlobalState {
   isAuthorized: boolean;
   user: User | undefined;
   activePlaces: Place[];
+  peopleInQueue: User[];
 }
 
 const defaultState: GlobalState = {
   isAuthorized: false,
   user: undefined,
-  activePlaces: []
+  activePlaces: [],
+  peopleInQueue: []
 };
 
 export const { useGlobalState } = createGlobalState(defaultState);
