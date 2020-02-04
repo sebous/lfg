@@ -5,8 +5,8 @@ import { DashboardBottomBar } from "./bottomBar/DashboardBottomBar";
 
 export const Dashbaord: React.FC = () => {
   return (
-    <div style={{ height: "calc(100vh - 40px)" }}>
-      <div style={{ height: "18%", borderBottom: "1px solid" }}>
+    <div style={{ height: "calc(100vh - 40px)", overflow: "hidden" }}>
+      <div style={{ borderBottom: "1px solid" }}>
         <PeopleInQueue />
       </div>
       <div style={{ height: "82%", overflow: "auto", padding: "1em 0 4em" }}>

@@ -1,14 +1,16 @@
 import React from "react";
 import _ from "lodash";
 import { Grid, Image, Container } from "semantic-ui-react";
-import { dummyUserFactory } from "../../common/factories";
 import { uniqueNamesGenerator, names } from "unique-names-generator";
+import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
+import "pure-react-carousel/dist/react-carousel.es.css";
+import { dummyUserFactory } from "../../common/factories";
 import { useGlobalState } from "../../common/state";
 
 const dummyAvatar =
   "https://www.berning-galabau.de/uploads/images/ansprechpartner/profil-pic_dummy.png";
 
-const dummyPeople = _.range(4).map(() =>
+const dummyPeople = _.range(6).map(() =>
   dummyUserFactory(uniqueNamesGenerator({ dictionaries: [names], length: 1 }))
 );
 
@@ -17,15 +19,27 @@ export const PeopleInQueue: React.FC = () => {
   const dataset = peopleInQueue.length > 0 ? peopleInQueue : dummyPeople;
 
   return (
-    <Container>
-      <Grid style={{ margin: 0 }}>
+    <CarouselProvider
+      naturalSlideHeight={105}
+      naturalSlideWidth={86}
+      totalSlides={dataset.length}
+      touchEnabled={true}
+      visibleSlides={4}
+      orientation={"horizontal"}
+      isPlaying={true}
+      infinite={true}
+      interval={5000}
+    >
+      <Slider>
         {dataset.map(({ username, avatar }, i) => (
-          <Grid.Column key={i} mobile={4}>
-            <Image src={avatar ?? dummyAvatar} />
-            <div style={{ textAlign: "center" }}>{username}</div>
-          </Grid.Column>
+          <Slide index={i} key={i}>
+            <div style={{ padding: "0.5rem" }}>
+              <Image src={avatar ?? dummyAvatar} />
+              <div style={{ textAlign: "center" }}>{username}</div>
+            </div>
+          </Slide>
         ))}
-      </Grid>
-    </Container>
+      </Slider>
+    </CarouselProvider>
   );
 };
