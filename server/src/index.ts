@@ -4,25 +4,40 @@ import express from "express";
 import { createConnection } from "typeorm";
 import session from "express-session";
 import connectRedis from "connect-redis";
+import { ApolloServer } from "apollo-server-express";
 import cors from "cors";
+import { buildSchema } from "type-graphql";
 
 dotenv.config();
 
 (async () => {
-  await createConnection();
+  try {
+    await createConnection();
+    const schema = await buildSchema({
+      resolvers: [__dirname + "/modules/**/*.ts"]
+    });
 
-  const app = express();
+    const apolloServer = new ApolloServer({
+      schema,
+      context: ({ req }: any) => ({ req })
+    });
 
-  // middlewares
-  app.use(
-    cors({
-      credentials: true,
-      origin: process.env.CLIENT_URL
-    })
-  );
+    const app = express();
 
-  const port = process.env.PORT;
-  app.listen(port, () =>
-    console.log(`graphql server started on http://localhost:${port}/graphql`)
-  );
+    // middlewares
+    app.use(
+      cors({
+        credentials: true,
+        origin: process.env.CLIENT_URL
+      })
+    );
+
+    apolloServer.applyMiddleware({ app });
+    const port = process.env.PORT;
+    app.listen(port, () =>
+      console.log(`graphql server started on http://localhost:${port}/graphql`)
+    );
+  } catch (err) {
+    console.log(err);
+  }
 })();
