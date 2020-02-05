@@ -1,17 +1,32 @@
-import { ObjectType, Field, ID } from "type-graphql";
+import { ObjectType, Field, ID, ClassType } from "type-graphql";
 
-export interface NotificationPayload {
-  data: string;
+export enum NotificationPriority {
+  NORMAL,
+  HIGH,
 }
 
-@ObjectType()
-export class Notification {
-  @Field(() => ID)
-  id!: string;
+export enum SubscriptionTopic {
+  PLACE_ADDED = "PLACE_ADDED",
+  USER_QUEUED = "USER_QUEUED",
+}
 
-  @Field(() => Date)
-  date!: Date;
+export interface Notification<T> {
+  id: string;
+  date: Date;
+  data: T;
+}
 
-  @Field()
-  data!: string;
+export function NotificationType<T>(TClass: ClassType<T>) {
+  @ObjectType({ isAbstract: true })
+  abstract class NotificationTypeClass {
+    @Field(() => ID)
+    id!: string;
+
+    @Field(() => Date)
+    date!: Date;
+
+    @Field(() => TClass)
+    data!: T;
+  }
+  return NotificationTypeClass;
 }
