@@ -9,3 +9,8 @@ export interface Place {
   name: string;
   peopleJoined: string[];
 }
+
+export enum SubscriptionTopic {
+  PLACE_ADDED = "PLACE_ADDED",
+  USER_QUEUED = "USER_QUEUED",
+}
