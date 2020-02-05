@@ -6,8 +6,8 @@ import {
   PubSubEngine,
   Subscription,
   Root,
+  Query,
 } from "type-graphql";
-// import { PubSubEngine } from "graphql-subscriptions";
 import { Place } from "../../entity/Place";
 import { SubscriptionTopic, Notification } from "../../types/notifications";
 import { notificationFactory } from "../../common/factories";
@@ -19,6 +19,23 @@ import { UpdatePlaceInput } from "./UpdatePlaceInput";
 
 @Resolver()
 export class PlaceResolver {
+  // get all places
+  @Query(() => [Place])
+  async getPlaces(): Promise<Place[]> {
+    const places = await Place.find();
+    return places;
+  }
+
+  // subscribe to place updates
+  @Subscription(() => PlaceNotificationType, {
+    topics: SubscriptionTopic.PLACE_ADDED,
+  })
+  placesSubscription(
+    @Root() payload: Notification<Place>
+  ): PlaceNotificationType {
+    return payload as PlaceNotificationType;
+  }
+
   // add new place
   @Mutation(() => Place)
   async addPlace(
@@ -38,16 +55,6 @@ export class PlaceResolver {
     await pubSub.publish(SubscriptionTopic.PLACE_ADDED, notification);
 
     return place;
-  }
-
-  // subscribe to place updates
-  @Subscription(() => PlaceNotificationType, {
-    topics: SubscriptionTopic.PLACE_ADDED,
-  })
-  placesSubscription(
-    @Root() payload: Notification<Place>
-  ): PlaceNotificationType {
-    return payload as PlaceNotificationType;
   }
 
   // update joinedUsersIds on Place

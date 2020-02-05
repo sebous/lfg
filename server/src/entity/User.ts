@@ -11,4 +11,8 @@ export class User extends BaseEntity {
   @Field()
   @Column()
   username!: string;
+
+  @Field()
+  @Column({ default: false })
+  queuing!: boolean;
 }
