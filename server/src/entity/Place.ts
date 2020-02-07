@@ -4,8 +4,7 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
-  JoinColumn
+  ManyToOne,
 } from "typeorm";
 import { User } from "./User";
 
@@ -25,7 +24,9 @@ export class Place extends BaseEntity {
   joinedUsersIds!: string[];
 
   @Field(() => User)
-  @JoinColumn()
-  @OneToOne(() => User)
+  @ManyToOne(
+    () => User,
+    user => user.places
+  )
   createdBy!: User;
 }
