@@ -22,7 +22,9 @@ export class PlaceResolver {
   // get all places
   @Query(() => [Place])
   async getPlaces(): Promise<Place[]> {
-    const places = await Place.find();
+    const places = await Place.find({
+      relations: ["createdBy", "createdBy.places"],
+    });
     return places;
   }
 
