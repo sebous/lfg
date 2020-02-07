@@ -19,7 +19,7 @@ export class Place extends BaseEntity {
   @Column()
   name!: string;
 
-  @Field(() => [String], { nullable: true })
+  @Field(() => [String])
   @Column({ array: true, type: "varchar" })
   joinedUsersIds!: string[];
 

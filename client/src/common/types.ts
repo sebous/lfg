@@ -1,6 +1,6 @@
 export interface User {
   username: string;
-  userId: string;
+  id: string;
   avatar?: string;
 }
 
@@ -8,6 +8,7 @@ export interface Place {
   id: string;
   name: string;
   joinedUsersIds: string[];
+  createdBy?: User;
 }
 
 export enum SubscriptionTopic {

@@ -17,30 +17,13 @@ const dummyPeople = _.range(6).map(() =>
 );
 
 const GET_USERS_IN_QUEUE = gql`
-  query {
+  query GetUsersInQueueQuery {
     getUsersInQueue {
       id
       username
     }
   }
 `;
-
-const USER_QUEUE_SUBSCRIPTION = gql`
-  subscription {
-    userQueueSubscription {
-      id
-    }
-  }
-`;
-
-interface GetUsersInQueue {
-  getUsersInQueue: User[];
-}
-
-interface User {
-  id: string;
-  username: string;
-}
 
 export const PeopleInQueue: React.FC = () => {
   const [peopleInQueue] = useGlobalState("peopleInQueue");

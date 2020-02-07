@@ -5,15 +5,6 @@ import { DashboardBottomBar } from "./bottomBar/DashboardBottomBar";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
-const EXCHANGE_RATES = gql`
-  {
-    rates(currency: "USD") {
-      currency
-      rate
-    }
-  }
-`;
-
 export const Dashbaord: React.FC = () => {
   // const { loading, data, error } = useQuery(EXCHANGE_RATES);
   // if (loading) return <p>loading</p>;

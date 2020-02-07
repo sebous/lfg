@@ -3,6 +3,17 @@ import { Menu, Icon, Modal, Input, Button } from "semantic-ui-react";
 import { Place } from "../../../common/types";
 import { useGlobalState } from "../../../common/state";
 import { placeFactory } from "../../../common/factories";
+import { gql } from "apollo-boost";
+
+const ADD_PLACE = gql`
+  mutation AddPlace($placeInput: NewPlaceInput!) {
+    addPlace(placeInput: $placeInput) {
+      id
+      name
+      joinedUsersIds
+    }
+  }
+`;
 
 // TODO: split this by each button with it's own functionallity
 export const DashboardBottomBar: React.FC = () => {

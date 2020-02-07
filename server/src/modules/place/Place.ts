@@ -68,6 +68,8 @@ export class PlaceResolver {
     if (!place) return;
 
     place.joinedUsersIds = placeInfo.joinedUsersIds;
+
+    const notification = notificationFactory<Place>(place);
     return await place.save();
   }
 

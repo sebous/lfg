@@ -1,28 +1,52 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import uuid from "uuid";
 import { Button, Icon } from "semantic-ui-react";
 import { uniqueNamesGenerator, starWars } from "unique-names-generator";
 import { useGlobalState } from "../../common/state";
-import { dummyUserFactory } from "../../common/factories";
+import { gql } from "apollo-boost";
+import { useMutation } from "@apollo/react-hooks";
+import { DummyLogin } from "../../common/graphqlTypes";
+
+const DUMMY_LOGIN = gql`
+  mutation DummyLogin($username: String!) {
+    dummyLogin(username: $username) {
+      id
+      username
+    }
+  }
+`;
 
 export const DummyAuthButton: React.FC = () => {
   const [, setAuthStatus] = useGlobalState("isAuthorized");
   const [, setUser] = useGlobalState("user");
   const history = useHistory();
+  const [dummyLogin, { error, data }] = useMutation<DummyLogin>(DUMMY_LOGIN);
 
-  const loginAsDummy = () => {
-    setAuthStatus(true);
-    setUser(
-      dummyUserFactory(
-        uniqueNamesGenerator({ dictionaries: [starWars], length: 1 })
-      )
-    );
-    history.push("/dashboard");
-  };
+  if (error) console.log("server error");
+  // handle updates on data
+  useEffect(() => {
+    if (data) {
+      setAuthStatus(true);
+      setUser({ id: data.dummyLogin.id, username: data.dummyLogin.username });
+      history.push("/dashboard");
+    }
+  }, [data]);
 
   return (
-    <Button icon labelPosition="left" onClick={() => loginAsDummy()}>
+    <Button
+      icon
+      labelPosition="left"
+      onClick={() =>
+        dummyLogin({
+          variables: {
+            username: uniqueNamesGenerator({
+              dictionaries: [starWars],
+              length: 1,
+            }),
+          },
+        })
+      }
+    >
       <Icon name="user" />
       Log in as Dummy user
     </Button>

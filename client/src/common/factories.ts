@@ -11,7 +11,7 @@ export function placeFactory(name: string): Place {
 
 export function dummyUserFactory(name: string): User {
   return {
-    userId: uuid.v4(),
+    id: uuid.v4(),
     username: name,
   };
 }
