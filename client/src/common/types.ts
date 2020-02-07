@@ -7,7 +7,7 @@ export interface User {
 export interface Place {
   id: string;
   name: string;
-  peopleJoined: string[];
+  joinedUsersIds: string[];
 }
 
 export enum SubscriptionTopic {
