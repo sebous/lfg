@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import _ from "lodash";
 import { Container, Grid } from "semantic-ui-react";
 import { PlaceItem } from "./PlaceItem";
-import { useGlobalState } from "../../../common/state";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import {
@@ -41,9 +40,6 @@ const PLACES_SUBSCRIPTION = gql`
 `;
 
 export const PlacesDataList: React.FC = () => {
-  const [places, updatePlaces] = useGlobalState("activePlaces");
-  const [user] = useGlobalState("user");
-
   let message = undefined;
   const { loading, data, error, subscribeToMore } = useQuery<PlacesQuery>(
     GET_PLACES
@@ -60,7 +56,6 @@ export const PlacesDataList: React.FC = () => {
       updateQuery: (prev, { subscriptionData }) => {
         console.log(prev, subscriptionData);
         if (!subscriptionData.data) return prev;
-        const data = subscriptionData.data as any;
 
         const placeNotification = (subscriptionData.data as any)
           .placesSubscription as PlacesSubscription_placesSubscription;
@@ -96,6 +91,7 @@ export const PlacesDataList: React.FC = () => {
           place => place.joinedUsersIds.length,
           ["desc"]
         );
+        console.log(sortedPlaces);
 
         return {
           ...prev,
@@ -105,40 +101,16 @@ export const PlacesDataList: React.FC = () => {
     });
   }, []);
 
-  // const placeClickHandler = (id: string) => {
-  //   const placeClicked = dataset.find(place => place.id === id);
-  //   if (!placeClicked) return;
-
-  //   const hasUserSelected = placeClicked.joinedUsersIds.includes(user!.userId);
-
-  //   updatePlaces(places =>
-  //     places.map(p => {
-  //       if (p.id === placeClicked.id) {
-  //         if (hasUserSelected) {
-  //           return {
-  //             ...placeClicked,
-  //             joinedUsersIds: placeClicked.joinedUsersIds.filter(
-  //               userId => userId !== user!.userId
-  //             ),
-  //           };
-  //         } else {
-  //           return {
-  //             ...placeClicked,
-  //             joinedUsersIds: [...placeClicked.joinedUsersIds, user!.userId],
-  //           };
-  //         }
-  //       }
-  //       return p;
-  //     })
-  //   );
-  // };
+  const sortedData = _.orderBy(data?.getPlaces, p => p.joinedUsersIds.length, [
+    "desc",
+  ]);
 
   return (
     <Container>
       <Grid style={{ margin: 0 }}>
         {message ||
-          data?.getPlaces.map(({ name, joinedUsersIds, id }, i) => (
-            <Grid.Column mobile={8} key={i}>
+          sortedData.map(({ name, joinedUsersIds, id }, i) => (
+            <Grid.Column mobile={8} key={id}>
               <PlaceItem
                 id={id}
                 clickHandler={() => {}}

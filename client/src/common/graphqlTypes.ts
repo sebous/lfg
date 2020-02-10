@@ -25,6 +25,29 @@ export interface DummyLoginVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: AddPlace
+// ====================================================
+
+export interface AddPlace_addPlace {
+  __typename: "Place";
+  id: string;
+  name: string;
+  joinedUsersIds: string[];
+}
+
+export interface AddPlace {
+  addPlace: AddPlace_addPlace;
+}
+
+export interface AddPlaceVariables {
+  placeInput: NewPlaceInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: GetUsersInQueueQuery
 // ====================================================
 
@@ -36,6 +59,35 @@ export interface GetUsersInQueueQuery_getUsersInQueue {
 
 export interface GetUsersInQueueQuery {
   getUsersInQueue: GetUsersInQueueQuery_getUsersInQueue[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: UpdatePlaceJoined
+// ====================================================
+
+export interface UpdatePlaceJoined_updatePlace_createdBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface UpdatePlaceJoined_updatePlace {
+  __typename: "Place";
+  id: string;
+  name: string;
+  joinedUsersIds: string[];
+  createdBy: UpdatePlaceJoined_updatePlace_createdBy;
+}
+
+export interface UpdatePlaceJoined {
+  updatePlace: UpdatePlaceJoined_updatePlace;
+}
+
+export interface UpdatePlaceJoinedVariables {
+  placeInfo: UpdatePlaceInput;
 }
 
 /* tslint:disable */
@@ -93,58 +145,6 @@ export interface PlacesSubscription_placesSubscription {
 
 export interface PlacesSubscription {
   placesSubscription: PlacesSubscription_placesSubscription;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: AddPlace
-// ====================================================
-
-export interface AddPlace_addPlace {
-  __typename: "Place";
-  id: string;
-  name: string;
-  joinedUsersIds: string[];
-}
-
-export interface AddPlace {
-  addPlace: AddPlace_addPlace;
-}
-
-export interface AddPlaceVariables {
-  placeInput: NewPlaceInput;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: UpdatePlaceJoined
-// ====================================================
-
-export interface UpdatePlaceJoined_updatePlace_createdBy {
-  __typename: "User";
-  id: string;
-}
-
-export interface UpdatePlaceJoined_updatePlace {
-  __typename: "Place";
-  id: string;
-  name: string;
-  joinedUsersIds: string[];
-  createdBy: UpdatePlaceJoined_updatePlace_createdBy;
-}
-
-export interface UpdatePlaceJoined {
-  updatePlace: UpdatePlaceJoined_updatePlace;
-}
-
-export interface UpdatePlaceJoinedVariables {
-  placeInfo: UpdatePlaceInput;
 }
 
 /* tslint:disable */

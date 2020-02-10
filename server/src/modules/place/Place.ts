@@ -64,7 +64,10 @@ export class PlaceResolver {
   async updatePlace(
     @Arg("placeInfo") placeInfo: UpdatePlaceInput
   ): Promise<Place | undefined> {
-    const place = await Place.findOne(placeInfo.id);
+    const place = await Place.findOne({
+      where: { id: placeInfo.id },
+      relations: ["createdBy", "createdBy.places"],
+    });
     if (!place) return;
 
     place.joinedUsersIds = placeInfo.joinedUsersIds;
