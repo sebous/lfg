@@ -39,6 +39,7 @@ export const PlaceItem: React.FC<PlaceItemProps> = props => {
           users.push(user.id);
         }
 
+        // this also updates local apollo cache
         updatePlace({
           variables: {
             placeInfo: {

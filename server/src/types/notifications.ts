@@ -7,6 +7,7 @@ export enum NotificationPriority {
 
 export enum SubscriptionTopic {
   PLACE_ADDED = "PLACE_ADDED",
+  PLACE_UPDATED = "PLACE_UPDATED",
   USER_QUEUED = "USER_QUEUED",
 }
 
