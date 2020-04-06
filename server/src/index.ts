@@ -15,7 +15,7 @@ dotenv.config();
   try {
     await createConnection();
     const schema = await buildSchema({
-      resolvers: [__dirname + "/modules/**/*.ts"]
+      resolvers: [__dirname + "/modules/**/*.ts"],
     });
 
     const apolloServer = new ApolloServer({
@@ -24,8 +24,8 @@ dotenv.config();
       subscriptions: {
         onConnect: () => console.log("client subscribed"),
         onDisconnect: () => console.log("client disconnected"),
-        path: "/subscriptions"
-      }
+        path: "/subscriptions",
+      },
     });
 
     const app = express();
@@ -34,7 +34,7 @@ dotenv.config();
     app.use(
       cors({
         credentials: true,
-        origin: process.env.CLIENT_URL
+        origin: process.env.CLIENT_URL,
       })
     );
 
