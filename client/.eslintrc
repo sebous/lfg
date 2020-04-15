@@ -2,6 +2,7 @@
   "extends": "airbnb-typescript-prettier",
   "rules": {
     "import/prefer-default-export": 0,
-    "no-console": 0
+    "no-console": 0,
+    "@typescript-eslint/no-explicit-any": 0
   }
 }

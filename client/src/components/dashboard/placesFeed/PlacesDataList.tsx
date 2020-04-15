@@ -4,10 +4,10 @@ import { Container, Grid } from "semantic-ui-react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { PlaceItem } from "./PlaceItem";
-import { PlacesQuery, PlacesSubscription_placesSubscription } from "../../../common/graphqlTypes";
+import { GetPlaces, PlacesSubs_placesSubscription } from "../../../common/graphqlTypes";
 
 const GET_PLACES = gql`
-  query PlacesQuery {
+  query GetPlaces {
     getPlaces {
       id
       name
@@ -20,17 +20,13 @@ const GET_PLACES = gql`
 `;
 
 const PLACES_SUBSCRIPTION = gql`
-  subscription PlacesSubscription {
+  subscription PlacesSubs {
     placesSubscription {
       id
-      date
-      data {
+      name
+      joinedUsersIds
+      createdBy {
         id
-        name
-        joinedUsersIds
-        createdBy {
-          id
-        }
       }
     }
   }
@@ -38,7 +34,7 @@ const PLACES_SUBSCRIPTION = gql`
 
 export const PlacesDataList: React.FC = () => {
   // load data
-  const { loading, data, error, subscribeToMore } = useQuery<PlacesQuery>(GET_PLACES);
+  const { loading, data, error, subscribeToMore } = useQuery<GetPlaces>(GET_PLACES);
 
   // placeholder message to render
   let message = "";
@@ -51,41 +47,29 @@ export const PlacesDataList: React.FC = () => {
   useEffect(() => {
     subscribeToMore({
       document: PLACES_SUBSCRIPTION,
-      updateQuery: (prev, { subscriptionData }) => {
-        console.log(prev, subscriptionData);
-        if (!subscriptionData.data) return prev;
+      updateQuery: (prevData, { subscriptionData }) => {
+        console.log(prevData, subscriptionData);
+        if (!subscriptionData.data) return prevData;
 
-        // TODO: codegen is not generating subscription interfaces correctly
-        const placeNotification = (subscriptionData.data as any)
-          .placesSubscription as PlacesSubscription_placesSubscription;
+        // TODO: codegen is not generating subscription interfaces correctly for subscribeToMore
+        const incomingData = (subscriptionData as any).data.placesSubscription as PlacesSubs_placesSubscription;
 
-        // let places = [...prev.getPlaces];
-        // // is update
-        // if (prev.getPlaces.some(place => place.id === placeNotification.id)) {
-        //   // map through existing and update place coming from notification
-        //   places = places.map(p =>
-        //     p.id === placeNotification.data.id ? { ...p, joinedUsersIds: placeNotification.data.joinedUsersIds } : p
-        //   );
-        // }
-        // // is new
-        // else {
-        //   const { id, createdBy, name, joinedUsersIds } = placeNotification.data;
-        //   places.push({
-        //     id,
-        //     createdBy,
-        //     name,
-        //     joinedUsersIds,
-        //     __typename: "Place",
-        //   });
-        // }
+        let places = [...prevData.getPlaces];
 
-        // const sortedPlaces = _.sortBy(places, place => place.joinedUsersIds.length, ["desc"]);
+        // is update
+        if (places.some(place => place.id === incomingData.id)) {
+          places = places.map(p =>
+            p.id === incomingData.id ? { ...p, joinedUsersIds: incomingData.joinedUsersIds } : p
+          );
+        }
 
-        // return {
-        //   ...prev,
-        //   getPlaces: sortedPlaces,
-        // };
-        return prev;
+        // is new
+        else {
+          const { id, createdBy, joinedUsersIds, name } = incomingData;
+          places.push({ id, createdBy, joinedUsersIds, name, __typename: "Place" });
+        }
+
+        return { getPlaces: places };
       },
     });
   }, [subscribeToMore]);

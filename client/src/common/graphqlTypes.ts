@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -22,6 +23,7 @@ export interface DummyLoginVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -45,6 +47,7 @@ export interface AddPlaceVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -63,6 +66,7 @@ export interface GetUsersInQueueQuery {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -92,63 +96,59 @@ export interface UpdatePlaceJoinedVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: PlacesQuery
+// GraphQL query operation: GetPlaces
 // ====================================================
 
-export interface PlacesQuery_getPlaces_createdBy {
+export interface GetPlaces_getPlaces_createdBy {
   __typename: "User";
   id: string;
 }
 
-export interface PlacesQuery_getPlaces {
+export interface GetPlaces_getPlaces {
   __typename: "Place";
   id: string;
   name: string;
   joinedUsersIds: string[];
-  createdBy: PlacesQuery_getPlaces_createdBy;
+  createdBy: GetPlaces_getPlaces_createdBy;
 }
 
-export interface PlacesQuery {
-  getPlaces: PlacesQuery_getPlaces[];
+export interface GetPlaces {
+  getPlaces: GetPlaces_getPlaces[];
 }
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL subscription operation: PlacesSubscription
+// GraphQL subscription operation: PlacesSubs
 // ====================================================
 
-export interface PlacesSubscription_placesSubscription_data_createdBy {
+export interface PlacesSubs_placesSubscription_createdBy {
   __typename: "User";
   id: string;
 }
 
-export interface PlacesSubscription_placesSubscription_data {
+export interface PlacesSubs_placesSubscription {
   __typename: "Place";
   id: string;
   name: string;
   joinedUsersIds: string[];
-  createdBy: PlacesSubscription_placesSubscription_data_createdBy;
+  createdBy: PlacesSubs_placesSubscription_createdBy;
 }
 
-export interface PlacesSubscription_placesSubscription {
-  __typename: "PlaceNotificationType";
-  id: string;
-  date: any;
-  data: PlacesSubscription_placesSubscription_data;
-}
-
-export interface PlacesSubscription {
-  placesSubscription: PlacesSubscription_placesSubscription;
+export interface PlacesSubs {
+  placesSubscription: PlacesSubs_placesSubscription;
 }
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 //==============================================================

@@ -19,12 +19,17 @@ export class PlaceResolver {
     return places;
   }
 
-  // subscribe to place updates
-  @Subscription(() => PlaceNotificationType, {
-    topics: SubscriptionTopic.PLACE_ADDED,
-  })
-  placesSubscription(@Root() payload: Notification<Place>): PlaceNotificationType {
-    return payload as PlaceNotificationType;
+  // TODO: notifications implementation
+  // @Subscription(() => PlaceNotificationType, {
+  //   topics: SubscriptionTopic.PLACE_ADDED,
+  // })
+  // placesSubscription(@Root() payload: Notification<Place>): PlaceNotificationType {
+  //   return payload as PlaceNotificationType;
+  // }
+
+  @Subscription(() => Place, { topics: [SubscriptionTopic.PLACE_ADDED, SubscriptionTopic.PLACE_UPDATED] })
+  placesSubscription(@Root() payload: Place): Place {
+    return payload;
   }
 
   // add new place
@@ -42,9 +47,7 @@ export class PlaceResolver {
       createdBy: user,
     }).save();
 
-    const notification = notificationFactory<Place>(place);
-    await pubSub.publish(SubscriptionTopic.PLACE_ADDED, notification);
-
+    await pubSub.publish(SubscriptionTopic.PLACE_ADDED, place);
     return place;
   }
 
@@ -62,8 +65,7 @@ export class PlaceResolver {
     place.joinedUsersIds = placeInfo.joinedUsersIds;
     const updatedPlace = await place.save();
 
-    const notification = notificationFactory<Place>(updatedPlace);
-    await pubSub.publish(SubscriptionTopic.PLACE_UPDATED, notification);
+    await pubSub.publish(SubscriptionTopic.PLACE_UPDATED, updatedPlace);
     return updatedPlace;
   }
 
