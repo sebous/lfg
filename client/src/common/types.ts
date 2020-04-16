@@ -15,3 +15,9 @@ export enum SubscriptionTopic {
   PLACE_ADDED = "PLACE_ADDED",
   USER_QUEUED = "USER_QUEUED",
 }
+
+export enum Action {
+  ADD = "ADD",
+  UPDATE = "UPDATE",
+  DELETE = "DELETE",
+}

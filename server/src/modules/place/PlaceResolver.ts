@@ -20,17 +20,17 @@ export class PlaceResolver {
   }
 
   // TODO: notifications implementation
-  // @Subscription(() => PlaceNotificationType, {
-  //   topics: SubscriptionTopic.PLACE_ADDED,
-  // })
-  // placesSubscription(@Root() payload: Notification<Place>): PlaceNotificationType {
-  //   return payload as PlaceNotificationType;
-  // }
-
-  @Subscription(() => Place, { topics: [SubscriptionTopic.PLACE_ADDED, SubscriptionTopic.PLACE_UPDATED] })
-  placesSubscription(@Root() payload: Place): Place {
-    return payload;
+  @Subscription(() => PlaceNotificationType, {
+    topics: [SubscriptionTopic.PLACE],
+  })
+  placesSubscription(@Root() payload: Notification<Place>): PlaceNotificationType {
+    return payload as PlaceNotificationType;
   }
+
+  // @Subscription(() => Place, { topics: [SubscriptionTopic.PLACE_ADDED, SubscriptionTopic.PLACE_UPDATED] })
+  // placesSubscription(@Root() payload: Place): Place {
+  //   return payload;
+  // }
 
   // add new place
   @Mutation(() => Place)
@@ -47,7 +47,8 @@ export class PlaceResolver {
       createdBy: user,
     }).save();
 
-    await pubSub.publish(SubscriptionTopic.PLACE_ADDED, place);
+    const notification = notificationFactory<Place>(place, "ADD");
+    await pubSub.publish(SubscriptionTopic.PLACE, notification);
     return place;
   }
 
@@ -65,20 +66,27 @@ export class PlaceResolver {
     place.joinedUsersIds = placeInfo.joinedUsersIds;
     const updatedPlace = await place.save();
 
-    await pubSub.publish(SubscriptionTopic.PLACE_UPDATED, updatedPlace);
+    const notification = notificationFactory<Place>(updatedPlace, "UPDATE");
+    await pubSub.publish(SubscriptionTopic.PLACE, notification);
     return updatedPlace;
   }
 
   // remove place
   @Mutation(() => Boolean)
-  async removeOnePlace(@Arg("placeId") placeId: string, @Arg("userId") userId: string): Promise<boolean> {
+  async removeOnePlace(
+    @Arg("placeId") placeId: string,
+    @Arg("userId") userId: string,
+    @PubSub() pubSub: PubSubEngine
+  ): Promise<boolean> {
     const place = await Place.findOne({ where: { id: placeId } });
     if (!place) return false;
 
     // user can delete only his places
     if (place.createdBy.id !== userId) return false;
 
+    const notification = notificationFactory<Place>(place, "DELETE");
     await Place.remove(place);
+    await pubSub.publish(SubscriptionTopic.PLACE, notification);
     return true;
   }
 

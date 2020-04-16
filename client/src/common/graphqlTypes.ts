@@ -129,17 +129,25 @@ export interface GetPlaces {
 // GraphQL subscription operation: PlacesSubs
 // ====================================================
 
-export interface PlacesSubs_placesSubscription_createdBy {
+export interface PlacesSubs_placesSubscription_data_createdBy {
   __typename: "User";
   id: string;
 }
 
-export interface PlacesSubs_placesSubscription {
+export interface PlacesSubs_placesSubscription_data {
   __typename: "Place";
   id: string;
   name: string;
   joinedUsersIds: string[];
-  createdBy: PlacesSubs_placesSubscription_createdBy;
+  createdBy: PlacesSubs_placesSubscription_data_createdBy;
+}
+
+export interface PlacesSubs_placesSubscription {
+  __typename: "PlaceNotificationType";
+  id: string;
+  date: any;
+  action: string;
+  data: PlacesSubs_placesSubscription_data;
 }
 
 export interface PlacesSubs {

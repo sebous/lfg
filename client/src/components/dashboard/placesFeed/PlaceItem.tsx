@@ -22,17 +22,17 @@ interface PlaceItemProps {
   id: string;
   name: string;
   joinedUsersIds: string[];
-  clickHandler: () => void;
 }
 
-export const PlaceItem: React.FC<PlaceItemProps> = props => {
+export const PlaceItem: React.FC<PlaceItemProps> = ({ id, name, joinedUsersIds }) => {
   const [user] = useGlobalState("user");
   const [updatePlace] = useMutation<UpdatePlaceJoined>(UPDATE_PLACE_JOINED);
   if (!user) throw Error("user not authenticated");
+
   return (
     <Card
       onClick={() => {
-        let users = [...props.joinedUsersIds];
+        let users = [...joinedUsersIds];
         if (users.indexOf(user.id) > -1) {
           users = users.filter(u => u !== user.id);
         } else {
@@ -43,17 +43,17 @@ export const PlaceItem: React.FC<PlaceItemProps> = props => {
         updatePlace({
           variables: {
             placeInfo: {
-              id: props.id,
+              id,
               joinedUsersIds: users,
             },
           },
         });
       }}
     >
-      <Card.Content header={props.name} />
+      <Card.Content header={name} />
       <Card.Content extra>
         <Icon name="user" />
-        {props.joinedUsersIds.length} boys would smash this
+        {joinedUsersIds.length} boys would smash this
       </Card.Content>
     </Card>
   );
