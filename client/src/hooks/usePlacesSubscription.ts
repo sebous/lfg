@@ -44,6 +44,7 @@ export const usePlacesSubscription = (data: GetPlaces | undefined) => {
     }
 
     if (action === Action.DELETE) {
+      console.log("delete action");
       const placeToDelete = localData.find(p => p.id === notificationData.id);
       if (!placeToDelete) return;
 

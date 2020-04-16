@@ -3,10 +3,10 @@ import { getConnection } from "typeorm";
 import { Place } from "../../entity/Place";
 import { SubscriptionTopic, Notification } from "../../types/notifications";
 import { notificationFactory } from "../../common/factories";
-import { PlaceNotificationType } from "./PlaceNotification";
-import { NewPlaceInput } from "./NewPlaceInput";
+import { PlaceNotificationType } from "./types/PlaceNotification";
+import { NewPlaceInput } from "./types/NewPlaceInput";
 import { User } from "../../entity/User";
-import { UpdatePlaceInput } from "./UpdatePlaceInput";
+import { UpdatePlaceInput } from "./types/UpdatePlaceInput";
 
 @Resolver()
 export class PlaceResolver {
@@ -26,11 +26,6 @@ export class PlaceResolver {
   placesSubscription(@Root() payload: Notification<Place>): PlaceNotificationType {
     return payload as PlaceNotificationType;
   }
-
-  // @Subscription(() => Place, { topics: [SubscriptionTopic.PLACE_ADDED, SubscriptionTopic.PLACE_UPDATED] })
-  // placesSubscription(@Root() payload: Place): Place {
-  //   return payload;
-  // }
 
   // add new place
   @Mutation(() => Place)
@@ -78,10 +73,11 @@ export class PlaceResolver {
     @Arg("userId") userId: string,
     @PubSub() pubSub: PubSubEngine
   ): Promise<boolean> {
-    const place = await Place.findOne({ where: { id: placeId } });
+    const place = await Place.findOne(placeId, { relations: ["createdBy", "createdBy.places"] });
     if (!place) return false;
 
     // user can delete only his places
+    // TODO: this userId should come from session
     if (place.createdBy.id !== userId) return false;
 
     const notification = notificationFactory<Place>(place, "DELETE");

@@ -1,10 +1,10 @@
 import React, { useState, createRef, useEffect } from "react";
 import { Menu, Icon, Modal, Input, Button } from "semantic-ui-react";
+import { gql } from "apollo-boost";
+import { useMutation } from "@apollo/react-hooks";
 import { Place } from "../../../common/types";
 import { useGlobalState } from "../../../common/state";
 import { placeFactory } from "../../../common/factories";
-import { gql } from "apollo-boost";
-import { useMutation } from "@apollo/react-hooks";
 import { AddPlace } from "../../../common/graphqlTypes";
 
 const ADD_PLACE = gql`
@@ -24,9 +24,7 @@ export const DashboardBottomBar: React.FC = () => {
   const inputRef = createRef<any>();
   const [addPlace] = useMutation<AddPlace>(ADD_PLACE);
 
-  const addBtnClicked = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-  ) => {
+  const addBtnClicked = () => {
     setModalOpen(!isModalOpen);
   };
 
@@ -50,11 +48,11 @@ export const DashboardBottomBar: React.FC = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       {/* Bottom menu */}
       <Menu icon>
         <Menu.Item name="add place" onClick={addBtnClicked}>
-          <Icon name="add"></Icon>
+          <Icon name="add" />
         </Menu.Item>
       </Menu>
 
@@ -74,15 +72,9 @@ export const DashboardBottomBar: React.FC = () => {
           <Button negative onClick={() => cancelAdding()}>
             Cancel
           </Button>
-          <Button
-            positive
-            icon="checkmark"
-            labelPosition="right"
-            content="Add"
-            onClick={() => confirmAdding()}
-          ></Button>
+          <Button positive icon="checkmark" labelPosition="right" content="Add" onClick={() => confirmAdding()} />
         </Modal.Actions>
       </Modal>
-    </React.Fragment>
+    </>
   );
 };

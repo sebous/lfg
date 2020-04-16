@@ -27,9 +27,9 @@ export const PlacesDataList: React.FC = () => {
       <Grid style={{ margin: 0 }}>
         {message ||
           (sortedData &&
-            sortedData.map(({ name, joinedUsersIds, id }) => (
+            sortedData.map(({ name, joinedUsersIds, id, createdBy }) => (
               <Grid.Column mobile={8} key={id}>
-                <PlaceItem id={id} name={name} joinedUsersIds={joinedUsersIds} />
+                <PlaceItem id={id} name={name} joinedUsersIds={joinedUsersIds} createdByUserId={createdBy.id} />
               </Grid.Column>
             )))}
       </Grid>

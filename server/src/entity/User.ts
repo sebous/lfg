@@ -1,10 +1,4 @@
-import {
-  Entity,
-  BaseEntity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
-} from "typeorm";
+import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { Field, ObjectType, ID } from "type-graphql";
 import { Place } from "./Place";
 
