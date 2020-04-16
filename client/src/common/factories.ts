@@ -5,13 +5,13 @@ export function placeFactory(name: string): Place {
   return {
     id: uuid.v4(),
     name,
-    peopleJoined: []
+    joinedUsersIds: [],
   };
 }
 
 export function dummyUserFactory(name: string): User {
   return {
-    userId: uuid.v4(),
-    username: name
+    id: uuid.v4(),
+    username: name,
   };
 }

@@ -1,14 +1,29 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef, useEffect } from "react";
 import { Menu, Icon, Modal, Input, Button } from "semantic-ui-react";
 import { Place } from "../../../common/types";
 import { useGlobalState } from "../../../common/state";
 import { placeFactory } from "../../../common/factories";
+import { gql } from "apollo-boost";
+import { useMutation } from "@apollo/react-hooks";
+import { AddPlace } from "../../../common/graphqlTypes";
+
+const ADD_PLACE = gql`
+  mutation AddPlace($placeInput: NewPlaceInput!) {
+    addPlace(placeInput: $placeInput) {
+      id
+      name
+      joinedUsersIds
+    }
+  }
+`;
 
 // TODO: split this by each button with it's own functionallity
 export const DashboardBottomBar: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [places, updatePlaces] = useGlobalState("activePlaces");
+  const [user] = useGlobalState("user");
   const inputRef = createRef<any>();
+  const [addPlace] = useMutation<AddPlace>(ADD_PLACE);
+
   const addBtnClicked = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
@@ -24,10 +39,14 @@ export const DashboardBottomBar: React.FC = () => {
     // this is weird but it works
     const inputVal = inputRef.current.inputRef.current.value;
     setModalOpen(false);
-    const newPlace = placeFactory(inputVal);
-    updatePlaces(places => [...places, newPlace]);
-    console.log(places);
-    console.log(inputVal);
+    addPlace({
+      variables: {
+        placeInput: {
+          name: inputVal,
+          createdById: user?.id,
+        },
+      },
+    });
   };
 
   return (

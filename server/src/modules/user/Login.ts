@@ -24,7 +24,7 @@ export class LoginResolver {
     @Ctx() ctx: Context,
     @PubSub() pubSub: PubSubEngine
   ): Promise<User> {
-    const newUser = await User.create({ username }).save();
+    const newUser = await User.create({ username, queuing: true }).save();
     console.log(newUser);
 
     // add userId to session, not used for now

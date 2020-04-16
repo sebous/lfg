@@ -1,61 +1,37 @@
 import React from "react";
 import _ from "lodash";
 import { Container, Grid } from "semantic-ui-react";
+import { useQuery } from "@apollo/react-hooks";
 import { PlaceItem } from "./PlaceItem";
-import { useGlobalState } from "../../../common/state";
-import { Place } from "../../../common/types";
-import { placeFactory } from "../../../common/factories";
-
-// for development purposes only
-const dummyData: Place[] = _.range(12).map(() => placeFactory("Music Lab"));
+import { GetPlaces } from "../../../common/graphqlTypes";
+import { usePlacesSubscription } from "../../../hooks/usePlacesSubscription";
+import { GET_PLACES } from "../../../gql/places.graphql";
 
 export const PlacesDataList: React.FC = () => {
-  const [places, updatePlaces] = useGlobalState("activePlaces");
-  const [user] = useGlobalState("user");
-  const dataset = places.length > 0 ? places : dummyData;
+  // load data
+  const { loading, data, error } = useQuery<GetPlaces>(GET_PLACES);
 
-  const placeClickHandler = (id: string) => {
-    const placeClicked = dataset.find(place => place.id === id);
-    if (!placeClicked) return;
+  // placeholder message to render
+  let message = "";
+  if (loading) message = "loading...";
+  else if (error) message = "error";
+  else if (data?.getPlaces.length === 0) message = "no results";
 
-    const hasUserSelected = placeClicked.peopleJoined.includes(user!.userId);
+  usePlacesSubscription(data);
 
-    updatePlaces(places =>
-      places.map(p => {
-        if (p.id === placeClicked.id) {
-          if (hasUserSelected) {
-            return {
-              ...placeClicked,
-              peopleJoined: placeClicked.peopleJoined.filter(
-                userId => userId !== user!.userId
-              )
-            };
-          } else {
-            return {
-              ...placeClicked,
-              peopleJoined: [...placeClicked.peopleJoined, user!.userId]
-            };
-          }
-        }
-        return p;
-      })
-    );
-  };
+  // const sortedData = data;
+  const sortedData = _.orderBy(data?.getPlaces, p => p.joinedUsersIds.length, ["desc"]);
 
-  console.log(places, "datalist");
   return (
     <Container>
       <Grid style={{ margin: 0 }}>
-        {dataset.map(({ name, peopleJoined, id }, i) => (
-          <Grid.Column mobile={8} key={i}>
-            <PlaceItem
-              id={id}
-              clickHandler={() => placeClickHandler(id)}
-              name={name}
-              peopleCount={peopleJoined.length}
-            />
-          </Grid.Column>
-        ))}
+        {message ||
+          (sortedData &&
+            sortedData.map(({ name, joinedUsersIds, id }) => (
+              <Grid.Column mobile={8} key={id}>
+                <PlaceItem id={id} name={name} joinedUsersIds={joinedUsersIds} />
+              </Grid.Column>
+            )))}
       </Grid>
     </Container>
   );

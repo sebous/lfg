@@ -6,13 +6,16 @@ export enum NotificationPriority {
 }
 
 export enum SubscriptionTopic {
-  PLACE_ADDED = "PLACE_ADDED",
+  PLACE = "PLACE",
   USER_QUEUED = "USER_QUEUED",
 }
+
+export type Action = "ADD" | "UPDATE" | "DELETE";
 
 export interface Notification<T> {
   id: string;
   date: Date;
+  action: Action;
   data: T;
 }
 
@@ -24,6 +27,9 @@ export function NotificationType<T>(TClass: ClassType<T>) {
 
     @Field(() => Date)
     date!: Date;
+
+    @Field()
+    action!: Action;
 
     @Field(() => TClass)
     data!: T;
