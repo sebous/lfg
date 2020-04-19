@@ -51,17 +51,70 @@ export interface AddPlaceVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: GetUsersInQueueQuery
+// GraphQL query operation: GetPeopleInQueue
 // ====================================================
 
-export interface GetUsersInQueueQuery_getUsersInQueue {
+export interface GetPeopleInQueue_getPeopleInQueue {
   __typename: "User";
   id: string;
   username: string;
 }
 
-export interface GetUsersInQueueQuery {
-  getUsersInQueue: GetUsersInQueueQuery_getUsersInQueue[];
+export interface GetPeopleInQueue {
+  getPeopleInQueue: GetPeopleInQueue_getPeopleInQueue[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL subscription operation: peopleQueueSubscription
+// ====================================================
+
+export interface peopleQueueSubscription_peopleQueueSubscription_data {
+  __typename: "User";
+  id: string;
+  username: string;
+}
+
+export interface peopleQueueSubscription_peopleQueueSubscription {
+  __typename: "UserNotificationType";
+  id: string;
+  date: any;
+  action: string;
+  data: peopleQueueSubscription_peopleQueueSubscription_data;
+}
+
+export interface peopleQueueSubscription {
+  peopleQueueSubscription: peopleQueueSubscription_peopleQueueSubscription;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: GetPlaces
+// ====================================================
+
+export interface GetPlaces_getPlaces_createdBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface GetPlaces_getPlaces {
+  __typename: "Place";
+  id: string;
+  name: string;
+  joinedUsersIds: string[];
+  createdBy: GetPlaces_getPlaces_createdBy;
+}
+
+export interface GetPlaces {
+  getPlaces: GetPlaces_getPlaces[];
 }
 
 /* tslint:disable */
@@ -100,24 +153,16 @@ export interface UpdatePlaceJoinedVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: GetPlaces
+// GraphQL mutation operation: RemovePlace
 // ====================================================
 
-export interface GetPlaces_getPlaces_createdBy {
-  __typename: "User";
-  id: string;
+export interface RemovePlace {
+  removeOnePlace: boolean;
 }
 
-export interface GetPlaces_getPlaces {
-  __typename: "Place";
-  id: string;
-  name: string;
-  joinedUsersIds: string[];
-  createdBy: GetPlaces_getPlaces_createdBy;
-}
-
-export interface GetPlaces {
-  getPlaces: GetPlaces_getPlaces[];
+export interface RemovePlaceVariables {
+  userId: string;
+  placeId: string;
 }
 
 /* tslint:disable */

@@ -1,19 +1,9 @@
-import {
-  Resolver,
-  Mutation,
-  Arg,
-  Query,
-  Ctx,
-  PubSub,
-  PubSubEngine,
-  Subscription,
-  Root,
-} from "type-graphql";
+import { Resolver, Mutation, Arg, Query, Ctx, PubSub, PubSubEngine, Subscription, Root } from "type-graphql";
+import { notificationFactory } from "../../common/factories";
 import { User } from "../../entity/User";
 import { Context } from "../../types/context";
-import { notificationFactory } from "../../common/factories";
 import { SubscriptionTopic, Notification } from "../../types/notifications";
-import { UserNotificationType } from "./UserNotification";
+import { UserNotificationType } from "./types/UserNotification";
 
 @Resolver()
 export class LoginResolver {
@@ -31,7 +21,7 @@ export class LoginResolver {
     // ctx.req.session!.userId = newUser.id;
 
     // TODO: call subscription here -> add to queue
-    const notification = notificationFactory<User>(newUser);
+    const notification = notificationFactory<User>(newUser, "ADD");
     await pubSub.publish(SubscriptionTopic.USER_QUEUED, notification);
     return newUser;
   }
@@ -39,15 +29,5 @@ export class LoginResolver {
   @Query(() => String)
   async helloWorld() {
     return "Hello world";
-  }
-
-  // subscribe to user queue
-  @Subscription(() => UserNotificationType, {
-    topics: SubscriptionTopic.USER_QUEUED,
-  })
-  userQueueSubscription(
-    @Root() payload: Notification<User>
-  ): UserNotificationType {
-    return payload as UserNotificationType;
   }
 }

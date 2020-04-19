@@ -19,7 +19,6 @@ export class PlaceResolver {
     return places;
   }
 
-  // TODO: notifications implementation
   @Subscription(() => PlaceNotificationType, {
     topics: [SubscriptionTopic.PLACE],
   })

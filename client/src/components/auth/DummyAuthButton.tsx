@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Button, Icon } from "semantic-ui-react";
 import { uniqueNamesGenerator, starWars } from "unique-names-generator";
-import { useGlobalState } from "../../common/state";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
+import { useGlobalState } from "../../common/state";
 import { DummyLogin } from "../../common/graphqlTypes";
 
 const DUMMY_LOGIN = gql`

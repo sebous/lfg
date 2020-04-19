@@ -1,6 +1,6 @@
 import { ObjectType } from "type-graphql";
-import { NotificationType } from "../../types/notifications";
-import { User } from "../../entity/User";
+import { User } from "../../../entity/User";
+import { NotificationType } from "../../../types/notifications";
 
 @ObjectType()
 export class UserNotificationType extends NotificationType(User) {}

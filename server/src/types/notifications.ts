@@ -7,7 +7,7 @@ export enum NotificationPriority {
 
 export enum SubscriptionTopic {
   PLACE = "PLACE",
-  USER_QUEUED = "USER_QUEUED",
+  USER = "USER",
 }
 
 export type Action = "ADD" | "UPDATE" | "DELETE";
