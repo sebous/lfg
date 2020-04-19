@@ -1,5 +1,5 @@
 import { Request } from "express";
 
-export interface Context {
+export interface ServerContext {
   req: Request;
 }
