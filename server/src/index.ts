@@ -6,7 +6,7 @@ import { createConnection } from "typeorm";
 import http from "http";
 import session from "express-session";
 import connectRedis from "connect-redis";
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer, CorsOptions } from "apollo-server-express";
 import cors from "cors";
 import { buildSchema } from "type-graphql";
 
@@ -36,12 +36,17 @@ dotenv.config();
     const RedisStore = connectRedis(session);
 
     // middlewares
+    const corsOptions: cors.CorsOptions = {
+      origin: process.env.CLIENT_URL,
+      credentials: true,
+    };
+    app.use(cors(corsOptions));
     app.use(
       session({
         store: new RedisStore({
           client: redis as any,
         }),
-        name: "qid",
+        name: "sess",
         secret: process.env.SESSION_SECRET || "qwerty",
         resave: false,
         saveUninitialized: false,
@@ -54,14 +59,7 @@ dotenv.config();
       })
     );
 
-    app.use(
-      cors({
-        credentials: true,
-        origin: process.env.CLIENT_URL,
-      })
-    );
-
-    apolloServer.applyMiddleware({ app });
+    apolloServer.applyMiddleware({ app, cors: corsOptions as CorsOptions });
 
     const httpServer = http.createServer(app);
     apolloServer.installSubscriptionHandlers(httpServer);

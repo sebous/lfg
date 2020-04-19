@@ -5,6 +5,7 @@ import { getMainDefinition } from "apollo-utilities";
 const cache = new InMemoryCache();
 const httpLink = new HttpLink({
   uri: "http://localhost:4000/graphql",
+  credentials: "include",
 });
 const wsLink = new WebSocketLink({
   uri: "ws://localhost:4000/subscriptions",

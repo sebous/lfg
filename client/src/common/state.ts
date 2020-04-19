@@ -12,7 +12,7 @@ const defaultState: GlobalState = {
   isAuthorized: false,
   user: undefined,
   activePlaces: [],
-  peopleInQueue: []
+  peopleInQueue: [],
 };
 
 export const { useGlobalState } = createGlobalState(defaultState);

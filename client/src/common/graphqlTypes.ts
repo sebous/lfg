@@ -51,6 +51,56 @@ export interface AddPlaceVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: LoginViaCookie
+// ====================================================
+
+export interface LoginViaCookie_loginViaCookie {
+  __typename: "User";
+  id: string;
+  username: string;
+  name: string | null;
+  fbId: string | null;
+  avatar: string | null;
+  queuing: boolean;
+}
+
+export interface LoginViaCookie {
+  loginViaCookie: LoginViaCookie_loginViaCookie | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: FBlogin
+// ====================================================
+
+export interface FBlogin_FBlogin {
+  __typename: "User";
+  id: string;
+  username: string;
+  name: string | null;
+  fbId: string | null;
+  avatar: string | null;
+  queuing: boolean;
+}
+
+export interface FBlogin {
+  FBlogin: FBlogin_FBlogin | null;
+}
+
+export interface FBloginVariables {
+  input: FBLoginInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: GetPeopleInQueue
 // ====================================================
 
@@ -207,6 +257,13 @@ export interface PlacesSubs {
 //==============================================================
 // START Enums and Input Objects
 //==============================================================
+
+export interface FBLoginInput {
+  fbId: string;
+  name: string;
+  accessToken: string;
+  avatar?: string | null;
+}
 
 export interface NewPlaceInput {
   name: string;

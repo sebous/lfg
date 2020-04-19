@@ -12,10 +12,8 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = props => {
   console.log(props);
   const { restrictedPath } = props;
   if (props.isAuthenticated) {
-    return (
-      <Route {...props} component={() => <Redirect to={{ pathname: restrictedPath }} />} />
-    )
+    return <Route {...props} component={() => <Redirect to={{ pathname: restrictedPath }} />} />;
   } else {
-    return <Redirect to={{ pathname: AUTHENTICATION_PATH }} />
+    return <Redirect to={{ pathname: AUTHENTICATION_PATH }} />;
   }
 };

@@ -7,10 +7,10 @@ export const checkIfTokenValid = async (accessToken: string) => {
     const response = await axios.get(CHECK_TOKEN_URL, {
       params: {
         input_token: accessToken,
-        access_token: `${process.env.APP_ID}|${process.env.APP_SECRET}`,
+        access_token: `${process.env.FB_APP_ID}|${process.env.FB_APP_SECRET}`,
       },
     });
-    const { data } = response;
+    const { data } = response.data;
     return data.is_valid as boolean;
   } catch (err) {
     return false;

@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Arg, Ctx, PubSub, PubSubEngine } from "type-graphql";
+import { Resolver, Mutation, Arg, Ctx, PubSub, PubSubEngine, Query } from "type-graphql";
 import { notificationFactory } from "../../common/factories";
 import { User } from "../../entity/User";
 import { ServerContext } from "../../types/context";
@@ -8,11 +8,18 @@ import { checkIfTokenValid } from "../../common/fbUtils";
 
 @Resolver()
 export class LoginResolver {
-  // @Mutation(() => User)
-  // async login(@Arg("email") email: string, @Arg("password") password: string): Promise<User | undefined> {
-  //   const user = await User.findOne({ where: { email } });
-  // const hashedPassword = await bcrypt
-  // }
+  // login with existing cookie
+  @Query(() => User, { nullable: true })
+  async loginViaCookie(@Ctx() ctx: ServerContext): Promise<User | undefined> {
+    // user not in session
+    if (!ctx.req.session!.userId) return;
+
+    // user no longer exists
+    const user = await User.findOne(ctx.req.session!.userId);
+    if (!user) return;
+
+    return user;
+  }
 
   // FB login
   @Mutation(() => User, { nullable: true })
@@ -22,7 +29,7 @@ export class LoginResolver {
   ): Promise<User | undefined> {
     const user = await User.findOne({ where: { fbId } });
 
-    // if not found register user
+    // register user
     if (!user) {
       const FBtokenValid = await checkIfTokenValid(accessToken);
       if (!FBtokenValid) return;
@@ -34,11 +41,11 @@ export class LoginResolver {
         avatar,
       }).save();
 
-      // login user
       ctx.req.session!.userId = newUser.id;
       return newUser;
     }
 
+    // login existing user
     ctx.req.session!.userId = user.id;
     return user;
   }
