@@ -49,8 +49,8 @@ dotenv.config();
     const httpServer = http.createServer(app);
     apolloServer.installSubscriptionHandlers(httpServer);
 
-    const port = process.env.PORT;
-    httpServer.listen(port, () => console.log(`graphql server started on http://localhost:${port}/graphql`));
+    const { PORT } = process.env;
+    httpServer.listen(PORT, () => console.log(`graphql server started on http://localhost:${PORT}/graphql`));
   } catch (err) {
     console.log(err);
   }
