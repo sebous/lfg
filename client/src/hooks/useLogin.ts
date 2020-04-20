@@ -7,8 +7,8 @@ import { LOGIN_VIA_COOKIE, FB_LOGIN } from "../gql/login.graphql";
 import { useGlobalState } from "../common/state";
 
 export const useLogin = () => {
-  const [userState, setUserState] = useGlobalState("user");
-  const [isAuth, setIsAuth] = useGlobalState("isAuthorized");
+  const [, setUserState] = useGlobalState("user");
+  const [, setIsAuth] = useGlobalState("isAuthorized");
 
   const [cookieAuthSuccess, setCookieAuthSuccess] = useState<boolean | undefined>(undefined);
   // true if user is authenticated via FB SDK
