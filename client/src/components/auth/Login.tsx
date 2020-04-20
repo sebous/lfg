@@ -3,11 +3,11 @@ import FacebookLogin from "react-facebook-login";
 import { useLogin } from "../../hooks/useLogin";
 
 export const Login: React.FC = () => {
-  const { setFbAuthResponse, shouldLoadFbLogin } = useLogin();
+  const { setFbAuthResponse, shouldLoadFbSDK } = useLogin();
 
   return (
     <>
-      {shouldLoadFbLogin && (
+      {shouldLoadFbSDK && (
         <FacebookLogin
           containerStyle={{ display: "none" }}
           appId="2540415289566455"

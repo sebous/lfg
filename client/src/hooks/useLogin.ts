@@ -7,14 +7,17 @@ import { LOGIN_VIA_COOKIE, FB_LOGIN } from "../gql/login.graphql";
 import { useGlobalState } from "../common/state";
 
 export const useLogin = () => {
+  const [userState, setUserState] = useGlobalState("user");
+  const [isAuth, setIsAuth] = useGlobalState("isAuthorized");
+
+  const [cookieAuthSuccess, setCookieAuthSuccess] = useState<boolean | undefined>(undefined);
+  // true if user is authenticated via FB SDK
+  const [fbAuthResponse, setFbAuthResponse] = useState<ReactFacebookLoginInfo | undefined>(undefined);
+
   const [loginViaCookie, { data: cookieLoginData, error: cookieError }] = useLazyQuery<LoginViaCookie>(
     LOGIN_VIA_COOKIE
   );
-  const [fbLogin, { data: fbLoginData, error: fbLoginError }] = useMutation<FBlogin>(FB_LOGIN);
-  const [cookieAuthSuccess, setCookieAuthSuccess] = useState<boolean | undefined>(undefined);
-  const [fbAuthResponse, setFbAuthResponse] = useState<ReactFacebookLoginInfo | undefined>(undefined);
-  const [userState, setUserState] = useGlobalState("user");
-  const [isAuth, setIsAuth] = useGlobalState("isAuthorized");
+  const [loginViaFbAuth, { data: fbLoginData, error: fbLoginError }] = useMutation<FBlogin>(FB_LOGIN);
 
   const history = useHistory();
 
@@ -39,7 +42,6 @@ export const useLogin = () => {
       setCookieAuthSuccess(false);
     }
     if (cookieLoginData?.loginViaCookie) {
-      console.log("from cookies");
       setCookieAuthSuccess(true);
       const { id, avatar, username } = cookieLoginData.loginViaCookie;
       setUserState({
@@ -48,7 +50,6 @@ export const useLogin = () => {
         avatar: avatar ?? undefined,
       });
       setIsAuth(true);
-      // TODO: redirect to dashboard
       redirectToDashboard();
     }
   }, [cookieLoginData, cookieError]);
@@ -57,7 +58,7 @@ export const useLogin = () => {
   useEffect(() => {
     if (fbAuthResponse) {
       const { accessToken, id, name, picture } = fbAuthResponse;
-      fbLogin({
+      loginViaFbAuth({
         variables: {
           input: {
             fbId: id,
@@ -82,10 +83,9 @@ export const useLogin = () => {
       const { id, username, avatar } = fbLoginData.FBlogin;
       setUserState({ id, username, avatar: avatar ?? undefined });
       setIsAuth(true);
-      // TODO: redirect to dashboard
       redirectToDashboard();
     }
   }, [fbLoginData, fbLoginError]);
 
-  return { setFbAuthResponse, shouldLoadFbLogin: cookieAuthSuccess === false };
+  return { setFbAuthResponse, shouldLoadFbSDK: cookieAuthSuccess === false };
 };
