@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Arg, PubSub, PubSubEngine, Subscription, Root, Query } from "type-graphql";
+import { Resolver, Mutation, Arg, PubSub, PubSubEngine, Subscription, Root, Query, Ctx } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Place } from "../../entity/Place";
 import { SubscriptionTopic, Notification } from "../../types/notifications";
@@ -7,15 +7,14 @@ import { PlaceNotificationType } from "./types/PlaceNotification";
 import { NewPlaceInput } from "./types/NewPlaceInput";
 import { User } from "../../entity/User";
 import { UpdatePlaceInput } from "./types/UpdatePlaceInput";
+import { ServerContext } from "../../types/context";
 
 @Resolver()
 export class PlaceResolver {
   // get all places
   @Query(() => [Place])
   async getPlaces(): Promise<Place[]> {
-    const places = await Place.find({
-      relations: ["createdBy", "createdBy.places"],
-    });
+    const places = await Place.find();
     return places;
   }
 
@@ -29,16 +28,16 @@ export class PlaceResolver {
   // add new place
   @Mutation(() => Place)
   async addPlace(
-    @Arg("placeInput") { name, createdById, joinedUsersIds }: NewPlaceInput,
+    @Arg("placeInput") { name }: NewPlaceInput,
+    @Ctx() ctx: ServerContext,
     @PubSub() pubSub: PubSubEngine
   ): Promise<Place> {
-    const user = await User.findOne({ where: { id: createdById } });
+    const user = await User.findOne(ctx.req.session!.userId);
     if (!user) throw Error("invalid user");
 
     const place = await Place.create({
       name,
-      joinedUsersIds,
-      createdBy: user,
+      owner: user,
     }).save();
 
     const notification = notificationFactory<Place>(place, "ADD");
@@ -46,18 +45,52 @@ export class PlaceResolver {
     return place;
   }
 
-  // update joinedUsersIds on Place
+  // update Place
   @Mutation(() => Place)
   async updatePlace(
-    @Arg("placeInfo") placeInfo: UpdatePlaceInput,
+    @Arg("placeInfo") { id, joinedUserId }: UpdatePlaceInput,
     @PubSub() pubSub: PubSubEngine
   ): Promise<Place | undefined> {
-    const place = await Place.findOne(placeInfo.id, {
-      relations: ["createdBy", "createdBy.places"],
-    });
+    const place = await Place.findOne(id);
+    const joinedUser = await User.findOne(joinedUserId);
+    if (!place || !joinedUser) return;
+
+    place.joinedUsers.push(joinedUser);
+    const updatedPlace = await place.save();
+
+    const notification = notificationFactory<Place>(updatedPlace, "UPDATE");
+    await pubSub.publish(SubscriptionTopic.PLACE, notification);
+    return updatedPlace;
+  }
+
+  @Mutation(() => Place)
+  async joinPlace(
+    @Arg("placeId") placeId: string,
+    @Ctx() ctx: ServerContext,
+    @PubSub() pubSub: PubSubEngine
+  ): Promise<Place | undefined> {
+    const place = await Place.findOne(placeId);
+    const user = await User.findOne(ctx.req.session!.userId);
+    if (!place || !user) return;
+
+    place.joinedUsers.push(user);
+    const updatedPlace = await place.save();
+
+    const notification = notificationFactory<Place>(updatedPlace, "UPDATE");
+    await pubSub.publish(SubscriptionTopic.PLACE, notification);
+    return updatedPlace;
+  }
+
+  @Mutation(() => Place)
+  async leavePlace(
+    @Arg("placeId") placeId: string,
+    @Ctx() ctx: ServerContext,
+    @PubSub() pubSub: PubSubEngine
+  ): Promise<Place | undefined> {
+    const place = await Place.findOne(placeId);
     if (!place) return;
 
-    place.joinedUsersIds = placeInfo.joinedUsersIds;
+    place.joinedUsers = place.joinedUsers.filter(u => u.id !== ctx.req.session!.userId);
     const updatedPlace = await place.save();
 
     const notification = notificationFactory<Place>(updatedPlace, "UPDATE");
@@ -69,15 +102,15 @@ export class PlaceResolver {
   @Mutation(() => Boolean)
   async removeOnePlace(
     @Arg("placeId") placeId: string,
-    @Arg("userId") userId: string,
+    @Ctx() ctx: ServerContext,
     @PubSub() pubSub: PubSubEngine
   ): Promise<boolean> {
-    const place = await Place.findOne(placeId, { relations: ["createdBy", "createdBy.places"] });
+    const place = await Place.findOne(placeId);
     if (!place) return false;
 
     // user can delete only his places
-    // TODO: this userId should come from session
-    if (place.createdBy.id !== userId) return false;
+    // TODO: admin can delete others
+    if (place.owner.id !== ctx.req.session!.userId) return false;
 
     const notification = notificationFactory<Place>(place, "DELETE");
     await Place.remove(place);

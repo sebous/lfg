@@ -1,57 +1,58 @@
 import React from "react";
 import { Card, Icon } from "semantic-ui-react";
 import { useMutation } from "@apollo/react-hooks";
-import { UpdatePlaceJoined } from "../../../common/graphqlTypes";
+import { GetPlaces_getPlaces_joinedUsers, JoinPlace, LeavePlace, RemovePlace } from "../../../common/graphqlTypes";
 import { useGlobalState } from "../../../common/state";
 import { useLongPress } from "../../../hooks/useLongPress";
-import { REMOVE_PLACE, UPDATE_PLACE } from "../../../gql/places.graphql";
+import { REMOVE_PLACE, JOIN_PLACE, LEAVE_PLACE } from "../../../gql/places.graphql";
 
 interface PlaceItemProps {
   id: string;
   name: string;
-  joinedUsersIds: string[];
-  createdByUserId: string;
+  joinedUsers: GetPlaces_getPlaces_joinedUsers[];
+  ownerId: string;
 }
 
-export const PlaceItem: React.FC<PlaceItemProps> = ({ id, name, joinedUsersIds, createdByUserId }) => {
+export const PlaceItem: React.FC<PlaceItemProps> = ({ id, name, joinedUsers, ownerId }) => {
   const [user] = useGlobalState("user");
   if (!user) throw Error("user not authenticated");
 
-  const [updatePlace] = useMutation<UpdatePlaceJoined>(UPDATE_PLACE);
-  const [removePlace] = useMutation(REMOVE_PLACE);
+  const [joinPlace] = useMutation<JoinPlace>(JOIN_PLACE);
+  const [leavePlace] = useMutation<LeavePlace>(LEAVE_PLACE);
+  const [removePlace] = useMutation<RemovePlace>(REMOVE_PLACE);
 
-  // checks place for current user (interested/not)
+  // join current user to place, remove if has already joined
   const updateFn = () => {
-    let users = [...joinedUsersIds];
-    if (users.indexOf(user.id) > -1) {
-      users = users.filter(u => u !== user.id);
-    } else {
-      users.push(user.id);
-    }
-
-    // this also updates local apollo cache
-    updatePlace({
-      variables: {
-        placeInfo: {
-          id,
-          joinedUsersIds: users,
+    // join
+    if (!joinedUsers.find(u => u.id === user.id)) {
+      joinPlace({
+        variables: {
+          placeId: id,
         },
-      },
-    });
+      });
+    }
+    // leave
+    else {
+      leavePlace({
+        variables: {
+          placeId: id,
+        },
+      });
+    }
   };
 
   // delete place
   // TODO: deletion should be in 2 steps, show delete btn and after click validate&delete
   const deleteFn = () => {
-    console.log("here");
     // user can delete only his own places
-    if (createdByUserId !== user.id) {
+    // TODO: admin can delete others tho, maybe remove this in the future
+    if (ownerId !== user.id) {
       // TODO: throw nice error here
       return;
     }
 
     removePlace({
-      variables: { userId: user.id, placeId: id },
+      variables: { placeId: id },
     });
   };
 
@@ -63,7 +64,7 @@ export const PlaceItem: React.FC<PlaceItemProps> = ({ id, name, joinedUsersIds, 
         <Card.Content header={name} />
         <Card.Content extra>
           <Icon name="user" />
-          {joinedUsersIds.length} boys would smash this
+          {joinedUsers.length} boys would smash this
         </Card.Content>
       </Card>
     </div>

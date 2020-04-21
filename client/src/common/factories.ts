@@ -1,5 +1,5 @@
-import { Place, User } from "./types";
 import uuid from "uuid";
+import { Place, User } from "./types";
 
 export function placeFactory(name: string): Place {
   return {

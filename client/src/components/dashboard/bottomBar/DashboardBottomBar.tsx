@@ -1,26 +1,12 @@
-import React, { useState, createRef, useEffect } from "react";
+import React, { useState, createRef } from "react";
 import { Menu, Icon, Modal, Input, Button } from "semantic-ui-react";
-import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
-import { Place } from "../../../common/types";
-import { useGlobalState } from "../../../common/state";
-import { placeFactory } from "../../../common/factories";
 import { AddPlace } from "../../../common/graphqlTypes";
-
-const ADD_PLACE = gql`
-  mutation AddPlace($placeInput: NewPlaceInput!) {
-    addPlace(placeInput: $placeInput) {
-      id
-      name
-      joinedUsersIds
-    }
-  }
-`;
+import { ADD_PLACE } from "../../../gql/places.graphql";
 
 // TODO: split this by each button with it's own functionallity
 export const DashboardBottomBar: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [user] = useGlobalState("user");
   const inputRef = createRef<any>();
   const [addPlace] = useMutation<AddPlace>(ADD_PLACE);
 
@@ -41,7 +27,6 @@ export const DashboardBottomBar: React.FC = () => {
       variables: {
         placeInput: {
           name: inputVal,
-          createdById: user?.id,
         },
       },
     });
