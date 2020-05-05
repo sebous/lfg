@@ -1,5 +1,15 @@
 import { ObjectType, Field, ID } from "type-graphql";
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import {
+  Entity,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+  UpdateDateColumn,
+  CreateDateColumn,
+  ManyToOne,
+} from "typeorm";
 import { User } from "./User";
 
 @ObjectType()
@@ -13,14 +23,23 @@ export class Place extends BaseEntity {
   @Column()
   name!: string;
 
-  @Field(() => [String])
-  @Column({ array: true, type: "varchar" })
-  joinedUsersIds!: string[];
+  // joined entities
 
   @Field(() => User)
-  @ManyToOne(
-    () => User,
-    user => user.places
-  )
-  createdBy!: User;
+  @ManyToOne(() => User, { eager: true })
+  owner!: User;
+
+  // TODO: this should have default value not be nullable field
+  @Field(() => [User], { nullable: true })
+  @ManyToMany(() => User, { eager: true })
+  @JoinTable()
+  joinedUsers!: User[];
+
+  // generated
+
+  @UpdateDateColumn()
+  updatedDate!: Date;
+
+  @CreateDateColumn()
+  createdDate!: Date;
 }

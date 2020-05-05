@@ -20,16 +20,16 @@ export const PlacesDataList: React.FC = () => {
   usePlacesSubscription(data);
 
   // const sortedData = data;
-  const sortedData = _.orderBy(data?.getPlaces, p => p.joinedUsersIds.length, ["desc"]);
+  const sortedData = _.orderBy(data?.getPlaces, p => p.joinedUsers?.length ?? 0, ["desc"]);
 
   return (
     <Container>
       <Grid style={{ margin: 0 }}>
         {message ||
           (sortedData &&
-            sortedData.map(({ name, joinedUsersIds, id, createdBy }) => (
+            sortedData.map(({ name, joinedUsers, id, owner }) => (
               <Grid.Column mobile={8} key={id}>
-                <PlaceItem id={id} name={name} joinedUsersIds={joinedUsersIds} createdByUserId={createdBy.id} />
+                <PlaceItem id={id} name={name} joinedUsers={joinedUsers ?? []} ownerId={owner.id} />
               </Grid.Column>
             )))}
       </Grid>

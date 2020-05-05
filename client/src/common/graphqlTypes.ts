@@ -27,30 +27,6 @@ export interface DummyLoginVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: AddPlace
-// ====================================================
-
-export interface AddPlace_addPlace {
-  __typename: "Place";
-  id: string;
-  name: string;
-  joinedUsersIds: string[];
-}
-
-export interface AddPlace {
-  addPlace: AddPlace_addPlace;
-}
-
-export interface AddPlaceVariables {
-  placeInput: NewPlaceInput;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// @generated
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: LoginViaCookie
 // ====================================================
 
@@ -150,7 +126,14 @@ export interface peopleQueueSubscription {
 // GraphQL query operation: GetPlaces
 // ====================================================
 
-export interface GetPlaces_getPlaces_createdBy {
+export interface GetPlaces_getPlaces_joinedUsers {
+  __typename: "User";
+  id: string;
+  username: string;
+  avatar: string | null;
+}
+
+export interface GetPlaces_getPlaces_owner {
   __typename: "User";
   id: string;
 }
@@ -159,8 +142,8 @@ export interface GetPlaces_getPlaces {
   __typename: "Place";
   id: string;
   name: string;
-  joinedUsersIds: string[];
-  createdBy: GetPlaces_getPlaces_createdBy;
+  joinedUsers: GetPlaces_getPlaces_joinedUsers[] | null;
+  owner: GetPlaces_getPlaces_owner;
 }
 
 export interface GetPlaces {
@@ -173,10 +156,40 @@ export interface GetPlaces {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: AddPlace
+// ====================================================
+
+export interface AddPlace_addPlace {
+  __typename: "Place";
+  id: string;
+  name: string;
+}
+
+export interface AddPlace {
+  addPlace: AddPlace_addPlace;
+}
+
+export interface AddPlaceVariables {
+  placeInput: NewPlaceInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: UpdatePlaceJoined
 // ====================================================
 
-export interface UpdatePlaceJoined_updatePlace_createdBy {
+export interface UpdatePlaceJoined_updatePlace_joinedUsers {
+  __typename: "User";
+  id: string;
+  username: string;
+  avatar: string | null;
+}
+
+export interface UpdatePlaceJoined_updatePlace_owner {
   __typename: "User";
   id: string;
 }
@@ -185,8 +198,8 @@ export interface UpdatePlaceJoined_updatePlace {
   __typename: "Place";
   id: string;
   name: string;
-  joinedUsersIds: string[];
-  createdBy: UpdatePlaceJoined_updatePlace_createdBy;
+  joinedUsers: UpdatePlaceJoined_updatePlace_joinedUsers[] | null;
+  owner: UpdatePlaceJoined_updatePlace_owner;
 }
 
 export interface UpdatePlaceJoined {
@@ -203,6 +216,80 @@ export interface UpdatePlaceJoinedVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: JoinPlace
+// ====================================================
+
+export interface JoinPlace_joinPlace_joinedUsers {
+  __typename: "User";
+  id: string;
+  username: string;
+  avatar: string | null;
+}
+
+export interface JoinPlace_joinPlace_owner {
+  __typename: "User";
+  id: string;
+}
+
+export interface JoinPlace_joinPlace {
+  __typename: "Place";
+  id: string;
+  name: string;
+  joinedUsers: JoinPlace_joinPlace_joinedUsers[] | null;
+  owner: JoinPlace_joinPlace_owner;
+}
+
+export interface JoinPlace {
+  joinPlace: JoinPlace_joinPlace;
+}
+
+export interface JoinPlaceVariables {
+  placeId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: LeavePlace
+// ====================================================
+
+export interface LeavePlace_leavePlace_joinedUsers {
+  __typename: "User";
+  id: string;
+  username: string;
+  avatar: string | null;
+}
+
+export interface LeavePlace_leavePlace_owner {
+  __typename: "User";
+  id: string;
+}
+
+export interface LeavePlace_leavePlace {
+  __typename: "Place";
+  id: string;
+  name: string;
+  joinedUsers: LeavePlace_leavePlace_joinedUsers[] | null;
+  owner: LeavePlace_leavePlace_owner;
+}
+
+export interface LeavePlace {
+  leavePlace: LeavePlace_leavePlace;
+}
+
+export interface LeavePlaceVariables {
+  placeId: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: RemovePlace
 // ====================================================
 
@@ -211,7 +298,6 @@ export interface RemovePlace {
 }
 
 export interface RemovePlaceVariables {
-  userId: string;
   placeId: string;
 }
 
@@ -224,7 +310,14 @@ export interface RemovePlaceVariables {
 // GraphQL subscription operation: PlacesSubs
 // ====================================================
 
-export interface PlacesSubs_placesSubscription_data_createdBy {
+export interface PlacesSubs_placesSubscription_data_joinedUsers {
+  __typename: "User";
+  id: string;
+  username: string;
+  avatar: string | null;
+}
+
+export interface PlacesSubs_placesSubscription_data_owner {
   __typename: "User";
   id: string;
 }
@@ -233,8 +326,8 @@ export interface PlacesSubs_placesSubscription_data {
   __typename: "Place";
   id: string;
   name: string;
-  joinedUsersIds: string[];
-  createdBy: PlacesSubs_placesSubscription_data_createdBy;
+  joinedUsers: PlacesSubs_placesSubscription_data_joinedUsers[] | null;
+  owner: PlacesSubs_placesSubscription_data_owner;
 }
 
 export interface PlacesSubs_placesSubscription {
@@ -267,13 +360,11 @@ export interface FBLoginInput {
 
 export interface NewPlaceInput {
   name: string;
-  createdById: string;
-  joinedUsersIds?: string[] | null;
 }
 
 export interface UpdatePlaceInput {
   id: string;
-  joinedUsersIds?: string[] | null;
+  joinedUserId: string;
 }
 
 //==============================================================

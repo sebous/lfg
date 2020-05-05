@@ -5,10 +5,23 @@ export const GET_PLACES = gql`
     getPlaces {
       id
       name
-      joinedUsersIds
-      createdBy {
+      joinedUsers {
+        id
+        username
+        avatar
+      }
+      owner {
         id
       }
+    }
+  }
+`;
+
+export const ADD_PLACE = gql`
+  mutation AddPlace($placeInput: NewPlaceInput!) {
+    addPlace(placeInput: $placeInput) {
+      id
+      name
     }
   }
 `;
@@ -18,8 +31,46 @@ export const UPDATE_PLACE = gql`
     updatePlace(placeInfo: $placeInfo) {
       id
       name
-      joinedUsersIds
-      createdBy {
+      joinedUsers {
+        id
+        username
+        avatar
+      }
+      owner {
+        id
+      }
+    }
+  }
+`;
+
+export const JOIN_PLACE = gql`
+  mutation JoinPlace($placeId: String!) {
+    joinPlace(placeId: $placeId) {
+      id
+      name
+      joinedUsers {
+        id
+        username
+        avatar
+      }
+      owner {
+        id
+      }
+    }
+  }
+`;
+
+export const LEAVE_PLACE = gql`
+  mutation LeavePlace($placeId: String!) {
+    leavePlace(placeId: $placeId) {
+      id
+      name
+      joinedUsers {
+        id
+        username
+        avatar
+      }
+      owner {
         id
       }
     }
@@ -27,8 +78,8 @@ export const UPDATE_PLACE = gql`
 `;
 
 export const REMOVE_PLACE = gql`
-  mutation RemovePlace($userId: String!, $placeId: String!) {
-    removeOnePlace(userId: $userId, placeId: $placeId)
+  mutation RemovePlace($placeId: String!) {
+    removeOnePlace(placeId: $placeId)
   }
 `;
 
@@ -41,8 +92,12 @@ export const PLACES_SUBSCRIPTION = gql`
       data {
         id
         name
-        joinedUsersIds
-        createdBy {
+        joinedUsers {
+          id
+          username
+          avatar
+        }
+        owner {
           id
         }
       }

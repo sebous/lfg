@@ -3,9 +3,9 @@ import {
   BaseEntity,
   Column,
   PrimaryGeneratedColumn,
-  OneToMany,
   UpdateDateColumn,
   CreateDateColumn,
+  ManyToMany,
 } from "typeorm";
 import { Field, ObjectType, ID } from "type-graphql";
 import { Place } from "./Place";
@@ -37,13 +37,16 @@ export class User extends BaseEntity {
   @Column({ default: false })
   queuing!: boolean;
 
-  // TODO: remove unnecessary fields from User
+  // joined entities
+
   @Field(() => [Place])
-  @OneToMany(
+  @ManyToMany(
     () => Place,
-    place => place.createdBy
+    place => place.joinedUsers
   )
-  places!: Place[];
+  placesJoined!: Place[];
+
+  // generated
 
   @UpdateDateColumn()
   updatedDate!: Date;
