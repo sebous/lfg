@@ -1,5 +1,5 @@
 import React from "react";
-import { LoaderWrapper } from "./style";
+import { LoaderWrapper, LoaderInner, LoaderBounceFirst, LoaderBounce, LoaderBounceLast, LoaderText } from "./style";
 
 interface LoaderProps {
   visible: boolean;
@@ -9,7 +9,12 @@ interface LoaderProps {
 export const Loader: React.FC<LoaderProps> = ({ visible, fullscreen }) => {
   return (
     <LoaderWrapper>
-      <span />
+      <LoaderInner>
+        <LoaderBounceFirst />
+        <LoaderBounce />
+        <LoaderBounceLast />
+      </LoaderInner>
+      <LoaderText>Logging in via FB</LoaderText>
     </LoaderWrapper>
   );
 };

@@ -10,17 +10,9 @@ export const Home: React.FC = () => {
   if (isAuth) history.replace("/dashboard");
 
   return (
-    // <div
-    //   style={{
-    //     display: "flex",
-    //     flexDirection: "column",
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //     height: "100%",
-    //   }}
-    // >
-    <Login />
-    // </div>
-    // <Loader visible fullscreen={false} />
+    <>
+      {/* <Login /> */}
+      <Loader visible fullscreen={false} />
+    </>
   );
 };
