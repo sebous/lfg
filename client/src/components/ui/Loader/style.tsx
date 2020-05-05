@@ -7,7 +7,8 @@ export const LoaderWrapper = styled.div`
   width: 100%;
   padding: 1rem;
   position: absolute;
-  bottom: 20%;
+  bottom: 50%;
+  transform: translate(0, 50%);
 `;
 
 export const LoaderInner = styled.div`
@@ -26,14 +27,14 @@ const animation = keyframes`
 `;
 
 export const LoaderBounce = styled.div`
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.75rem;
+  height: 1.75rem;
   background: ${props => props.theme.color.primary};
   border-radius: 100%;
   display: inline-block;
   animation: ${animation} 1.4s infinite ease-in-out both;
   animation-delay: -0.16s;
-  margin-right: 0.5rem;
+  margin-right: 0.75rem;
 `;
 
 export const LoaderBounceFirst = styled(LoaderBounce)`
@@ -42,9 +43,10 @@ export const LoaderBounceFirst = styled(LoaderBounce)`
 
 export const LoaderBounceLast = styled(LoaderBounce)`
   animation-delay: 0s;
+  margin-right: 0;
 `;
 
 export const LoaderText = styled.div`
-  font-size: 0.8rem;
-  color: ${props => props.theme.color.light};
+  font-size: 1rem;
+  color: ${props => props.theme.color.gray};
 `;
