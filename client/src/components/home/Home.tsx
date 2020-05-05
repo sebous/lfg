@@ -2,6 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Login } from "../auth/Login";
 import { useGlobalState } from "../../common/state";
+import { Loader } from "../ui/Loader";
 
 export const Home: React.FC = () => {
   const [isAuth] = useGlobalState("isAuthorized");
@@ -9,16 +10,17 @@ export const Home: React.FC = () => {
   if (isAuth) history.replace("/dashboard");
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-      }}
-    >
-      <Login />
-    </div>
+    // <div
+    //   style={{
+    //     display: "flex",
+    //     flexDirection: "column",
+    //     justifyContent: "center",
+    //     alignItems: "center",
+    //     height: "100%",
+    //   }}
+    // >
+    // <Login />
+    // </div>
+    <Loader visible fullscreen={false} />
   );
 };

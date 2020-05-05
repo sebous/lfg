@@ -1,7 +1,7 @@
 import React from "react";
 import { LoaderWrapper } from "./style";
 
-export interface LoaderProps {
+interface LoaderProps {
   visible: boolean;
   fullscreen?: boolean;
 }
