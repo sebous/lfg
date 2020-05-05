@@ -19,8 +19,8 @@ export const Home: React.FC = () => {
     //     height: "100%",
     //   }}
     // >
-    // <Login />
+    <Login />
     // </div>
-    <Loader visible fullscreen={false} />
+    // <Loader visible fullscreen={false} />
   );
 };

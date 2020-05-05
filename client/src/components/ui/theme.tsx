@@ -13,8 +13,10 @@ export const theme = Object.freeze({
 });
 
 export const GlobalStyles = createGlobalStyle`
-  body {
+  body, html {
     font-family: 'PT Sans', sans-serif;
     font-size: 16px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.8);
   }
 `;

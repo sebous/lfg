@@ -12,8 +12,11 @@ export const NavbarWrapper = styled.div`
 `;
 
 export const NavbarHeader = styled.div`
-  font-size: 24px;
+  font-size: 32px;
   line-height: 32px;
+  letter-spacing: 0.5px;
+  padding-left: 1rem;
+  font-weight: bold;
   margin-right: auto;
   color: ${props => props.theme.color.primary};
 `;
@@ -22,10 +25,15 @@ export const NavbarAvatar = styled.div`
   width: 2rem;
   height: 2rem;
   overflow: hidden;
-  object-fit: contain;
+`;
+
+export const NavbarAvatarImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 export const NavbarUsername = styled.div`
   font-size: 0.75rem;
-  margin-right: 1.125rem;
+  margin-right: 0.75rem;
 `;
