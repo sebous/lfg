@@ -1,5 +1,6 @@
 import { gql } from "apollo-boost";
 
+// TODO: add avatar too
 export const GET_PEOPLE_IN_QUEUE = gql`
   query GetPeopleInQueue {
     getPeopleInQueue {
