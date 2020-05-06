@@ -54,5 +54,5 @@ export const usePeopleQueueSubscription = (data: GetPeopleInQueue | undefined) =
         },
       });
     }
-  }, [notification]);
+  }, [notification, client, data]);
 };

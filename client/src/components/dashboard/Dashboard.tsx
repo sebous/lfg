@@ -1,6 +1,4 @@
 import React from "react";
-import { PlacesDataList } from "./placesFeed/PlacesDataList";
-import { DashboardBottomBar } from "./bottomBar/DashboardBottomBar";
 import { PeopleInQueue } from "./peopleInQueue/PeopleInQueue";
 
 export const Dashbaord: React.FC = () => {

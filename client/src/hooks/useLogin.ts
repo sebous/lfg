@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useLazyQuery, useMutation } from "@apollo/react-hooks";
 import { ReactFacebookLoginInfo } from "react-facebook-login";
 import { useHistory } from "react-router-dom";
@@ -11,7 +11,7 @@ export const useLogin = () => {
   const [, setIsAuth] = useGlobalState("isAuthorized");
 
   const [cookieAuthSuccess, setCookieAuthSuccess] = useState<boolean | undefined>(undefined);
-  // true if user is authenticated via FB SDK
+  // populated if user is authenticated via FB SDK
   const [fbAuthResponse, setFbAuthResponse] = useState<ReactFacebookLoginInfo | undefined>(undefined);
 
   const [loginViaCookie, { data: cookieLoginData, error: cookieError }] = useLazyQuery<LoginViaCookie>(
@@ -21,9 +21,7 @@ export const useLogin = () => {
 
   const history = useHistory();
 
-  function redirectToDashboard() {
-    history.replace("/dashboard");
-  }
+  const redirectToDashboard = useCallback(() => history.replace("/dashboard"), [history]);
 
   // try login via cookie
   useEffect(() => {
@@ -52,7 +50,7 @@ export const useLogin = () => {
       setIsAuth(true);
       redirectToDashboard();
     }
-  }, [cookieLoginData, cookieError]);
+  }, [cookieLoginData, cookieError, redirectToDashboard, setIsAuth, setUserState]);
 
   // login user via userInfo from FB login
   useEffect(() => {
@@ -69,7 +67,7 @@ export const useLogin = () => {
         },
       });
     }
-  }, [fbAuthResponse]);
+  }, [fbAuthResponse, loginViaFbAuth]);
 
   // handle fbLogin result
   useEffect(() => {
@@ -85,7 +83,7 @@ export const useLogin = () => {
       setIsAuth(true);
       redirectToDashboard();
     }
-  }, [fbLoginData, fbLoginError]);
+  }, [fbLoginData, fbLoginError, redirectToDashboard, setIsAuth, setUserState]);
 
   return { setFbAuthResponse, shouldLoadFbSDK: cookieAuthSuccess === false };
 };

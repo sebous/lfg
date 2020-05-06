@@ -1,5 +1,4 @@
 import React from "react";
-import _ from "lodash";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import { useQuery } from "@apollo/react-hooks";
 import { GetPeopleInQueue } from "../../../common/graphqlTypes";
