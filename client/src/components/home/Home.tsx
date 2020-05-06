@@ -11,7 +11,7 @@ export const Home: React.FC = () => {
 
   return (
     <>
-      {/* <Login /> */}
+      <Login />
       <Loader visible fullscreen={false} />
     </>
   );
