@@ -8,6 +8,7 @@ import { ApolloServer, CorsOptions } from "apollo-server-express";
 import cors from "cors";
 import { buildSchema } from "type-graphql";
 import { applyMiddlewares } from "./common/middleware";
+import { pubSubRedis } from "./common/redis";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ dotenv.config();
     await createConnection();
     const schema = await buildSchema({
       resolvers: [path.join(__dirname, "/modules/**/*.ts")],
+      pubSub: pubSubRedis,
     });
 
     // apollo config
