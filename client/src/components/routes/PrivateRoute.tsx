@@ -5,14 +5,14 @@ export const AUTHENTICATION_PATH = "/";
 
 export interface PrivateRouteProps extends RouteProps {
   isAuthenticated: boolean;
-  restrictedPath: string;
 }
 
 // TODO: refactor this via router-dom docs
-export const PrivateRoute: React.FC<PrivateRouteProps> = props => {
-  const { restrictedPath, isAuthenticated } = props;
-  if (isAuthenticated) {
-    return <Route {...props} component={() => <Redirect to={{ pathname: restrictedPath }} />} />;
-  }
-  return <Redirect to={{ pathname: AUTHENTICATION_PATH }} />;
-};
+export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, isAuthenticated, ...rest }) => (
+  <Route
+    {...rest}
+    render={({ location }) =>
+      isAuthenticated ? children : <Redirect to={{ pathname: AUTHENTICATION_PATH, state: { from: location } }} />
+    }
+  />
+);

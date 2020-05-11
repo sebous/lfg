@@ -13,7 +13,7 @@ export const Router: React.FC = () => {
         <Home />
       </Route>
       <Route path="/login">Login</Route>
-      <PrivateRoute isAuthenticated={isAuth} restrictedPath="/dashboard">
+      <PrivateRoute isAuthenticated={isAuth} path="/dashboard">
         <Dashbaord />
       </PrivateRoute>
     </Switch>
