@@ -5,7 +5,7 @@ import { ServerContext } from "../../types/context";
 import { User } from "../../entity/User";
 import { chatMessageFactory } from "../../common/factories";
 import { SubscriptionTopic } from "../../types/notifications";
-import { clearChat } from "../../common/chatUtils";
+import { clearChat } from "../../common/util/chatUtils";
 
 @Resolver()
 export class ChatResolver {

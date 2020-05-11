@@ -4,7 +4,7 @@ import { User } from "../../entity/User";
 import { ServerContext } from "../../types/context";
 import { SubscriptionTopic } from "../../types/notifications";
 import { FBLoginInput } from "./types/FBLoginInput";
-import { checkIfTokenValid } from "../../common/fbUtils";
+import { checkIfTokenValid } from "../../common/util/fbUtils";
 
 @Resolver()
 export class LoginResolver {
