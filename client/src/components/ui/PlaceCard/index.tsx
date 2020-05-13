@@ -1,17 +1,25 @@
 import React from "react";
 import { loremIpsum } from "lorem-ipsum";
-import { PlaceCardWrapper, PlaceCartHeader, PlaceCartDescription } from "./style";
+import { PlaceCardWrapper, PlaceCardHeader, PlaceCarDescription, PlaceCardBackground, PlaceCardBottom } from "./style";
 import { shortenString } from "../../../common/stringUtil";
+import { GetPlaces_getPlaces_joinedUsers } from "../../../common/graphqlTypes";
+import { PlaceQueue } from "../PlaceQueue";
+import { Btn } from "../Button";
 
 interface PlaceCardProps {
   name?: string;
   description?: string;
-  usersQueuing?: number;
+  userQueue: GetPlaces_getPlaces_joinedUsers[];
 }
 
-export const PlaceCard: React.FC<PlaceCardProps> = () => (
+export const PlaceCard: React.FC<PlaceCardProps> = ({ userQueue }) => (
   <PlaceCardWrapper>
-    <PlaceCartHeader>Music lab</PlaceCartHeader>
-    <PlaceCartDescription>{shortenString(loremIpsum({ count: 50 }), 150)}</PlaceCartDescription>9
+    <PlaceCardBackground />
+    <PlaceCardHeader>Music lab</PlaceCardHeader>
+    <PlaceCarDescription>{shortenString(loremIpsum({ count: 50 }), 140)}</PlaceCarDescription>
+    <PlaceCardBottom>
+      <PlaceQueue userQueue={userQueue} />
+      <Btn>join</Btn>
+    </PlaceCardBottom>
   </PlaceCardWrapper>
 );

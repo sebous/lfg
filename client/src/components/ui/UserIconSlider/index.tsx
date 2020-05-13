@@ -1,11 +1,10 @@
 import React from "react";
 import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
-import { dummyAvatar } from "../../../common/dummyData";
 import { UserIcon } from "../UserIcon";
 import { UserIconSliderWrapper } from "./style";
 
 interface UserIconSliderProps {
-  people: { username: string; id: string }[];
+  people: { username: string; id: string; avatar?: string }[];
 }
 
 export const UserIconSlider: React.FC<UserIconSliderProps> = ({ people }) => (
@@ -24,7 +23,7 @@ export const UserIconSlider: React.FC<UserIconSliderProps> = ({ people }) => (
       <Slider>
         {people.map((person, i) => (
           <Slide index={i} key={person.id}>
-            <UserIcon name={person.username} avatar={dummyAvatar} />
+            <UserIcon name={person.username} avatar={person.avatar} size="LARGE" />
           </Slide>
         ))}
       </Slider>
