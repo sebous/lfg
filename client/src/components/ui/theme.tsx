@@ -20,6 +20,7 @@ export const GlobalStyles = createGlobalStyle`
     font-size: 16px;
     line-height: 1.5;
     color: rgba(255,255,255,0.8);
+    overflow: hidden;
   };
   h1,h2,h3,h4,h5 {
     font-family: 'PT Sans', sans-serif;
