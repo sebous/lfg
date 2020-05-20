@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const PlaceCardWrapper = styled.div`
   height: 230px;
-  width: 80vw;
   position: relative;
   border-radius: 6px;
   padding: 0.5rem 1.25rem;
@@ -10,6 +9,8 @@ export const PlaceCardWrapper = styled.div`
   flex-direction: column;
   overflow: hidden;
   background: ${props => props.theme.color.backgroundLight};
+  flex: 0 0 100%;
+  width: 100%;
 `;
 
 export const PlaceCardBackground = styled.div`
@@ -66,4 +67,8 @@ export const PlaceCardBottom = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
+`;
+
+export const PlaceCardsContainer = styled.div`
+  position: relative;
 `;

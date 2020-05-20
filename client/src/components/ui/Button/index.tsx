@@ -10,3 +10,8 @@ export const Btn = styled.button`
   border-radius: 2px;
   text-transform: uppercase;
 `;
+
+export const BtnDanger = styled(Btn)`
+  color: ${props => props.theme.color.danger};
+  border-color: ${props => props.theme.color.danger};
+`;

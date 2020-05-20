@@ -4,6 +4,7 @@ export const theme = Object.freeze({
   color: {
     primary: "#119da4",
     secondary: "#0c7489",
+    danger: "#c23142",
     background: "#202c39",
     backgroundLight: "#2D4154",
     gray: "#3E505B",
