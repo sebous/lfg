@@ -9,9 +9,16 @@ import { PlaceCard } from "../PlaceCard";
 interface PlaceSliderProps {
   places: GetPlaces_getPlaces[];
   currentUserId: string;
+  onClickPlaceBtn: (placeId: string) => void;
+  onPlaceCardHold: (placeId: string) => void;
 }
 
-export const PlaceSlider: React.FC<PlaceSliderProps> = ({ places, currentUserId }) => {
+export const PlaceSlider: React.FC<PlaceSliderProps> = ({
+  places,
+  currentUserId,
+  onClickPlaceBtn,
+  onPlaceCardHold,
+}) => {
   // animation
   const index = useRef(0);
   const [animationProps, setAnimationProps] = useSprings(places.length, i => ({
@@ -56,6 +63,8 @@ export const PlaceSlider: React.FC<PlaceSliderProps> = ({ places, currentUserId 
               name={name}
               selfQueued={joinedUsers?.some(user => user.id === currentUserId) ?? false}
               userQueue={joinedUsers ?? []}
+              joinLeaveFn={() => onClickPlaceBtn(id)}
+              deletePlaceFn={() => onPlaceCardHold(id)}
             />
           </animated.div>
         </animated.div>

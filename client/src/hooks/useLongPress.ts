@@ -12,7 +12,7 @@ export const useLongPress = (timeout = 200, callback: () => void) => {
     }
 
     return () => clearTimeout(timerId.current);
-  }, [startLongPress]);
+  }, [startLongPress, callback, timeout]);
 
   const start = useCallback(() => setStartLongPress(true), []);
   const stop = useCallback(() => setStartLongPress(false), []);

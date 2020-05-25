@@ -4,6 +4,7 @@
     "import/prefer-default-export": 0,
     "no-console": 0,
     "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-non-null-assertion": 0,
     "react/jsx-props-no-spreading": 0
   }
 }

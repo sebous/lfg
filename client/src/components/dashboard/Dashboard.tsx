@@ -1,8 +1,8 @@
 import React from "react";
 import { PeopleInQueue } from "./peopleInQueue/PeopleInQueue";
-import { PlaceCard } from "../ui/PlaceCard";
-import { dummyPeopleInQueue } from "../../common/dummyData";
-import { PlaceCardsContainer } from "../ui/PlaceCard/style";
+// import { PlaceCard } from "../ui/PlaceCard";
+// import { dummyPeopleInQueue } from "../../common/dummyData";
+// import { PlaceCardsContainer } from "../ui/PlaceCard/style";
 import { PlacesFeed } from "./placesFeed/PlacesFeed";
 
 export const Dashbaord: React.FC = () => {

@@ -47,7 +47,7 @@ export const PlaceCardHeader = styled.h2`
   z-index: 1;
 `;
 
-export const PlaceCarDescription = styled.p`
+export const PlaceCardDescription = styled.p`
   font-size: 0.75rem;
   text-align: right;
   position: relative;
@@ -55,6 +55,21 @@ export const PlaceCarDescription = styled.p`
   display: inline-block;
   max-height: 3.5rem;
   overflow: hidden;
+`;
+
+export const PlaceCardCloseOverlay = styled("div")<{ visible: boolean }>`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s;
+  opacity: ${props => (props.visible ? 1 : 0)};
 `;
 
 export const PlaceCardBottom = styled.div`

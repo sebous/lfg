@@ -55,5 +55,5 @@ export const usePlacesSubscription = (data: GetPlaces | undefined) => {
         },
       });
     }
-  }, [notification]);
+  }, [notification, client, data]);
 };
