@@ -86,4 +86,5 @@ export const PlaceCardBottom = styled.div`
 
 export const PlaceCardsContainer = styled.div`
   position: relative;
+  height: 262px;
 `;

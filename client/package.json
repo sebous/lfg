@@ -42,7 +42,7 @@
     "semantic-ui-react": "^0.88.2",
     "styled-components": "^5.1.0",
     "subscriptions-transport-ws": "^0.9.16",
-    "typescript": "^3.9.2",
+    "typescript": "^3.9.5",
     "unique-names-generator": "^4.2.0",
     "uuid": "^3.4.0"
   },

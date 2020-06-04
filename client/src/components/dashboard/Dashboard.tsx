@@ -4,23 +4,14 @@ import { PeopleInQueue } from "./peopleInQueue/PeopleInQueue";
 // import { dummyPeopleInQueue } from "../../common/dummyData";
 // import { PlaceCardsContainer } from "../ui/PlaceCard/style";
 import { PlacesFeed } from "./placesFeed/PlacesFeed";
+import { ActionsBar } from "./actionsBar/ActionsBar";
 
 export const Dashbaord: React.FC = () => {
   return (
     <div>
       <PeopleInQueue />
-      {/* <PlaceCardsContainer>
-        <PlaceCard userQueue={dummyPeopleInQueue(6) as any} selfQueued />
-      </PlaceCardsContainer> */}
       <PlacesFeed />
-      {/* <div style={{ borderBottom: "1px solid" }}>
-      </div>
-      <div style={{ height: "82%", overflow: "auto", padding: "1em 0 4em" }}>
-        <PlacesDataList />
-      </div>
-      <div style={{ position: "absolute", width: "100%", bottom: 0 }}>
-        <DashboardBottomBar />
-      </div> */}
+      <ActionsBar />
     </div>
   );
 };
