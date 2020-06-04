@@ -31,7 +31,11 @@ export class Place extends BaseEntity {
 
   // TODO: this should have default value not be nullable field
   @Field(() => [User], { nullable: true })
-  @ManyToMany(() => User, { eager: true })
+  @ManyToMany(
+    () => User,
+    user => user.placesJoined,
+    { eager: true }
+  )
   @JoinTable()
   joinedUsers!: User[];
 

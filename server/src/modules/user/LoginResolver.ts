@@ -47,25 +47,31 @@ export class LoginResolver {
 
     // login existing user
     ctx.req.session!.userId = user.id;
+
+    // also refresh avatar url from fb
+    if (user.avatar !== avatar) {
+      user.avatar = avatar;
+      await user.save();
+    }
     return user;
   }
 
   // login user - no registration
-  @Mutation(() => User)
-  async dummyLogin(
-    @Arg("username") username: string,
-    @Ctx() ctx: ServerContext,
-    @PubSub() pubSub: PubSubEngine
-  ): Promise<User> {
-    const newUser = await User.create({ username, queuing: true }).save();
-    console.log(newUser);
+  //   @Mutation(() => User)
+  //   async dummyLogin(
+  //     @Arg("username") username: string,
+  //     @Ctx() ctx: ServerContext,
+  //     @PubSub() pubSub: PubSubEngine
+  //   ): Promise<User> {
+  //     const newUser = await User.create({ username, queuing: true }).save();
+  //     console.log(newUser);
 
-    // add userId to session, not used for now
-    // ctx.req.session!.userId = newUser.id;
+  //     // add userId to session, not used for now
+  //     // ctx.req.session!.userId = newUser.id;
 
-    // TODO: call subscription here -> add to queue
-    const notification = notificationFactory<User>(newUser, "ADD");
-    await pubSub.publish(SubscriptionTopic.USER_QUEUED, notification);
-    return newUser;
-  }
+  //     // TODO: call subscription here -> add to queue
+  //     const notification = notificationFactory<User>(newUser, "ADD");
+  //     await pubSub.publish(SubscriptionTopic.USER_QUEUED, notification);
+  //     return newUser;
+  //   }
 }

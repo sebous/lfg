@@ -1,15 +1,16 @@
-import { Resolver, Query, Subscription, Root, Mutation, Arg } from "type-graphql";
+import { Resolver, Query, Subscription, Root, Mutation, Ctx } from "type-graphql";
 import { User } from "../../entity/User";
 import { UserNotificationType } from "./types/UserNotification";
 import { SubscriptionTopic, Notification } from "../../types/notifications";
+import { ServerContext } from "../../types/context";
 
 @Resolver()
 export class GetPeopleInQueue {
   // get users in queue
   @Query(() => [User])
   async getPeopleInQueue(): Promise<User[]> {
-    const users = await User.find({ where: { queuing: true } });
-    return users;
+    const queuingUsers = await User.find({ where: { queuing: true } });
+    return queuingUsers;
   }
 
   // subscribe changes in people queue
@@ -23,7 +24,10 @@ export class GetPeopleInQueue {
   // TODO: this should come from session
   // add to queue
   @Mutation(() => Boolean)
-  async addUserToQueue(@Arg("userId") userId: string) {
+  async addUserToQueue(@Ctx() ctx: ServerContext) {
+    const { userId } = ctx.req;
+    if (!userId) return false;
+
     const user = await User.findOne(userId);
     if (!user) return false;
 
@@ -34,7 +38,10 @@ export class GetPeopleInQueue {
 
   // remove from queue
   @Mutation(() => Boolean)
-  async removeUserFromQueue(@Arg("userId") userId: string) {
+  async removeUserFromQueue(@Ctx() ctx: ServerContext) {
+    const { userId } = ctx.req;
+    if (!userId) return false;
+
     const user = await User.findOne(userId);
     if (!user) return false;
 
