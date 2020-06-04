@@ -27,7 +27,7 @@ export class ChatResolver {
     const user = await User.findOne(ctx.req.session!.userId);
     if (!user) throw Error("invalid session");
 
-    const chatMessage = chatMessageFactory(message, user.name ?? "");
+    const chatMessage = chatMessageFactory(message, user.name ?? user.username ?? "");
     await redis.lpush(CHAT_REDIS_STORE, JSON.stringify(chatMessage));
     await pubSub.publish(SubscriptionTopic.CHAT, chatMessage);
     return true;
