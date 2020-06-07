@@ -11,7 +11,7 @@ import {
 import { shortenString } from "../../../common/stringUtil";
 import { GetPlaces_getPlaces_joinedUsers } from "../../../common/graphqlTypes";
 import { PlaceQueue } from "../PlaceQueue";
-import { Btn, BtnDanger } from "../Button";
+import { Btn, BtnDanger } from "../Button/style";
 import { useLongPress } from "../../../hooks/useLongPress";
 import { useOutsideClick } from "../../../hooks/useOutsideClick";
 

@@ -4,29 +4,6 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: DummyLogin
-// ====================================================
-
-export interface DummyLogin_dummyLogin {
-  __typename: "User";
-  id: string;
-  username: string;
-}
-
-export interface DummyLogin {
-  dummyLogin: DummyLogin_dummyLogin;
-}
-
-export interface DummyLoginVariables {
-  username: string;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// @generated
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: LoginViaCookie
 // ====================================================
 

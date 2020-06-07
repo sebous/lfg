@@ -2,6 +2,7 @@ export interface User {
   username: string;
   id: string;
   avatar?: string;
+  queuing?: boolean;
 }
 
 export interface Place {

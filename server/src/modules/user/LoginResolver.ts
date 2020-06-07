@@ -1,8 +1,6 @@
-import { Resolver, Mutation, Arg, Ctx, PubSub, PubSubEngine, Query } from "type-graphql";
-import { notificationFactory } from "../../common/factories";
+import { Resolver, Mutation, Arg, Ctx, Query } from "type-graphql";
 import { User } from "../../entity/User";
 import { ServerContext } from "../../types/context";
-import { SubscriptionTopic } from "../../types/notifications";
 import { FBLoginInput } from "./types/FBLoginInput";
 import { checkIfTokenValid } from "../../common/util/fbUtils";
 

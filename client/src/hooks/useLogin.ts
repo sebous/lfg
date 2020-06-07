@@ -41,11 +41,12 @@ export const useLogin = () => {
     }
     if (cookieLoginData?.loginViaCookie) {
       setCookieAuthSuccess(true);
-      const { id, avatar, username } = cookieLoginData.loginViaCookie;
+      const { id, avatar, username, queuing } = cookieLoginData.loginViaCookie;
       setUserState({
         id,
         username,
         avatar: avatar ?? undefined,
+        queuing,
       });
       setIsAuth(true);
       redirectToDashboard();
@@ -78,8 +79,8 @@ export const useLogin = () => {
       // TODO: show err message -> fb token invalid
     }
     if (fbLoginData?.FBlogin) {
-      const { id, username, avatar } = fbLoginData.FBlogin;
-      setUserState({ id, username, avatar: avatar ?? undefined });
+      const { id, username, avatar, queuing } = fbLoginData.FBlogin;
+      setUserState({ id, username, avatar: avatar ?? undefined, queuing });
       setIsAuth(true);
       redirectToDashboard();
     }
