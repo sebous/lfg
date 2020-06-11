@@ -1,8 +1,9 @@
-import { Resolver, Query, Subscription, Root, Mutation, Ctx } from "type-graphql";
+import { Resolver, Query, Subscription, Root, Mutation, Ctx, PubSub, PubSubEngine } from "type-graphql";
 import { User } from "../../entity/User";
 import { UserNotificationType } from "./types/UserNotification";
 import { SubscriptionTopic, Notification } from "../../types/notifications";
 import { ServerContext } from "../../types/context";
+import { notificationFactory } from "../../common/factories";
 
 @Resolver()
 export class GetPeopleInQueue {
@@ -23,29 +24,33 @@ export class GetPeopleInQueue {
 
   // add to queue
   @Mutation(() => Boolean)
-  async queueSelf(@Ctx() ctx: ServerContext) {
-    const { userId } = ctx.req;
+  async queueSelf(@Ctx() ctx: ServerContext, @PubSub() pubSub: PubSubEngine) {
+    const { userId } = ctx.req.session;
     if (!userId) return false;
 
     const user = await User.findOne(userId);
     if (!user) return false;
 
     user.queuing = true;
-    await user.save();
+    const updatedUser = await user.save();
+
+    await pubSub.publish(SubscriptionTopic.USER, notificationFactory<User>(updatedUser, "UPDATE"));
     return true;
   }
 
   // remove from queue
   @Mutation(() => Boolean)
-  async leaveQueue(@Ctx() ctx: ServerContext) {
-    const { userId } = ctx.req;
+  async leaveQueue(@Ctx() ctx: ServerContext, @PubSub() pubSub: PubSubEngine) {
+    const { userId } = ctx.req.session;
     if (!userId) return false;
 
     const user = await User.findOne(userId);
     if (!user) return false;
 
     user.queuing = false;
-    await user.save();
+    const updatedUser = await user.save();
+
+    await pubSub.publish(SubscriptionTopic.USER, notificationFactory<User>(updatedUser, "UPDATE"));
     return true;
   }
 }
