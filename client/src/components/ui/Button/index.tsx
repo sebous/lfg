@@ -2,12 +2,12 @@ import React from "react";
 import { BtnActionWrapper } from "./style";
 
 interface BtnActionProps {
+  iconNormal: React.ReactNode;
+  iconToggled?: React.ReactNode;
   toggled?: boolean;
-  ToggleOnIcon?: React.ReactNode;
-  ToggleOffIcon: React.ReactNode;
   onClick?: () => void;
 }
 
-export const BtnAction: React.FC<BtnActionProps> = ({ toggled, ToggleOffIcon, ToggleOnIcon, onClick }) => (
-  <BtnActionWrapper onClick={onClick}>{toggled ? ToggleOnIcon : ToggleOffIcon}</BtnActionWrapper>
+export const BtnAction: React.FC<BtnActionProps> = ({ toggled, iconNormal, iconToggled, onClick }) => (
+  <BtnActionWrapper onClick={onClick}>{toggled ? iconToggled : iconNormal}</BtnActionWrapper>
 );

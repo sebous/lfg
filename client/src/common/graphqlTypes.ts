@@ -100,6 +100,32 @@ export interface peopleQueueSubscription {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: QueueSelf
+// ====================================================
+
+export interface QueueSelf {
+  queueSelf: boolean;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: LeaveQueue
+// ====================================================
+
+export interface LeaveQueue {
+  leaveQueue: boolean;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: GetPlaces
 // ====================================================
 
@@ -148,43 +174,6 @@ export interface AddPlace {
 
 export interface AddPlaceVariables {
   placeInput: NewPlaceInput;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// @generated
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: UpdatePlaceJoined
-// ====================================================
-
-export interface UpdatePlaceJoined_updatePlace_joinedUsers {
-  __typename: "User";
-  id: string;
-  username: string;
-  avatar: string | null;
-}
-
-export interface UpdatePlaceJoined_updatePlace_owner {
-  __typename: "User";
-  id: string;
-}
-
-export interface UpdatePlaceJoined_updatePlace {
-  __typename: "Place";
-  id: string;
-  name: string;
-  joinedUsers: UpdatePlaceJoined_updatePlace_joinedUsers[] | null;
-  owner: UpdatePlaceJoined_updatePlace_owner;
-}
-
-export interface UpdatePlaceJoined {
-  updatePlace: UpdatePlaceJoined_updatePlace;
-}
-
-export interface UpdatePlaceJoinedVariables {
-  placeInfo: UpdatePlaceInput;
 }
 
 /* tslint:disable */
@@ -337,11 +326,6 @@ export interface FBLoginInput {
 
 export interface NewPlaceInput {
   name: string;
-}
-
-export interface UpdatePlaceInput {
-  id: string;
-  joinedUserId: string;
 }
 
 //==============================================================

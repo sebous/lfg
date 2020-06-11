@@ -46,22 +46,22 @@ export class PlaceResolver {
   }
 
   // update Place
-  @Mutation(() => Place)
-  async updatePlace(
-    @Arg("placeInfo") { id, joinedUserId }: UpdatePlaceInput,
-    @PubSub() pubSub: PubSubEngine
-  ): Promise<Place | undefined> {
-    const place = await Place.findOne(id);
-    const joinedUser = await User.findOne(joinedUserId);
-    if (!place || !joinedUser) return;
+  // @Mutation(() => Place)
+  // async updatePlace(
+  //   @Arg("placeInfo") { id, joinedUserId }: UpdatePlaceInput,
+  //   @PubSub() pubSub: PubSubEngine
+  // ): Promise<Place | undefined> {
+  //   const place = await Place.findOne(id);
+  //   const joinedUser = await User.findOne(joinedUserId);
+  //   if (!place || !joinedUser) return;
 
-    place.joinedUsers.push(joinedUser);
-    const updatedPlace = await place.save();
+  //   place.joinedUsers.push(joinedUser);
+  //   const updatedPlace = await place.save();
 
-    const notification = notificationFactory<Place>(updatedPlace, "UPDATE");
-    await pubSub.publish(SubscriptionTopic.PLACE, notification);
-    return updatedPlace;
-  }
+  //   const notification = notificationFactory<Place>(updatedPlace, "UPDATE");
+  //   await pubSub.publish(SubscriptionTopic.PLACE, notification);
+  //   return updatedPlace;
+  // }
 
   @Mutation(() => Place)
   async joinPlace(

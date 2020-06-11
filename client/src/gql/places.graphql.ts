@@ -26,22 +26,22 @@ export const ADD_PLACE = gql`
   }
 `;
 
-export const UPDATE_PLACE = gql`
-  mutation UpdatePlaceJoined($placeInfo: UpdatePlaceInput!) {
-    updatePlace(placeInfo: $placeInfo) {
-      id
-      name
-      joinedUsers {
-        id
-        username
-        avatar
-      }
-      owner {
-        id
-      }
-    }
-  }
-`;
+// export const UPDATE_PLACE = gql`
+//   mutation UpdatePlaceJoined($placeInfo: UpdatePlaceInput!) {
+//     updatePlace(placeInfo: $placeInfo) {
+//       id
+//       name
+//       joinedUsers {
+//         id
+//         username
+//         avatar
+//       }
+//       owner {
+//         id
+//       }
+//     }
+//   }
+// `;
 
 export const JOIN_PLACE = gql`
   mutation JoinPlace($placeId: String!) {

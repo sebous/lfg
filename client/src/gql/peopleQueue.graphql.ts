@@ -23,3 +23,15 @@ export const PEOPLE_QUEUE_SUBS = gql`
     }
   }
 `;
+
+export const QUEUE_SELF = gql`
+  mutation QueueSelf {
+    queueSelf
+  }
+`;
+
+export const LEAVE_QUEUE = gql`
+  mutation LeaveQueue {
+    leaveQueue
+  }
+`;

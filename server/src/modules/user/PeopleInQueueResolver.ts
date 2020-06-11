@@ -21,10 +21,9 @@ export class GetPeopleInQueue {
     return payload as UserNotificationType;
   }
 
-  // TODO: this should come from session
   // add to queue
   @Mutation(() => Boolean)
-  async addUserToQueue(@Ctx() ctx: ServerContext) {
+  async queueSelf(@Ctx() ctx: ServerContext) {
     const { userId } = ctx.req;
     if (!userId) return false;
 
@@ -38,7 +37,7 @@ export class GetPeopleInQueue {
 
   // remove from queue
   @Mutation(() => Boolean)
-  async removeUserFromQueue(@Ctx() ctx: ServerContext) {
+  async leaveQueue(@Ctx() ctx: ServerContext) {
     const { userId } = ctx.req;
     if (!userId) return false;
 
