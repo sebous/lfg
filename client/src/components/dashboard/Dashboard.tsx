@@ -1,17 +1,17 @@
 import React from "react";
 import { PeopleInQueue } from "./peopleInQueue/PeopleInQueue";
-// import { PlaceCard } from "../ui/PlaceCard";
-// import { dummyPeopleInQueue } from "../../common/dummyData";
-// import { PlaceCardsContainer } from "../ui/PlaceCard/style";
 import { PlacesFeed } from "./placesFeed/PlacesFeed";
 import { ActionsBar } from "./actionsBar/ActionsBar";
+import { Chat } from "./chat/Chat";
+import { DashboardContainer } from "../ui/Container";
 
 export const Dashbaord: React.FC = () => {
   return (
-    <div>
+    <DashboardContainer>
       <PeopleInQueue />
       <PlacesFeed />
+      <Chat />
       <ActionsBar />
-    </div>
+    </DashboardContainer>
   );
 };

@@ -13,7 +13,7 @@ export const Login: React.FC = () => {
           appId="2540415289566455"
           autoLoad
           fields="name,email,picture"
-          callback={info => {
+          callback={(info: any) => {
             console.log(info);
             setFbAuthResponse(info);
           }}

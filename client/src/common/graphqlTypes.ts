@@ -4,6 +4,65 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: GetChatHistory
+// ====================================================
+
+export interface GetChatHistory_getChatHistory {
+  __typename: "ChatMessage";
+  id: string;
+  timestamp: string;
+  senderName: string;
+  message: string;
+}
+
+export interface GetChatHistory {
+  getChatHistory: GetChatHistory_getChatHistory[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: SendChatMessage
+// ====================================================
+
+export interface SendChatMessage {
+  sendChatMessage: boolean;
+}
+
+export interface SendChatMessageVariables {
+  message: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL subscription operation: ChatSubscription
+// ====================================================
+
+export interface ChatSubscription_chatSubscription {
+  __typename: "ChatMessage";
+  id: string;
+  timestamp: string;
+  senderName: string;
+  message: string;
+}
+
+export interface ChatSubscription {
+  chatSubscription: ChatSubscription_chatSubscription;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: LoginViaCookie
 // ====================================================
 
