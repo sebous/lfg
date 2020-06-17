@@ -37,7 +37,8 @@ dotenv.config();
 
     // cors
     const corsOptions: cors.CorsOptions = {
-      origin: process.env.CLIENT_URL,
+      // TODO: limit this in production
+      origin: true,
       credentials: true,
     };
     app.use(cors(corsOptions));

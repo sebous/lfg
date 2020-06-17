@@ -29,8 +29,10 @@ export class LoginResolver {
 
     // register user
     if (!user) {
-      const FBtokenValid = await checkIfTokenValid(accessToken);
-      if (!FBtokenValid) return;
+      if (process.env.NODE_ENV === "production") {
+        const FBtokenValid = await checkIfTokenValid(accessToken);
+        if (!FBtokenValid) return;
+      }
 
       const newUser = await User.create({
         username: name,

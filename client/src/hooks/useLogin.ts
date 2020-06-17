@@ -55,6 +55,20 @@ export const useLogin = () => {
 
   // login user via userInfo from FB login
   useEffect(() => {
+    if (process.env.NODE_ENV === "development" && process.env.REACT_APP_DUMMY_FB_LOGIN === "true") {
+      loginViaFbAuth({
+        variables: {
+          input: {
+            fbId: process.env.REACT_APP_FB_ID,
+            name: process.env.REACT_APP_FB_NAME,
+            accessToken: "asdasda",
+            avatar: process.env.REACT_APP_FB_AVATAR,
+          },
+        },
+      });
+      return;
+    }
+
     if (fbAuthResponse) {
       const { accessToken, id, name, picture } = fbAuthResponse;
       loginViaFbAuth({
