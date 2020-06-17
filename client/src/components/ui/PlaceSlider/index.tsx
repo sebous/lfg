@@ -36,7 +36,7 @@ export const PlaceSlider: React.FC<PlaceSliderProps> = ({
     setAnimationProps((i: number) => {
       if (i < index.current - 1 || i > index.current + 1) return { display: "none" };
       const x = (i - index.current) * window.innerWidth + (down ? mx : 0);
-      const scale = down ? 1 - distance / window.innerWidth / 2 : 1;
+      const scale = down ? 1 - distance / window.innerWidth / 3 : 1;
       return { x, scale, display: "block" };
     });
   });

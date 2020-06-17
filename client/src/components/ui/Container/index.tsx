@@ -9,12 +9,11 @@ export const ActionsBarContainer = styled.div`
 
 export const DashboardContainer = styled.div`
   position: relative;
-  overflow: hidden;
-  height: calc(100vh - 49px);
+  height: 100%;
 `;
 
 export const ChatContainer = styled.div`
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
   bottom: 0;
   left: 0;

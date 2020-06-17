@@ -10,7 +10,8 @@ export const Dashbaord: React.FC = () => {
     <DashboardContainer>
       <PeopleInQueue />
       <PlacesFeed />
-      <Chat />
+      {/* TODO: move chat to different screen */}
+      {/* <Chat /> */}
       <ActionsBar />
     </DashboardContainer>
   );
