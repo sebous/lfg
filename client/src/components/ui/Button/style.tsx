@@ -25,5 +25,5 @@ export const BtnActionWrapper = styled.button`
   color: ${props => props.theme.color.primary};
   border: 2px solid ${props => props.theme.color.primary};
   border-radius: 2px;
-  margin-bottom: 2rem;
+  margin: 0.5rem 2rem;
 `;

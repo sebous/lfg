@@ -3,13 +3,15 @@ import styled from "styled-components";
 export const ActionsBarContainer = styled.div`
   position: absolute;
   right: 0;
-  bottom: 4rem;
-  width: 3.5rem;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
 `;
 
 export const DashboardContainer = styled.div`
   position: relative;
-  height: 100%;
+  height: calc(100% - 49px);
 `;
 
 export const ChatContainer = styled.div`

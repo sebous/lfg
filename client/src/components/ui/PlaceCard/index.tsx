@@ -1,5 +1,4 @@
 import React, { useState, useRef, useMemo } from "react";
-import { loremIpsum } from "lorem-ipsum";
 import {
   PlaceCardWrapper,
   PlaceCardHeader,
@@ -24,21 +23,28 @@ interface PlaceCardProps {
   deletePlaceFn: () => void;
 }
 
-export const PlaceCard: React.FC<PlaceCardProps> = ({ userQueue, selfQueued, joinLeaveFn, deletePlaceFn }) => {
+export const PlaceCard: React.FC<PlaceCardProps> = ({
+  userQueue,
+  selfQueued,
+  joinLeaveFn,
+  deletePlaceFn,
+  name,
+  description,
+}) => {
   const [closeVisible, setCloseVisible] = useState(false);
   const elementRef = useRef<HTMLDivElement | null>(null);
 
   const onHold = useLongPress(500, () => setCloseVisible(true));
   useOutsideClick(elementRef, () => setCloseVisible(false));
 
-  const dummyDescription = useMemo(() => shortenString(loremIpsum({ count: 50 }), 140), []);
+  const shortenedDescription = useMemo(() => shortenString(description ?? "", 140), []);
 
   return (
     <div ref={elementRef}>
       <PlaceCardWrapper {...onHold} onBlur={() => setCloseVisible(false)}>
         <PlaceCardBackground />
-        <PlaceCardHeader>Music lab</PlaceCardHeader>
-        <PlaceCardDescription>{dummyDescription}</PlaceCardDescription>
+        <PlaceCardHeader>{name}</PlaceCardHeader>
+        <PlaceCardDescription>{shortenedDescription}</PlaceCardDescription>
         <PlaceCardCloseOverlay visible={closeVisible}>
           <BtnDanger onClick={deletePlaceFn}>delete</BtnDanger>
         </PlaceCardCloseOverlay>

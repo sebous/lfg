@@ -4,4 +4,7 @@ import { InputType, Field } from "type-graphql";
 export class NewPlaceInput {
   @Field()
   name!: string;
+
+  @Field()
+  description!: string;
 }

@@ -5,6 +5,7 @@ export const GET_PLACES = gql`
     getPlaces {
       id
       name
+      description
       joinedUsers {
         id
         username
@@ -22,32 +23,17 @@ export const ADD_PLACE = gql`
     addPlace(placeInput: $placeInput) {
       id
       name
+      description
     }
   }
 `;
-
-// export const UPDATE_PLACE = gql`
-//   mutation UpdatePlaceJoined($placeInfo: UpdatePlaceInput!) {
-//     updatePlace(placeInfo: $placeInfo) {
-//       id
-//       name
-//       joinedUsers {
-//         id
-//         username
-//         avatar
-//       }
-//       owner {
-//         id
-//       }
-//     }
-//   }
-// `;
 
 export const JOIN_PLACE = gql`
   mutation JoinPlace($placeId: String!) {
     joinPlace(placeId: $placeId) {
       id
       name
+      description
       joinedUsers {
         id
         username
@@ -65,6 +51,7 @@ export const LEAVE_PLACE = gql`
     leavePlace(placeId: $placeId) {
       id
       name
+      description
       joinedUsers {
         id
         username
@@ -92,6 +79,7 @@ export const PLACES_SUBSCRIPTION = gql`
       data {
         id
         name
+        description
         joinedUsers {
           id
           username

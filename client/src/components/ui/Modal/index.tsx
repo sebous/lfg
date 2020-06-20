@@ -7,18 +7,19 @@ import { ModalAPheader, ModalAPinput } from "./style";
 interface ModalAddPlaceProps {
   isOpen: boolean;
   closeFn: () => void;
-  addPlaceFn: (name: string) => void;
+  addPlaceFn: (name: string, description?: string) => void;
 }
 
 export const ModalAddPlace: React.FC<ModalAddPlaceProps> = ({ addPlaceFn, closeFn, isOpen }) => {
-  const inputRef = createRef<HTMLInputElement>();
+  const placeNameRef = createRef<HTMLInputElement>();
+  const descriptionRef = createRef<HTMLInputElement>();
 
   const addPlace = () => {
-    if (!inputRef.current || !inputRef.current.value) return;
-    addPlaceFn(inputRef.current.value);
+    if (!placeNameRef?.current?.value || !descriptionRef?.current?.value) return;
+    addPlaceFn(placeNameRef.current.value);
   };
 
-  const focusInput = () => inputRef.current?.focus();
+  const focusInput = () => placeNameRef.current?.focus();
 
   return (
     <ReactModal
@@ -53,13 +54,14 @@ export const ModalAddPlace: React.FC<ModalAddPlaceProps> = ({ addPlaceFn, closeF
           borderRadius: "4px",
           outline: "none",
           padding: "1rem",
-          height: "180px",
+          height: "260px",
           backgroundColor: theme.color.background,
         },
       }}
     >
       <ModalAPheader>Add new place</ModalAPheader>
-      <ModalAPinput type="text" placeholder="Some nice pub.." ref={inputRef} />
+      <ModalAPinput type="text" placeholder="Some nice pub.." ref={placeNameRef} />
+      <ModalAPinput type="area" placeholder="Describe me.." ref={descriptionRef} />
       <Btn onClick={() => addPlace()}>OK</Btn>
     </ReactModal>
   );

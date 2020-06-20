@@ -23,6 +23,10 @@ export class Place extends BaseEntity {
   @Column()
   name!: string;
 
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  description?: string;
+
   // joined entities
 
   @Field(() => User)

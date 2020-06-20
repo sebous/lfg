@@ -18,4 +18,5 @@ export const ModalAPinput = styled.input`
   background: ${props => props.theme.color.background};
   color: rgba(255, 255, 255, 0.8);
   padding: 0.5rem;
+  border-radius: 0;
 `;

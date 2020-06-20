@@ -19,12 +19,13 @@ export const ActionsBar: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   // add place
-  const addPlaceFn = (name: string) => {
+  const addPlaceFn = (name: string, description?: string) => {
     setModalOpen(false);
     addPlace({
       variables: {
         placeInput: {
           name,
+          description,
         },
       },
     });
@@ -45,19 +46,15 @@ export const ActionsBar: React.FC = () => {
   return (
     <>
       <ActionsBarContainer>
+        <BtnAction iconNormal={<PlusIcon />} onClick={() => setModalOpen(true)} />
         <BtnAction
           toggled={user?.queuing}
           iconNormal={<BeerIcon />}
           iconToggled={<LeaveIcon />}
           onClick={() => queueSelfFn()}
         />
-        <BtnAction iconNormal={<PlusIcon />} onClick={() => setModalOpen(true)} />
       </ActionsBarContainer>
-      <ModalAddPlace
-        addPlaceFn={(name: string) => addPlaceFn(name)}
-        closeFn={() => setModalOpen(false)}
-        isOpen={modalOpen}
-      />
+      <ModalAddPlace addPlaceFn={addPlaceFn} closeFn={() => setModalOpen(false)} isOpen={modalOpen} />
     </>
   );
 };

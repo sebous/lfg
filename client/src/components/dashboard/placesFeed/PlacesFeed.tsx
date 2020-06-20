@@ -24,6 +24,7 @@ export const PlacesFeed: React.FC = () => {
   const sortedData: GetPlaces_getPlaces[] = _.range(4).map(n => ({
     id: String(n),
     name: "Music Lab",
+    description: "asd asdasd asdasd asdasdsa",
     __typename: "Place",
     owner: { __typename: "User", id: "asdasd" },
     joinedUsers: [],

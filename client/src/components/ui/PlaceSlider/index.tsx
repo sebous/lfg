@@ -43,7 +43,7 @@ export const PlaceSlider: React.FC<PlaceSliderProps> = ({
 
   return (
     <PlaceCardsContainer>
-      {places.map(({ id, joinedUsers, name, owner }, i) => (
+      {places.map(({ id, joinedUsers, name, owner, description }, i) => (
         <animated.div
           {...dragBinding()}
           key={id}
@@ -61,6 +61,7 @@ export const PlaceSlider: React.FC<PlaceSliderProps> = ({
             <PlaceCard
               key={id}
               name={name}
+              description={description ?? undefined}
               selfQueued={joinedUsers?.some(user => user.id === currentUserId) ?? false}
               userQueue={joinedUsers ?? []}
               joinLeaveFn={() => onClickPlaceBtn(id)}
