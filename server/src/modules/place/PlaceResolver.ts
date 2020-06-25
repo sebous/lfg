@@ -1,13 +1,12 @@
 import { Resolver, Mutation, Arg, PubSub, PubSubEngine, Subscription, Root, Query, Ctx } from "type-graphql";
-import { getConnection } from "typeorm";
 import { Place } from "../../entity/Place";
 import { SubscriptionTopic, Notification } from "../../types/notifications";
 import { notificationFactory } from "../../common/factories";
 import { PlaceNotificationType } from "./types/PlaceNotification";
 import { NewPlaceInput } from "./types/NewPlaceInput";
 import { User } from "../../entity/User";
-import { UpdatePlaceInput } from "./types/UpdatePlaceInput";
 import { ServerContext } from "../../types/context";
+import { clearAllPlaces } from "../../common/util/placeUtil";
 
 @Resolver()
 export class PlaceResolver {
@@ -104,11 +103,7 @@ export class PlaceResolver {
   // clear Place entity table
   @Mutation(() => Boolean)
   async clearPlaces(): Promise<boolean> {
-    await getConnection()
-      .createQueryBuilder()
-      .delete()
-      .from(Place)
-      .execute();
+    await clearAllPlaces();
     return true;
   }
 }

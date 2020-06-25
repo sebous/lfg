@@ -9,6 +9,7 @@ import cors from "cors";
 import { buildSchema } from "type-graphql";
 import { applyMiddlewares } from "./common/middleware";
 import { pubSubRedis } from "./common/redis";
+import { scheduleCronJobs } from "./common/cronjobs";
 
 dotenv.config();
 
@@ -20,6 +21,9 @@ dotenv.config();
       resolvers: [path.join(__dirname, "/modules/**/*.ts")],
       pubSub: pubSubRedis,
     });
+
+    // cronjobs
+    if (process.env.NODE_ENV === "production") scheduleCronJobs();
 
     // apollo config
     const apolloServer = new ApolloServer({

@@ -37,7 +37,7 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
   const onHold = useLongPress(500, () => setCloseVisible(true));
   useOutsideClick(elementRef, () => setCloseVisible(false));
 
-  const shortenedDescription = useMemo(() => shortenString(description ?? "", 140), []);
+  const shortenedDescription = useMemo(() => shortenString(description ?? "", 140), [description]);
 
   return (
     <div ref={elementRef}>
