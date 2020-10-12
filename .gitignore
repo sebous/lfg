@@ -2,3 +2,16 @@ node_modules/
 .env
 client/build
 server/dist
+
+native/.expo/*
+native/npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+native/web-build/
+
+# macOS
+.DS_Store
