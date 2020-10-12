@@ -1,12 +1,11 @@
-import Redis, { RedisOptions } from "ioredis";
+import Redis from "ioredis";
 import { RedisPubSub } from "graphql-redis-subscriptions";
 
-// TODO: fill this for production
-const options: RedisOptions = {};
+const url = process.env.NODE_ENV === "production" ? process.env.REDIS_URL : undefined;
 
-export const redis = new Redis(options);
+export const redis = new Redis(url);
 
 export const pubSubRedis = new RedisPubSub({
-  publisher: new Redis(options),
-  subscriber: new Redis(options),
+  publisher: new Redis(url),
+  subscriber: new Redis(url),
 });

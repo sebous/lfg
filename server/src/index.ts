@@ -2,7 +2,6 @@ import "reflect-metadata";
 import dotenv from "dotenv";
 import express from "express";
 import * as path from "path";
-import { createConnection } from "typeorm";
 import http from "http";
 import { ApolloServer, CorsOptions } from "apollo-server-express";
 import cors from "cors";
@@ -10,13 +9,14 @@ import { buildSchema } from "type-graphql";
 import { applyMiddlewares } from "./common/middleware";
 import { pubSubRedis } from "./common/redis";
 import { scheduleCronJobs } from "./common/cronjobs";
+import { createTypeormConn } from "./common/dbConnection";
 
 dotenv.config();
 
 (async () => {
   try {
     // TypeORM + TypeGraphQL config
-    await createConnection();
+    await createTypeormConn();
     const schema = await buildSchema({
       resolvers: [path.join(__dirname, "/modules/**/*.ts")],
       pubSub: pubSubRedis,
