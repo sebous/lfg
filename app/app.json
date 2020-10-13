@@ -20,6 +20,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "facebookScheme": "10213424758133874"
+    "facebookScheme": "fb1181469392249020",
+    "facebookDisplayName": "lfg"
   }
 }
