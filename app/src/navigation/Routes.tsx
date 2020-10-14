@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Text } from "react-native";
 import { CenterView } from "../components/views/CenterView";
 import { useLogin } from "../hooks/useLogin";
+import { AppTabs } from "./appTabs/AppTabs";
 
 export function Routes() {
   const [loading, setLoading] = useState(true);
@@ -16,9 +17,5 @@ export function Routes() {
     );
   }
 
-  return (
-    <CenterView>
-      <Text>Loaded</Text>
-    </CenterView>
-  );
+  return <AppTabs />;
 }
