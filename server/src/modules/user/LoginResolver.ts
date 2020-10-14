@@ -9,6 +9,7 @@ export class LoginResolver {
   // login with existing cookie
   @Query(() => User, { nullable: true })
   async loginViaCookie(@Ctx() ctx: ServerContext): Promise<User | undefined> {
+    console.log(ctx.req.session!.userId);
     // user not in session
     if (!ctx.req.session!.userId) return;
 
@@ -16,6 +17,7 @@ export class LoginResolver {
     const user = await User.findOne(ctx.req.session!.userId);
     if (!user) return;
 
+    console.log("cookie found");
     return user;
   }
 
@@ -26,6 +28,8 @@ export class LoginResolver {
     @Ctx() ctx: ServerContext
   ): Promise<User | undefined> {
     const user = await User.findOne({ where: { fbId } });
+
+    console.log(name);
 
     // register user
     if (!user) {

@@ -6,6 +6,9 @@
     },
     {
       "directory": "./server"
+    },
+    {
+      "directory": "./rest-server"
     }
   ]
 }
