@@ -3,8 +3,8 @@ node_modules/
 client/build
 server/dist
 
-native/.expo/*
-native/npm-debug.*
+app/.expo/*
+app/npm-debug.*
 *.jks
 *.p8
 *.p12
