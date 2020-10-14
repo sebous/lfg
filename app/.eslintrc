@@ -12,6 +12,12 @@
   "rules": {
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "no-empty-pattern": 0,
-    "@typescript-eslint/no-empty-interface": 0
+    "@typescript-eslint/no-empty-interface": 0,
+    "react-hooks/exhaustive-deps": [
+      "warning",
+      {
+        "additionalHooks": "useAsyncCallback"
+      }
+    ]
   }
 }
