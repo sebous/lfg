@@ -5,11 +5,9 @@ import { useLogin } from "../hooks/useLogin";
 import { AppTabs } from "./appTabs/AppTabs";
 
 export function Routes() {
-  const [loading, setLoading] = useState(true);
   const { auth } = useLogin();
-  useEffect(() => (auth ? setLoading(false) : undefined), [auth]);
 
-  if (loading) {
+  if (!auth) {
     return (
       <CenterView>
         <ActivityIndicator size="large" />
