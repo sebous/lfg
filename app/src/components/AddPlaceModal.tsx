@@ -4,7 +4,5 @@ import { Modal, View } from "react-native";
 interface AddPlaceModalProps {}
 
 export const AddPlaceModal: React.FC<AddPlaceModalProps> = ({}) => {
-  return (
-    <View style={{ flex: 1 }}>{/* <Modal animationType="fade" transparent={true}></Modal> */}</View>
-  );
+  return <View style={{}}>{/* <Modal animationType="fade" transparent={true}></Modal> */}</View>;
 };

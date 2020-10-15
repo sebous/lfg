@@ -8,7 +8,7 @@ const httpLink = createHttpLink({
 });
 
 const wsLink = new WebSocketLink({
-  uri: "http://192.168.0.157:4000/subscriptions",
+  uri: "ws://192.168.0.157:4000/subscriptions",
   options: { reconnect: true },
 });
 
