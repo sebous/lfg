@@ -1,13 +1,15 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
+import { PeopleInQueue } from "../components/peopleInQueue/PeopleInQueue";
 import { CenterView } from "../components/views/CenterView";
+import { DashboardNavProps } from "../navigation/dashboardStack/DashboardParamList";
 
 interface DashboardProps {}
 
-export const Dashboard: React.FC<DashboardProps> = ({}) => {
+export const Dashboard: React.FC<DashboardNavProps<"Dashboard">> = ({}) => {
   return (
-    <CenterView>
-      <Text>Dashboard</Text>
-    </CenterView>
+    <View>
+      <PeopleInQueue />
+    </View>
   );
 };

@@ -1,16 +1,16 @@
 import React from "react";
 import { BottomTabBar, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { AppParamList } from "./AppParamList";
 import { DashboardStack } from "../dashboardStack/DashboardStack";
 import { ChatStack } from "../chatStack/ChatStack";
 import { useNavigation } from "@react-navigation/native";
-import { AddPlace } from "../../screens/AddPlace";
 
 interface AppTabsProps {}
 
 const Tab = createBottomTabNavigator<AppParamList>();
+
+const AddPlacePlaceholder = () => null;
 
 export const AppTabs: React.FC<AppTabsProps> = ({}) => {
   const navigation = useNavigation();
@@ -34,7 +34,7 @@ export const AppTabs: React.FC<AppTabsProps> = ({}) => {
       />
       <Tab.Screen
         name="AddPlace"
-        component={AddPlace}
+        component={AddPlacePlaceholder}
         options={{
           title: "Add place",
           tabBarIcon: ({ focused, color, size }) => (
