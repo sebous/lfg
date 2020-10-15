@@ -10,8 +10,16 @@ interface PeopleInQueueProps {}
 export const PeopleInQueue: React.FC<PeopleInQueueProps> = ({}) => {
   const client = useApolloClient();
   const { data, error, loading } = useQuery<GetPeopleInQueue>(GET_PEOPLE_IN_QUEUE);
-  const { data: notification } = useSubscription<peopleQueueSubscription>(PEOPLE_QUEUE_SUBS);
-  console.log("notification", notification);
+  const { data: notification, error: subsErr } = useSubscription<peopleQueueSubscription>(
+    PEOPLE_QUEUE_SUBS,
+  );
+  useEffect(() => {
+    console.log(notification);
+  }, [notification]);
+  useEffect(() => {
+    console.log(subsErr);
+  }, [subsErr]);
+  // console.log("notification", notification, subsErr);
 
   if (loading) {
     return (

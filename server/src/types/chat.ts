@@ -8,8 +8,7 @@ export class ChatMessage {
   id!: string;
 
   @Field()
-  // string because of redis limitations
-  timestamp!: string;
+  timestamp!: Date;
 
   @Field()
   senderName!: string;

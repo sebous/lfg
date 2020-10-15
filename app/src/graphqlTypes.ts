@@ -8,7 +8,6 @@
 // ====================================================
 
 export interface GetChatHistory_getChatHistory {
-  __typename: "ChatMessage";
   id: string;
   timestamp: string;
   senderName: string;
@@ -46,7 +45,6 @@ export interface SendChatMessageVariables {
 // ====================================================
 
 export interface ChatSubscription_chatSubscription {
-  __typename: "ChatMessage";
   id: string;
   timestamp: string;
   senderName: string;
@@ -67,7 +65,6 @@ export interface ChatSubscription {
 // ====================================================
 
 export interface LoginViaCookie_loginViaCookie {
-  __typename: "User";
   id: string;
   username: string;
   name: string | null;
@@ -90,7 +87,6 @@ export interface LoginViaCookie {
 // ====================================================
 
 export interface FBlogin_FBlogin {
-  __typename: "User";
   id: string;
   username: string;
   name: string | null;
@@ -117,7 +113,6 @@ export interface FBloginVariables {
 // ====================================================
 
 export interface GetPeopleInQueue_getPeopleInQueue {
-  __typename: "User";
   id: string;
   username: string;
 }
@@ -136,13 +131,11 @@ export interface GetPeopleInQueue {
 // ====================================================
 
 export interface peopleQueueSubscription_peopleQueueSubscription_data {
-  __typename: "User";
   id: string;
   username: string;
 }
 
 export interface peopleQueueSubscription_peopleQueueSubscription {
-  __typename: "UserNotificationType";
   id: string;
   date: any;
   action: string;
@@ -189,19 +182,16 @@ export interface LeaveQueue {
 // ====================================================
 
 export interface GetPlaces_getPlaces_joinedUsers {
-  __typename: "User";
   id: string;
   username: string;
   avatar: string | null;
 }
 
 export interface GetPlaces_getPlaces_owner {
-  __typename: "User";
   id: string;
 }
 
 export interface GetPlaces_getPlaces {
-  __typename: "Place";
   id: string;
   name: string;
   description: string | null;
@@ -223,7 +213,6 @@ export interface GetPlaces {
 // ====================================================
 
 export interface AddPlace_addPlace {
-  __typename: "Place";
   id: string;
   name: string;
   description: string | null;
@@ -247,19 +236,16 @@ export interface AddPlaceVariables {
 // ====================================================
 
 export interface JoinPlace_joinPlace_joinedUsers {
-  __typename: "User";
   id: string;
   username: string;
   avatar: string | null;
 }
 
 export interface JoinPlace_joinPlace_owner {
-  __typename: "User";
   id: string;
 }
 
 export interface JoinPlace_joinPlace {
-  __typename: "Place";
   id: string;
   name: string;
   description: string | null;
@@ -285,19 +271,16 @@ export interface JoinPlaceVariables {
 // ====================================================
 
 export interface LeavePlace_leavePlace_joinedUsers {
-  __typename: "User";
   id: string;
   username: string;
   avatar: string | null;
 }
 
 export interface LeavePlace_leavePlace_owner {
-  __typename: "User";
   id: string;
 }
 
 export interface LeavePlace_leavePlace {
-  __typename: "Place";
   id: string;
   name: string;
   description: string | null;
@@ -340,19 +323,16 @@ export interface RemovePlaceVariables {
 // ====================================================
 
 export interface PlacesSubs_placesSubscription_data_joinedUsers {
-  __typename: "User";
   id: string;
   username: string;
   avatar: string | null;
 }
 
 export interface PlacesSubs_placesSubscription_data_owner {
-  __typename: "User";
   id: string;
 }
 
 export interface PlacesSubs_placesSubscription_data {
-  __typename: "Place";
   id: string;
   name: string;
   description: string | null;
@@ -361,7 +341,6 @@ export interface PlacesSubs_placesSubscription_data {
 }
 
 export interface PlacesSubs_placesSubscription {
-  __typename: "PlaceNotificationType";
   id: string;
   date: any;
   action: string;

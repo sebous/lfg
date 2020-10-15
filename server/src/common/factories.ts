@@ -15,7 +15,7 @@ export function notificationFactory<T>(data: T, action: Action): Notification<T>
 export function chatMessageFactory(message: string, senderName: string): ChatMessage {
   return {
     id: uuid.v4(),
-    timestamp: new Date().toISOString(),
+    timestamp: new Date(),
     senderName,
     message,
   };
