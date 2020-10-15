@@ -12,9 +12,17 @@ const Stack = createStackNavigator<DashboardParamList>();
 export const DashboardStack: React.FC<DashboardStackProps> = ({}) => {
   return (
     <Stack.Navigator initialRouteName="Dashboard">
-      <Stack.Screen name="Dashboard" component={Dashboard} />
-      <Stack.Screen name="Place" component={Place} />
-      <Stack.Screen name="UserProfile" component={UserProfile} />
+      <Stack.Screen name="Dashboard" component={Dashboard} options={{ title: "LFG" }} />
+      <Stack.Screen
+        name="Place"
+        component={Place}
+        options={({ route }) => ({ title: route.params.name })}
+      />
+      <Stack.Screen
+        name="UserProfile"
+        component={UserProfile}
+        options={({ route }) => ({ title: route.params.name })}
+      />
     </Stack.Navigator>
   );
 };

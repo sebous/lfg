@@ -1,19 +1,62 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { BottomTabBar, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import { AntDesign, Feather } from "@expo/vector-icons";
 import { AppParamList } from "./AppParamList";
-import { Chat } from "../../screens/Chat";
 import { DashboardStack } from "../dashboardStack/DashboardStack";
 import { ChatStack } from "../chatStack/ChatStack";
+import { useNavigation } from "@react-navigation/native";
+import { AddPlace } from "../../screens/AddPlace";
 
 interface AppTabsProps {}
 
-const Stack = createBottomTabNavigator<AppParamList>();
+const Tab = createBottomTabNavigator<AppParamList>();
 
 export const AppTabs: React.FC<AppTabsProps> = ({}) => {
+  const navigation = useNavigation();
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Dashboard" component={DashboardStack} />
-      <Stack.Screen name="Chat" component={ChatStack} />
-    </Stack.Navigator>
+    <Tab.Navigator
+    // way to hide tabs on certain screens
+    // tabBar={(props) => {
+    //   return (
+    //     <BottomTabBar {...props} state={{ ...props.state, routes: [props.state.routes[0]] }} />
+    //   );
+    // }}
+    >
+      <Tab.Screen
+        name="Dashboard"
+        component={DashboardStack}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <AntDesign name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="AddPlace"
+        component={AddPlace}
+        options={{
+          title: "Add place",
+          tabBarIcon: ({ focused, color, size }) => (
+            <AntDesign name="plus" size={size} color={color} />
+          ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("AddPlace");
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Chat"
+        component={ChatStack}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Feather name="message-square" size={size} color={color} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
   );
 };

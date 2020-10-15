@@ -1,5 +1,9 @@
 export type DashboardParamList = {
   Dashboard: undefined;
-  Place: undefined;
-  UserProfile: undefined;
+  Place: {
+    name: string;
+  };
+  UserProfile: {
+    name?: string;
+  };
 };
