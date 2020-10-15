@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as Facebook from "expo-facebook";
 import Constants from "expo-constants";
 import { AsyncStorage } from "react-native";
@@ -12,12 +12,14 @@ import {
   LoginViaCookie_loginViaCookie,
 } from "../graphqlTypes";
 import { FB_LOGIN, LOGIN_VIA_COOKIE } from "../gql/login.graphql";
+import { UserContext } from "../providers/UserProvider";
 
 export const USER_LOGGED = "USER_LOGGED";
 type User = FBlogin_FBlogin | LoginViaCookie_loginViaCookie;
 
 export function useLogin() {
   const [auth, setAuth] = useState(false);
+  const { setQueuing } = useContext(UserContext);
 
   const { data: loginViaCookie, error: errorLoggingViaCookie } = useQuery<LoginViaCookie>(
     LOGIN_VIA_COOKIE,
@@ -30,6 +32,7 @@ export function useLogin() {
   // save local auth state
   const [authUser] = useAsyncCallback(async (user: User) => {
     await AsyncStorage.setItem(USER_LOGGED, JSON.stringify({ ...user }));
+    setQueuing(user.queuing);
     setAuth(true);
   }, []);
 
