@@ -21,7 +21,17 @@ const link = split(
   httpLink,
 );
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        getPeopleInQueue: {
+          merge: false,
+        },
+      },
+    },
+  },
+});
 
 export const apolloClient = new ApolloClient({
   cache,

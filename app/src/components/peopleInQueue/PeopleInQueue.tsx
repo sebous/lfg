@@ -4,22 +4,20 @@ import { View, Text, StyleSheet } from "react-native";
 import faker from "faker";
 import { GET_PEOPLE_IN_QUEUE, PEOPLE_QUEUE_SUBS } from "../../gql/peopleQueue.graphql";
 import { GetPeopleInQueue, peopleQueueSubscription } from "../../graphqlTypes";
+import { usePeopleQueueSubscription } from "../../hooks/usePeopleQueueSubscription";
 
 interface PeopleInQueueProps {}
 
 export const PeopleInQueue: React.FC<PeopleInQueueProps> = ({}) => {
   const client = useApolloClient();
   const { data, error, loading } = useQuery<GetPeopleInQueue>(GET_PEOPLE_IN_QUEUE);
-  const { data: notification, error: subsErr } = useSubscription<peopleQueueSubscription>(
-    PEOPLE_QUEUE_SUBS,
-  );
-  useEffect(() => {
-    console.log(notification);
-  }, [notification]);
-  useEffect(() => {
-    console.log(subsErr);
-  }, [subsErr]);
-  // console.log("notification", notification, subsErr);
+  usePeopleQueueSubscription(data);
+  // useEffect(() => {
+  //   console.log("notification", notification);
+  // }, [notification]);
+  // useEffect(() => {
+  //   console.log("subsErr", subsErr);
+  // }, [subsErr]);
 
   if (loading) {
     return (

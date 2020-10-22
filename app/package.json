@@ -6,7 +6,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "codegen": "apollo codegen:generate ./src/graphqlTypes.ts --includes='./src/**/*.{tsx,ts}' --endpoint=http://localhost:4000/graphql --target=typescript --tagName=gql --outputFlat --watch --no-addTypename"
+    "codegen": "apollo codegen:generate ./src/graphqlTypes.ts --includes='./src/**/*.{tsx,ts}' --endpoint=http://localhost:4000/graphql --target=typescript --tagName=gql --outputFlat --watch"
   },
   "dependencies": {
     "@apollo/client": "^3.2.3",
