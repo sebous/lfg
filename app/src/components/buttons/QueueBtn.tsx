@@ -35,8 +35,8 @@ export const QueueBtn: React.FC<QueueBtnProps> = ({}) => {
         backgroundColor: !queuing ? AppColors.GREEN : AppColors.RED,
       }}
       activeOpacity={0.5}
-      delayPressIn={0.05}
-      delayPressOut={0.05}
+      delayPressIn={0.1}
+      delayPressOut={0.1}
       onPress={queueFn}
     >
       {!queuing ? (

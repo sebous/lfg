@@ -26,21 +26,21 @@ export const RootStack: React.FC<RootStackProps> = ({}) => {
           cardStyle: { backgroundColor: "transparent" },
           cardOverlayEnabled: true,
           // fade animation
-          cardStyleInterpolator: ({ current: { progress } }) => ({
-            cardStyle: {
-              opacity: progress.interpolate({
-                inputRange: [0, 0.5, 0.9, 1],
-                outputRange: [0, 0.25, 0.7, 1],
-              }),
-            },
-            overlayStyle: {
-              opacity: progress.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 0.5],
-                extrapolate: "clamp",
-              }),
-            },
-          }),
+          // cardStyleInterpolator: ({ current: { progress } }) => ({
+          //   cardStyle: {
+          //     opacity: progress.interpolate({
+          //       inputRange: [0, 0.5, 0.9, 1],
+          //       outputRange: [0, 0.25, 0.7, 1],
+          //     }),
+          //   },
+          //   overlayStyle: {
+          //     opacity: progress.interpolate({
+          //       inputRange: [0, 1],
+          //       outputRange: [0, 0.5],
+          //       extrapolate: "clamp",
+          //     }),
+          //   },
+          // }),
         }}
       />
     </RootStackScreen.Navigator>
