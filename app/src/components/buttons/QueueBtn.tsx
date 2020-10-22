@@ -5,6 +5,8 @@ import { UserContext } from "../../providers/UserProvider";
 import { useMutation } from "@apollo/client";
 import { LeaveQueue, QueueSelf } from "../../graphqlTypes";
 import { LEAVE_QUEUE, QUEUE_SELF } from "../../gql/peopleQueue.graphql";
+import { AppColors } from "../../styles/colors";
+import { ButtonStyles } from "../../styles/button";
 
 interface QueueBtnProps {}
 
@@ -28,9 +30,13 @@ export const QueueBtn: React.FC<QueueBtnProps> = ({}) => {
 
   return (
     <TouchableOpacity
-      style={{ ...styles.btn, backgroundColor: !queuing ? "lightgreen" : "red" }}
+      style={{
+        ...ButtonStyles.queueBtn,
+        backgroundColor: !queuing ? AppColors.GREEN : AppColors.RED,
+      }}
       activeOpacity={0.5}
       delayPressIn={0.05}
+      delayPressOut={0.05}
       onPress={queueFn}
     >
       {!queuing ? (
@@ -41,15 +47,3 @@ export const QueueBtn: React.FC<QueueBtnProps> = ({}) => {
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  btn: {
-    alignItems: "center",
-    padding: 12,
-    backgroundColor: "lightgreen",
-    position: "absolute",
-    borderRadius: 5,
-    bottom: 40,
-    right: 16,
-  },
-});

@@ -11,7 +11,7 @@ export default function App() {
     <ApolloProvider client={apolloClient}>
       <UserProvider>
         <NavigationContainer>
-          <StatusBar style="dark" />
+          <StatusBar style="light" />
           <Routes />
         </NavigationContainer>
       </UserProvider>

@@ -21,8 +21,6 @@ export function usePeopleQueueSubscription(data?: GetPeopleInQueue) {
     const localData = data?.getPeopleInQueue ?? [];
     const query = GET_PEOPLE_IN_QUEUE;
 
-    console.log(action, notificationData, data);
-
     if (action === Action.ADD) {
       const newUser: peopleQueueSubscription_peopleQueueSubscription_data = {
         ...notificationData,

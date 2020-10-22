@@ -1,6 +1,8 @@
 import { ApolloClient, createHttpLink, InMemoryCache, split } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "apollo-link-ws";
+import { RetryLink } from "apollo-link-retry";
+import { ApolloLink } from "apollo-link";
 
 const httpLink = createHttpLink({
   credentials: "include",

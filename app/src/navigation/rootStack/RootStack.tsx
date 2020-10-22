@@ -1,6 +1,8 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
+import App from "../../../App";
 import { AddPlaceModal } from "../../components/AddPlaceModal";
+import { AppColors } from "../../styles/colors";
 import { AppTabs } from "../appTabs/AppTabs";
 
 interface RootStackProps {}
@@ -13,7 +15,7 @@ export const RootStack: React.FC<RootStackProps> = ({}) => {
       <RootStackScreen.Screen
         name="Dashboard"
         component={AppTabs}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, cardStyle: { backgroundColor: AppColors.DARK_BACKGROUND } }}
       />
       <RootStackScreen.Screen
         name="AddPlace"

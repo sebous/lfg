@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 interface UserContextType {
   queuing: boolean;
-  setQueuing: (value: boolean) => void;
+  setQueuing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const UserContext = React.createContext<UserContextType>({
@@ -12,9 +12,5 @@ export const UserContext = React.createContext<UserContextType>({
 
 export const UserProvider: React.FC = ({ children }) => {
   const [queuing, setQueuing] = useState(false);
-  return (
-    <UserContext.Provider value={{ queuing, setQueuing: (value: boolean) => setQueuing(value) }}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={{ queuing, setQueuing }}>{children}</UserContext.Provider>;
 };
