@@ -12,12 +12,6 @@ export const PeopleInQueue: React.FC<PeopleInQueueProps> = ({}) => {
   const client = useApolloClient();
   const { data, error, loading } = useQuery<GetPeopleInQueue>(GET_PEOPLE_IN_QUEUE);
   usePeopleQueueSubscription(data);
-  // useEffect(() => {
-  //   console.log("notification", notification);
-  // }, [notification]);
-  // useEffect(() => {
-  //   console.log("subsErr", subsErr);
-  // }, [subsErr]);
 
   if (loading) {
     return (
@@ -34,7 +28,6 @@ export const PeopleInQueue: React.FC<PeopleInQueueProps> = ({}) => {
       </View>
     );
   }
-  console.log("getPeopleInQueue", data);
 
   return (
     <View style={styles.container}>
