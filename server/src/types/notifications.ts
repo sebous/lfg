@@ -1,10 +1,5 @@
 import { ObjectType, Field, ID, ClassType } from "type-graphql";
 
-export enum NotificationPriority {
-  NORMAL,
-  HIGH,
-}
-
 export enum SubscriptionTopic {
   PLACE = "PLACE",
   USER = "USER",
@@ -26,7 +21,7 @@ export function NotificationType<T>(TClass: ClassType<T>) {
     @Field(() => ID)
     id!: string;
 
-    @Field(() => Date)
+    @Field()
     date!: Date;
 
     @Field()

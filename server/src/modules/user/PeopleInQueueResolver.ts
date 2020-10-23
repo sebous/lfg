@@ -34,7 +34,7 @@ export class GetPeopleInQueue {
     user.queuing = true;
     const updatedUser = await user.save();
 
-    await pubSub.publish(SubscriptionTopic.USER, notificationFactory<User>(updatedUser, "UPDATE"));
+    await pubSub.publish(SubscriptionTopic.USER, notificationFactory<User>(updatedUser, "ADD"));
     return true;
   }
 
@@ -50,7 +50,7 @@ export class GetPeopleInQueue {
     user.queuing = false;
     const updatedUser = await user.save();
 
-    await pubSub.publish(SubscriptionTopic.USER, notificationFactory<User>(updatedUser, "UPDATE"));
+    await pubSub.publish(SubscriptionTopic.USER, notificationFactory<User>(updatedUser, "DELETE"));
     return true;
   }
 }
