@@ -6,8 +6,6 @@ import { CenterView } from "../components/views/CenterView";
 import { DashboardNavProps } from "../navigation/dashboardStack/DashboardParamList";
 import { ViewStyles } from "../styles/view";
 
-interface DashboardProps {}
-
 export const Dashboard: React.FC<DashboardNavProps<"Dashboard">> = ({}) => {
   return (
     <View style={ViewStyles.background}>

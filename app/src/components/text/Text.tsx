@@ -13,3 +13,7 @@ export const TextH2: React.FC = ({ children }) => {
 export const TextP: React.FC = ({ children }) => {
   return <Text style={TextStyles.p}>{children}</Text>;
 };
+
+export const TextError: React.FC = ({ children }) => {
+  return <Text style={TextStyles.error}>{children}</Text>;
+};

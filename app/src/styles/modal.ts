@@ -14,14 +14,16 @@ export const ModalStyles = StyleSheet.create({
   formContainer: {
     marginTop: 40,
   },
-  inputGroup: {},
+  inputGroup: {
+    marginBottom: 20,
+  },
   input: {
     height: 50,
     width: "100%",
     borderBottomColor: AppColors.DARK_BACKGROUND,
     borderBottomWidth: 1,
     color: AppColors.WHITE,
-    fontSize: 16,
-    marginBottom: 20,
+    fontSize: 18,
+    paddingHorizontal: 5,
   },
 });

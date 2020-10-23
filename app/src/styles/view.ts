@@ -17,4 +17,7 @@ export const ViewStyles = StyleSheet.create({
   tileWrapper: {
     paddingHorizontal: 20,
   },
+  spacer: {
+    marginBottom: 20,
+  },
 });

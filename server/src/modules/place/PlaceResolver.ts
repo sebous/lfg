@@ -26,11 +26,7 @@ export class PlaceResolver {
 
   // add new place
   @Mutation(() => Place)
-  async addPlace(
-    @Arg("placeInput") { name, description }: NewPlaceInput,
-    @Ctx() ctx: ServerContext,
-    @PubSub() pubSub: PubSubEngine
-  ): Promise<Place> {
+  async addPlace(@Arg("placeInput") { name, description }: NewPlaceInput, @Ctx() ctx: ServerContext): Promise<Place> {
     const user = await User.findOne(ctx.req.session!.userId);
     if (!user) throw Error("invalid user");
 
@@ -40,8 +36,8 @@ export class PlaceResolver {
       owner: user,
     }).save();
 
-    const notification = notificationFactory<Place>(place, "ADD");
-    await pubSub.publish(SubscriptionTopic.PLACE, notification);
+    // const notification = notificationFactory<Place>(place, "ADD");
+    // await pubSub.publish(SubscriptionTopic.PLACE, notification);
     return place;
   }
 

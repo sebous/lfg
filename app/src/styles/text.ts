@@ -17,4 +17,9 @@ export const TextStyles = StyleSheet.create({
     fontSize: 16,
     color: AppColors.WHITE,
   },
+  error: {
+    color: AppColors.RED,
+    paddingTop: 5,
+    paddingLeft: 5,
+  },
 });
