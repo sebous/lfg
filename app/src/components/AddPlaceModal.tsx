@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Button, Modal, ScrollView, TextInput, View } from "react-native";
+import React from "react";
+import { TextInput, View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { AntDesign } from "@expo/vector-icons";
 import { ModalStyles } from "../styles/modal";
-import { TextError, TextH1, TextP } from "./text/Text";
+import { TextError, TextH1 } from "./text/Text";
 import { AppColors } from "../styles/colors";
 import { BtnIcon } from "./buttons/Btn";
 import { ViewStyles } from "../styles/view";
-import { ButtonStyles } from "../styles/button";
 import { RootNavProps } from "../navigation/rootStack/RootParamList";
 import { useMutation } from "@apollo/client";
 import { AddPlace, AddPlaceVariables } from "../graphqlTypes";
