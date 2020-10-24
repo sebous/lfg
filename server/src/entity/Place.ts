@@ -27,6 +27,7 @@ export class Place extends BaseEntity {
   @Column({ nullable: true })
   description?: string;
 
+  @Field({ nullable: true })
   @Column("bytea", { nullable: true, name: "Image" })
   image?: Buffer;
 
