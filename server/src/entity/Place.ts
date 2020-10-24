@@ -27,8 +27,10 @@ export class Place extends BaseEntity {
   @Column({ nullable: true })
   description?: string;
 
-  // joined entities
+  @Column("bytea", { nullable: true, name: "Image" })
+  image?: Buffer;
 
+  // joined entities
   @Field(() => User)
   @ManyToOne(() => User, { eager: true })
   owner!: User;

@@ -1,10 +1,13 @@
 import { ApolloClient, createHttpLink, InMemoryCache, split } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "apollo-link-ws";
-import { RetryLink } from "apollo-link-retry";
-import { ApolloLink } from "apollo-link";
+import { createUploadLink } from "apollo-upload-client";
 
-const httpLink = createHttpLink({
+// const httpLink = createHttpLink({
+//   credentials: "include",
+// });
+
+const uploadLink = createUploadLink({
   credentials: "include",
   uri: "http://192.168.0.157:4000/graphql",
 });
@@ -20,7 +23,7 @@ const link = split(
     return definition.kind === "OperationDefinition" && definition.operation === "subscription";
   },
   wsLink as any,
-  httpLink,
+  uploadLink,
 );
 
 const cache = new InMemoryCache({

@@ -7,6 +7,7 @@ import { NewPlaceInput } from "./types/NewPlaceInput";
 import { User } from "../../entity/User";
 import { ServerContext } from "../../types/context";
 import { clearAllPlaces } from "../../common/util/placeUtil";
+import { streamToBuffer } from "../../common/util/streamUtil";
 
 @Resolver()
 export class PlaceResolver {
@@ -26,18 +27,32 @@ export class PlaceResolver {
 
   // add new place
   @Mutation(() => Place)
-  async addPlace(@Arg("placeInput") { name, description }: NewPlaceInput, @Ctx() ctx: ServerContext): Promise<Place> {
+  async addPlace(
+    @Arg("placeInput") { name, description, imageUpload }: NewPlaceInput,
+    @Ctx() ctx: ServerContext
+  ): Promise<Place> {
     const user = await User.findOne(ctx.req.session!.userId);
     if (!user) throw Error("invalid user");
+
+    const extractImage = async () => {
+      const img = await imageUpload;
+      if (!img) return;
+
+      console.log("img", img);
+      const stream = img.createReadStream();
+      const buffer = await streamToBuffer(stream);
+      return buffer;
+    };
 
     const place = await Place.create({
       name,
       description,
       owner: user,
+      image: await extractImage(),
     }).save();
 
-    // const notification = notificationFactory<Place>(place, "ADD");
-    // await pubSub.publish(SubscriptionTopic.PLACE, notification);
+    console.log(place);
+
     return place;
   }
 

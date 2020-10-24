@@ -4,6 +4,7 @@ import { ActivityIndicator, FlatList, ListRenderItem, View } from "react-native"
 import { GET_PLACES } from "../../gql/places.graphql";
 import { GetPlaces, GetPlaces_getPlaces } from "../../graphqlTypes";
 import { AppColors } from "../../styles/colors";
+import { PeopleInQueue } from "../peopleInQueue/PeopleInQueue";
 import { TextError, TextH2, TextP } from "../text/Text";
 import { Tile } from "../views/Tile";
 
@@ -44,7 +45,8 @@ export const PlacesFeed: React.FC<PlacesFeedProps> = ({ goToDetail }) => {
           data={data?.getPlaces}
           renderItem={renderItem}
           keyExtractor={(p) => p.id}
-          nestedScrollEnabled
+          nestedScrollEnabled={true}
+          ListHeaderComponent={<PeopleInQueue />}
         />
       )}
     </View>

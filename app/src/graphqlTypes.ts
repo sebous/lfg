@@ -391,6 +391,7 @@ export interface FBLoginInput {
 export interface NewPlaceInput {
   name: string;
   description: string;
+  imageUpload?: any | null;
 }
 
 //==============================================================
