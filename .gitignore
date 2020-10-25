@@ -2,6 +2,7 @@ node_modules/
 .env
 client/build
 server/dist
+server/uploads
 
 app/.expo/*
 app/npm-debug.*

@@ -1,13 +1,6 @@
 import { InputType, Field } from "type-graphql";
 import { GraphQLUpload } from "apollo-server-express";
-import { ReadStream } from "fs";
-
-export interface FileUpload {
-  filename: string;
-  mimetype: string;
-  encoding: string;
-  createReadStream(): ReadStream;
-}
+import { FileUpload } from "graphql-upload";
 
 @InputType()
 export class NewPlaceInput {

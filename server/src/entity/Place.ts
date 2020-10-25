@@ -23,13 +23,13 @@ export class Place extends BaseEntity {
   @Column()
   name!: string;
 
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  description?: string;
+  @Field()
+  @Column()
+  description!: string;
 
   @Field({ nullable: true })
-  @Column("bytea", { nullable: true, name: "Image" })
-  image?: Buffer;
+  @Column({ nullable: true })
+  imageUrl?: string;
 
   // joined entities
   @Field(() => User)

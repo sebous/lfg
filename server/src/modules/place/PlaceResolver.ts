@@ -7,7 +7,7 @@ import { NewPlaceInput } from "./types/NewPlaceInput";
 import { User } from "../../entity/User";
 import { ServerContext } from "../../types/context";
 import { clearAllPlaces } from "../../common/util/placeUtil";
-import { streamToBuffer } from "../../common/util/streamUtil";
+import * as uploadStorage from "../../common/uploadStorage";
 
 @Resolver()
 export class PlaceResolver {
@@ -38,21 +38,16 @@ export class PlaceResolver {
       const img = await imageUpload;
       if (!img) return;
 
-      console.log("img", img);
-      const stream = img.createReadStream();
-      const buffer = await streamToBuffer(stream);
-      return buffer;
+      const fileUrl = await uploadStorage.saveUpload(img);
+      return fileUrl;
     };
 
     const place = await Place.create({
       name,
       description,
       owner: user,
-      image: await extractImage(),
+      imageUrl: await extractImage(),
     }).save();
-
-    console.log(place);
-
     return place;
   }
 
