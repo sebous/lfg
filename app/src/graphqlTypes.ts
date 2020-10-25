@@ -198,6 +198,7 @@ export interface GetPlaces_getPlaces_joinedUsers {
 export interface GetPlaces_getPlaces_owner {
   __typename: "User";
   id: string;
+  avatar: string | null;
 }
 
 export interface GetPlaces_getPlaces {

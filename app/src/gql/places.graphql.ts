@@ -14,6 +14,7 @@ export const GET_PLACES = gql`
       }
       owner {
         id
+        avatar
       }
     }
   }
