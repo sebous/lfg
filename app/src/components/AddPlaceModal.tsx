@@ -11,9 +11,9 @@ import { AppColors } from "../styles/colors";
 import { BtnIcon } from "./buttons/Btn";
 import { ViewStyles } from "../styles/view";
 import { RootNavProps } from "../navigation/rootStack/RootParamList";
-import { useMutation } from "@apollo/client";
+import { useApolloClient, useMutation } from "@apollo/client";
 import { AddPlace, AddPlaceVariables } from "../graphqlTypes";
-import { ADD_PLACE } from "../gql/places.graphql";
+import { ADD_PLACE, GET_PLACES } from "../gql/places.graphql";
 
 export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }) => {
   const { handleSubmit, control, errors, setValue } = useForm({});
@@ -31,7 +31,10 @@ export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }
     if (imageFile) {
       imageFile.name = name;
     }
-    addPlaceMutation({ variables: { placeInput: { name, description, imageUpload: imageFile } } });
+    addPlaceMutation({
+      variables: { placeInput: { name, description, imageUpload: imageFile } },
+      refetchQueries: [{ query: GET_PLACES }],
+    });
     navigation.navigate("Dashboard");
   };
 

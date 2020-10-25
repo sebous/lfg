@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useApolloClient, useQuery } from "@apollo/client";
 import React from "react";
 import { ActivityIndicator, FlatList, ListRenderItem, View } from "react-native";
 import { Image } from "react-native-elements";
@@ -16,8 +16,7 @@ interface PlacesFeedProps {
 }
 
 export const PlacesFeed: React.FC<PlacesFeedProps> = ({ goToDetail }) => {
-  const { data, loading, error } = useQuery<GetPlaces>(GET_PLACES);
-  console.log(data?.getPlaces);
+  const { data, loading, error } = useQuery<GetPlaces>(GET_PLACES, { pollInterval: 10000 });
 
   let InfoTile = () => <View />;
   if (loading) {

@@ -1,11 +1,7 @@
-import { ApolloClient, createHttpLink, InMemoryCache, split } from "@apollo/client";
+import { ApolloClient, InMemoryCache, split } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "apollo-link-ws";
 import { createUploadLink } from "apollo-upload-client";
-
-// const httpLink = createHttpLink({
-//   credentials: "include",
-// });
 
 export const SERVER_URL = "192.168.0.157:4000";
 
@@ -33,6 +29,9 @@ const cache = new InMemoryCache({
     Query: {
       fields: {
         getPeopleInQueue: {
+          merge: false,
+        },
+        getPlaces: {
           merge: false,
         },
       },

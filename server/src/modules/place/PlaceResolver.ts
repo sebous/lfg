@@ -28,7 +28,6 @@ export class PlaceResolver {
   async getPlaces(@Ctx() ctx: ServerContext): Promise<Place[]> {
     console.log(ctx.req.session.userId);
     const places = await Place.find();
-    console.log(places);
     return places;
   }
 

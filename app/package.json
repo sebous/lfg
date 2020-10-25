@@ -2,6 +2,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
+    "serverIP": "SERVER_URL=`hostname -I | awk '{print $1}'`; echo $SERVER_URL",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
