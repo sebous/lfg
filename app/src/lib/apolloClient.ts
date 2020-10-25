@@ -7,13 +7,15 @@ import { createUploadLink } from "apollo-upload-client";
 //   credentials: "include",
 // });
 
+export const SERVER_URL = "192.168.0.157:4000";
+
 const uploadLink = createUploadLink({
   credentials: "include",
-  uri: "http://192.168.0.157:4000/graphql",
+  uri: `http://${SERVER_URL}/graphql`,
 });
 
 const wsLink = new WebSocketLink({
-  uri: "ws://192.168.0.157:4000/subscriptions",
+  uri: `ws://${SERVER_URL}/subscriptions`,
   options: { reconnect: true },
 });
 

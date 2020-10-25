@@ -18,3 +18,11 @@ export async function saveUpload(upload: FileUpload): Promise<string> {
   });
   return `${fileId}.${extension}`;
 }
+
+/**
+ *
+ * @param fileName full name with extension
+ */
+export async function removeUpload(fileName: string) {
+  await fs.unlink(path.join(__dirname, `../../uploads/${fileName}`));
+}

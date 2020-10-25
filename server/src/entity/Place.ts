@@ -27,9 +27,14 @@ export class Place extends BaseEntity {
   @Column()
   description!: string;
 
-  @Field({ nullable: true })
   @Column({ nullable: true })
   imageUrl?: string;
+
+  @Field(() => String, { nullable: true })
+  image() {
+    if (!this.imageUrl) return;
+    return `/uploads/${this.imageUrl}`;
+  }
 
   // joined entities
   @Field(() => User)

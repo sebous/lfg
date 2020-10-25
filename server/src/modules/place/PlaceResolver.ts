@@ -1,4 +1,15 @@
-import { Resolver, Mutation, Arg, PubSub, PubSubEngine, Subscription, Root, Query, Ctx } from "type-graphql";
+import {
+  Resolver,
+  Mutation,
+  Arg,
+  PubSub,
+  PubSubEngine,
+  Subscription,
+  Root,
+  Query,
+  Ctx,
+  Authorized,
+} from "type-graphql";
 import { Place } from "../../entity/Place";
 import { SubscriptionTopic, Notification } from "../../types/notifications";
 import { notificationFactory } from "../../common/factories";
@@ -13,8 +24,10 @@ import * as uploadStorage from "../../common/uploadStorage";
 export class PlaceResolver {
   // get all places
   @Query(() => [Place])
+  @Authorized()
   async getPlaces(): Promise<Place[]> {
     const places = await Place.find();
+    console.log(places);
     return places;
   }
 
@@ -27,6 +40,7 @@ export class PlaceResolver {
 
   // add new place
   @Mutation(() => Place)
+  @Authorized()
   async addPlace(
     @Arg("placeInput") { name, description, imageUpload }: NewPlaceInput,
     @Ctx() ctx: ServerContext
@@ -52,6 +66,7 @@ export class PlaceResolver {
   }
 
   @Mutation(() => Place)
+  @Authorized()
   async joinPlace(
     @Arg("placeId") placeId: string,
     @Ctx() ctx: ServerContext,
@@ -70,6 +85,7 @@ export class PlaceResolver {
   }
 
   @Mutation(() => Place)
+  @Authorized()
   async leavePlace(
     @Arg("placeId") placeId: string,
     @Ctx() ctx: ServerContext,
@@ -88,6 +104,7 @@ export class PlaceResolver {
 
   // remove place
   @Mutation(() => Boolean)
+  @Authorized()
   async removeOnePlace(
     @Arg("placeId") placeId: string,
     @Ctx() ctx: ServerContext,

@@ -27,7 +27,7 @@ export function applyMiddlewares(app: Express) {
 }
 
 export async function isAuth(req: Request, res: Response, next: NextFunction) {
-  const user = await User.findOne(req.session!.userId);
+  const user = await User.findOne({ where: { id: req.session!.userId } });
   if (!user) return res.sendStatus(401);
 
   next();

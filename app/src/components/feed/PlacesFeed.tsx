@@ -1,8 +1,10 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
 import { ActivityIndicator, FlatList, ListRenderItem, View } from "react-native";
+import { Image } from "react-native-elements";
 import { GET_PLACES } from "../../gql/places.graphql";
 import { GetPlaces, GetPlaces_getPlaces } from "../../graphqlTypes";
+import { SERVER_URL } from "../../lib/apolloClient";
 import { AppColors } from "../../styles/colors";
 import { PeopleInQueue } from "../peopleInQueue/PeopleInQueue";
 import { TextError, TextH2, TextP } from "../text/Text";
@@ -15,38 +17,57 @@ interface PlacesFeedProps {
 export const PlacesFeed: React.FC<PlacesFeedProps> = ({ goToDetail }) => {
   const { data, loading, error } = useQuery<GetPlaces>(GET_PLACES);
 
+  let InfoTile = () => <View />;
+  if (loading) {
+    InfoTile = () => (
+      <Tile>
+        <ActivityIndicator size="large" color={AppColors.GREEN} />
+      </Tile>
+    );
+  }
+  if (error) {
+    InfoTile = () => (
+      <Tile>
+        <TextError>error loading places</TextError>
+      </Tile>
+    );
+  }
+  if (data?.getPlaces.length === 0) {
+    InfoTile = () => (
+      <Tile>
+        <TextP>No places, wanna add some?</TextP>
+      </Tile>
+    );
+  }
+
   const renderItem: ListRenderItem<GetPlaces_getPlaces> = ({
-    item: { id, description, name, owner },
+    item: { id, description, name, owner, image },
   }) => (
     <Tile>
       <TextH2>{name}</TextH2>
       <TextP>{description}</TextP>
+      <Image
+        source={{ uri: `http://${SERVER_URL}${image}` }}
+        style={{ height: 100, width: 100 }}
+        PlaceholderContent={<ActivityIndicator />}
+      />
     </Tile>
   );
+
   return (
-    <View>
-      {loading && (
-        <Tile>
-          <ActivityIndicator size="large" color={AppColors.GREEN} />
-        </Tile>
-      )}
-      {error && (
-        <Tile>
-          <TextError>error loading places</TextError>
-        </Tile>
-      )}
-      {data?.getPlaces?.length === 0 && (
-        <Tile>
-          <TextP>No places, wanna add some?</TextP>
-        </Tile>
-      )}
+    <View style={{ flex: 1 }}>
       {data?.getPlaces && (
         <FlatList
           data={data?.getPlaces}
           renderItem={renderItem}
           keyExtractor={(p) => p.id}
           nestedScrollEnabled={true}
-          ListHeaderComponent={<PeopleInQueue />}
+          ListHeaderComponent={
+            <>
+              <PeopleInQueue />
+              <InfoTile />
+            </>
+          }
         />
       )}
     </View>
