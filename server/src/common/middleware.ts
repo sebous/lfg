@@ -1,7 +1,8 @@
 import session from "express-session";
 import connectRedis from "connect-redis";
-import { Express } from "express";
+import { Express, Request, Response, NextFunction } from "express";
 import { redis } from "./redis";
+import { User } from "../entity/User";
 
 export function applyMiddlewares(app: Express) {
   // session
@@ -23,4 +24,11 @@ export function applyMiddlewares(app: Express) {
       },
     })
   );
+}
+
+export async function isAuth(req: Request, res: Response, next: NextFunction) {
+  const user = await User.findOne({ where: { id: req.session!.userId } });
+  if (!user) return res.sendStatus(401);
+
+  next();
 }

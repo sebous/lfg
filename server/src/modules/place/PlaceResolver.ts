@@ -1,4 +1,15 @@
-import { Resolver, Mutation, Arg, PubSub, PubSubEngine, Subscription, Root, Query, Ctx } from "type-graphql";
+import {
+  Resolver,
+  Mutation,
+  Arg,
+  PubSub,
+  PubSubEngine,
+  Subscription,
+  Root,
+  Query,
+  Ctx,
+  Authorized,
+} from "type-graphql";
 import { Place } from "../../entity/Place";
 import { SubscriptionTopic, Notification } from "../../types/notifications";
 import { notificationFactory } from "../../common/factories";
@@ -7,13 +18,16 @@ import { NewPlaceInput } from "./types/NewPlaceInput";
 import { User } from "../../entity/User";
 import { ServerContext } from "../../types/context";
 import { clearAllPlaces } from "../../common/util/placeUtil";
+import * as uploadStorage from "../../common/uploadStorage";
 
 @Resolver()
 export class PlaceResolver {
   // get all places
   @Query(() => [Place])
+  @Authorized()
   async getPlaces(): Promise<Place[]> {
     const places = await Place.find();
+    console.log(places);
     return places;
   }
 
@@ -26,22 +40,33 @@ export class PlaceResolver {
 
   // add new place
   @Mutation(() => Place)
-  async addPlace(@Arg("placeInput") { name, description }: NewPlaceInput, @Ctx() ctx: ServerContext): Promise<Place> {
+  @Authorized()
+  async addPlace(
+    @Arg("placeInput") { name, description, imageUpload }: NewPlaceInput,
+    @Ctx() ctx: ServerContext
+  ): Promise<Place> {
     const user = await User.findOne(ctx.req.session!.userId);
     if (!user) throw Error("invalid user");
+
+    const extractImage = async () => {
+      const img = await imageUpload;
+      if (!img) return;
+
+      const fileUrl = await uploadStorage.saveUpload(img);
+      return fileUrl;
+    };
 
     const place = await Place.create({
       name,
       description,
       owner: user,
+      imageUrl: await extractImage(),
     }).save();
-
-    // const notification = notificationFactory<Place>(place, "ADD");
-    // await pubSub.publish(SubscriptionTopic.PLACE, notification);
     return place;
   }
 
   @Mutation(() => Place)
+  @Authorized()
   async joinPlace(
     @Arg("placeId") placeId: string,
     @Ctx() ctx: ServerContext,
@@ -60,6 +85,7 @@ export class PlaceResolver {
   }
 
   @Mutation(() => Place)
+  @Authorized()
   async leavePlace(
     @Arg("placeId") placeId: string,
     @Ctx() ctx: ServerContext,
@@ -78,6 +104,7 @@ export class PlaceResolver {
 
   // remove place
   @Mutation(() => Boolean)
+  @Authorized()
   async removeOnePlace(
     @Arg("placeId") placeId: string,
     @Ctx() ctx: ServerContext,

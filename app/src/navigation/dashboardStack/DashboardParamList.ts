@@ -4,7 +4,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 export type DashboardParamList = {
   Dashboard: undefined;
   Place: {
-    name: string;
+    id: string;
   };
   UserProfile: {
     name?: string;

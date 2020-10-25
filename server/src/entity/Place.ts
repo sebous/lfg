@@ -23,12 +23,20 @@ export class Place extends BaseEntity {
   @Column()
   name!: string;
 
-  @Field({ nullable: true })
+  @Field()
+  @Column()
+  description!: string;
+
   @Column({ nullable: true })
-  description?: string;
+  imageUrl?: string;
+
+  @Field(() => String, { nullable: true })
+  image() {
+    if (!this.imageUrl) return;
+    return `/uploads/${this.imageUrl}`;
+  }
 
   // joined entities
-
   @Field(() => User)
   @ManyToOne(() => User, { eager: true })
   owner!: User;

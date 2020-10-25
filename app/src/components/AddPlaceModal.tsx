@@ -1,30 +1,79 @@
-import React, { useEffect, useState } from "react";
-import { Button, Modal, ScrollView, TextInput, View } from "react-native";
+import React, { useState } from "react";
+import { TextInput, View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { AntDesign } from "@expo/vector-icons";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
+import { ReactNativeFile } from "apollo-upload-client";
 import { ModalStyles } from "../styles/modal";
-import { TextError, TextH1, TextP } from "./text/Text";
+import { TextError, TextH1 } from "./text/Text";
 import { AppColors } from "../styles/colors";
 import { BtnIcon } from "./buttons/Btn";
 import { ViewStyles } from "../styles/view";
-import { ButtonStyles } from "../styles/button";
 import { RootNavProps } from "../navigation/rootStack/RootParamList";
 import { useMutation } from "@apollo/client";
 import { AddPlace, AddPlaceVariables } from "../graphqlTypes";
 import { ADD_PLACE } from "../gql/places.graphql";
 
 export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }) => {
-  const { handleSubmit, control, errors } = useForm({});
+  const { handleSubmit, control, errors, setValue } = useForm({});
+  const [image, setImage] = useState<ReactNativeFile>();
   const [addPlaceMutation, { data: addPlaceResponse, error: addPlaceError, loading }] = useMutation<
     AddPlace,
     AddPlaceVariables
   >(ADD_PLACE);
+  console.log("image", image);
 
   const onSubmit = (data: { name: string; description: string }) => {
     console.log("submitting", data);
     const { name, description } = data;
-    addPlaceMutation({ variables: { placeInput: { name, description } } });
+    const imageFile = image;
+    if (imageFile) {
+      imageFile.name = name;
+    }
+    addPlaceMutation({ variables: { placeInput: { name, description, imageUpload: imageFile } } });
     navigation.navigate("Dashboard");
+  };
+
+  const pickImage = async () => {
+    const { granted } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (!granted) return;
+
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.5,
+    });
+    if (pickerResult.cancelled) return;
+
+    // save image uri
+    const { uri, type } = pickerResult;
+    const imageFile = new ReactNativeFile({
+      uri,
+      type,
+    });
+    setImage(imageFile);
+  };
+
+  const takeImage = async () => {
+    const { granted } = await Permissions.askAsync(Permissions.CAMERA);
+    if (!granted) return;
+
+    const cameraResult = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.5,
+    });
+    console.log(cameraResult);
+    if (cameraResult.cancelled) return;
+
+    // save image uri
+    const { uri, type } = cameraResult;
+    const imageFile = new ReactNativeFile({
+      uri,
+      type,
+    });
+    setImage(imageFile);
   };
 
   return (
@@ -75,7 +124,20 @@ export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }
           />
           {errors?.description && <TextError>{errors?.description?.message}</TextError>}
         </View>
+
         <View style={ViewStyles.spacer} />
+        <BtnIcon
+          onPress={pickImage}
+          icon={<AntDesign name="arrowright" color={AppColors.WHITE} size={20} />}
+        >
+          pick img
+        </BtnIcon>
+        <BtnIcon
+          onPress={takeImage}
+          icon={<AntDesign name="arrowright" color={AppColors.WHITE} size={20} />}
+        >
+          take img
+        </BtnIcon>
         <BtnIcon
           onPress={handleSubmit(onSubmit)}
           icon={<AntDesign name="arrowright" color={AppColors.WHITE} size={20} />}

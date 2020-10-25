@@ -6,6 +6,7 @@ export const GET_PLACES = gql`
       id
       name
       description
+      image
       joinedUsers {
         id
         username

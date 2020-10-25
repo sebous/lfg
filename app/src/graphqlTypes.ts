@@ -204,7 +204,8 @@ export interface GetPlaces_getPlaces {
   __typename: "Place";
   id: string;
   name: string;
-  description: string | null;
+  description: string;
+  image: string | null;
   joinedUsers: GetPlaces_getPlaces_joinedUsers[] | null;
   owner: GetPlaces_getPlaces_owner;
 }
@@ -226,7 +227,7 @@ export interface AddPlace_addPlace {
   __typename: "Place";
   id: string;
   name: string;
-  description: string | null;
+  description: string;
 }
 
 export interface AddPlace {
@@ -262,7 +263,7 @@ export interface JoinPlace_joinPlace {
   __typename: "Place";
   id: string;
   name: string;
-  description: string | null;
+  description: string;
   joinedUsers: JoinPlace_joinPlace_joinedUsers[] | null;
   owner: JoinPlace_joinPlace_owner;
 }
@@ -300,7 +301,7 @@ export interface LeavePlace_leavePlace {
   __typename: "Place";
   id: string;
   name: string;
-  description: string | null;
+  description: string;
   joinedUsers: LeavePlace_leavePlace_joinedUsers[] | null;
   owner: LeavePlace_leavePlace_owner;
 }
@@ -355,7 +356,7 @@ export interface PlacesSubs_placesSubscription_data {
   __typename: "Place";
   id: string;
   name: string;
-  description: string | null;
+  description: string;
   joinedUsers: PlacesSubs_placesSubscription_data_joinedUsers[] | null;
   owner: PlacesSubs_placesSubscription_data_owner;
 }
@@ -391,6 +392,7 @@ export interface FBLoginInput {
 export interface NewPlaceInput {
   name: string;
   description: string;
+  imageUpload?: any | null;
 }
 
 //==============================================================
