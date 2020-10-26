@@ -26,4 +26,14 @@ export const ModalStyles = StyleSheet.create({
     fontSize: 18,
     paddingHorizontal: 5,
   },
+  imageInputGroup: {
+    paddingHorizontal: 5,
+  },
+  imageInputHeader: {
+    // paddingLeft: 5,
+    // paddingRight: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
 });

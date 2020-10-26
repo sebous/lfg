@@ -1,8 +1,7 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 import { QueueBtn } from "../components/buttons/QueueBtn";
 import { PlacesFeed } from "../components/feed/PlacesFeed";
-import { PeopleInQueue } from "../components/peopleInQueue/PeopleInQueue";
 import { DashboardNavProps } from "../navigation/dashboardStack/DashboardParamList";
 import { ViewStyles } from "../styles/view";
 

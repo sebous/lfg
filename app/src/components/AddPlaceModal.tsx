@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { TextInput, View } from "react-native";
+import { ScrollView, TextInput, View, Image } from "react-native";
 import { useForm, Controller } from "react-hook-form";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { ReactNativeFile } from "apollo-upload-client";
 import { ModalStyles } from "../styles/modal";
-import { TextError, TextH1 } from "./text/Text";
+import { TextError, TextH1, TextLight } from "./text/Text";
 import { AppColors } from "../styles/colors";
 import { BtnIcon } from "./buttons/Btn";
 import { ViewStyles } from "../styles/view";
@@ -14,15 +14,20 @@ import { RootNavProps } from "../navigation/rootStack/RootParamList";
 import { useApolloClient, useMutation } from "@apollo/client";
 import { AddPlace, AddPlaceVariables } from "../graphqlTypes";
 import { ADD_PLACE, GET_PLACES } from "../gql/places.graphql";
+import { stringify } from "querystring";
+
+interface AddPlaceFormInput {
+  name: string;
+  description: string;
+}
 
 export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }) => {
-  const { handleSubmit, control, errors, setValue } = useForm({});
+  const { handleSubmit, control, errors, setValue } = useForm<AddPlaceFormInput>({});
   const [image, setImage] = useState<ReactNativeFile>();
   const [addPlaceMutation, { data: addPlaceResponse, error: addPlaceError, loading }] = useMutation<
     AddPlace,
     AddPlaceVariables
   >(ADD_PLACE);
-  console.log("image", image);
 
   const onSubmit = (data: { name: string; description: string }) => {
     console.log("submitting", data);
@@ -45,7 +50,7 @@ export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }
     const pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 0.5,
+      quality: 0.25,
     });
     if (pickerResult.cancelled) return;
 
@@ -65,9 +70,8 @@ export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }
     const cameraResult = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 0.5,
+      quality: 0.25,
     });
-    console.log(cameraResult);
     if (cameraResult.cancelled) return;
 
     // save image uri
@@ -82,7 +86,7 @@ export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }
   return (
     <View style={ModalStyles.addPlaceModal}>
       <TextH1>Add place</TextH1>
-      <View style={ModalStyles.formContainer}>
+      <ScrollView style={ModalStyles.formContainer}>
         <View style={ModalStyles.inputGroup}>
           <Controller
             control={control}
@@ -128,26 +132,35 @@ export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }
           {errors?.description && <TextError>{errors?.description?.message}</TextError>}
         </View>
 
+        <View style={ModalStyles.imageInputGroup}>
+          <View style={ModalStyles.imageInputHeader}>
+            <TextLight>Image</TextLight>
+            <Ionicons
+              name="ios-image"
+              size={36}
+              color={AppColors.GREEN}
+              style={{ marginLeft: "auto" }}
+              onPress={pickImage}
+            />
+            <AntDesign
+              name="camera"
+              size={40}
+              color={AppColors.GREEN}
+              style={{ marginLeft: 20 }}
+              onPress={takeImage}
+            />
+          </View>
+          {image && <Image source={{ uri: image?.uri }} style={{ height: 100, width: 100 }} />}
+        </View>
+
         <View style={ViewStyles.spacer} />
-        <BtnIcon
-          onPress={pickImage}
-          icon={<AntDesign name="arrowright" color={AppColors.WHITE} size={20} />}
-        >
-          pick img
-        </BtnIcon>
-        <BtnIcon
-          onPress={takeImage}
-          icon={<AntDesign name="arrowright" color={AppColors.WHITE} size={20} />}
-        >
-          take img
-        </BtnIcon>
         <BtnIcon
           onPress={handleSubmit(onSubmit)}
           icon={<AntDesign name="arrowright" color={AppColors.WHITE} size={20} />}
         >
           Publish
         </BtnIcon>
-      </View>
+      </ScrollView>
     </View>
   );
 };

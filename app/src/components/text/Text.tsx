@@ -14,6 +14,10 @@ export const TextP: React.FC = ({ children }) => {
   return <Text style={TextStyles.p}>{children}</Text>;
 };
 
+export const TextLight: React.FC = ({ children }) => {
+  return <Text style={TextStyles.light}>{children}</Text>;
+};
+
 export const TextError: React.FC = ({ children }) => {
   return <Text style={TextStyles.error}>{children}</Text>;
 };

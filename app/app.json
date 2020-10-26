@@ -20,6 +20,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "userInterfaceStyle": "automatic",
     "facebookScheme": "fb1181469392249020",
     "facebookDisplayName": "lfg"
   }

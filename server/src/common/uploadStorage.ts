@@ -5,8 +5,10 @@ import path from "path";
 import shortid from "shortid";
 import { streamToBuffer } from "./util/streamUtil";
 
+const UPLOAD_FOLDER_NAME = "uploads";
+
 async function ensureUploadFolderExists() {
-  const folderPath = path.join(__dirname, "../../uploads");
+  const folderPath = path.join(__dirname, `../../${UPLOAD_FOLDER_NAME}`);
   try {
     await fs.access(folderPath);
   } catch (err) {
@@ -15,7 +17,7 @@ async function ensureUploadFolderExists() {
 }
 
 /**
- * @returns filename.ext in /upload folder
+ * @returns filename.ext in /uploads folder
  */
 export async function saveUpload(upload: FileUpload): Promise<string> {
   const { createReadStream, mimetype, encoding } = upload;
@@ -23,7 +25,7 @@ export async function saveUpload(upload: FileUpload): Promise<string> {
   const fileId = shortid.generate();
   const extension = mime.extension(mimetype);
   await ensureUploadFolderExists();
-  await fs.writeFile(path.join(__dirname, `../../uploads/${fileId}.${extension}`), buffer, {
+  await fs.writeFile(path.join(__dirname, `../../${UPLOAD_FOLDER_NAME}/${fileId}.${extension}`), buffer, {
     encoding: encoding === "7bit" ? "ascii" : encoding,
   });
   return `${fileId}.${extension}`;
@@ -34,5 +36,5 @@ export async function saveUpload(upload: FileUpload): Promise<string> {
  * @param fileName full name with extension
  */
 export async function removeUpload(fileName: string) {
-  await fs.unlink(path.join(__dirname, `../../uploads/${fileName}`));
+  await fs.unlink(path.join(__dirname, `../../${UPLOAD_FOLDER_NAME}/${fileName}`));
 }

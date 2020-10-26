@@ -18,6 +18,6 @@ export const ViewStyles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   spacer: {
-    marginBottom: 20,
+    marginBottom: 40,
   },
 });

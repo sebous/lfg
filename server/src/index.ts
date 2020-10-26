@@ -10,7 +10,7 @@ import { applyMiddlewares, isAuth } from "./common/middleware";
 import { pubSubRedis } from "./common/redis";
 import { scheduleCronJobs } from "./common/cronjobs";
 import { createTypeormConn } from "./common/dbConnection";
-import { ServerAuthChecker } from "./modules/user/AuthChecker";
+import { GraphQLAuthChecker } from "./modules/user/AuthChecker";
 
 dotenv.config();
 
@@ -21,7 +21,7 @@ dotenv.config();
     const schema = await buildSchema({
       resolvers: [path.join(__dirname, "/modules/**/*.ts")],
       pubSub: pubSubRedis,
-      authChecker: ServerAuthChecker,
+      authChecker: GraphQLAuthChecker,
     });
 
     // cronjobs
