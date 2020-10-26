@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
+import { AppColors } from "./colors";
 
 export const FeedStyles = StyleSheet.create({
   feedTileImage: {
-    width: "70%",
-    height: 150,
+    height: 100,
     resizeMode: "center",
     borderRadius: 8,
+    flex: 1,
   },
   feedTileContainer: {
     flexDirection: "row",
@@ -16,4 +17,6 @@ export const FeedStyles = StyleSheet.create({
     height: 40,
     borderRadius: 100,
   },
+  joinedUsersWrapper: { paddingLeft: 20, flexDirection: "row" },
+  joinedUsersText: { fontSize: 20, paddingLeft: 10, color: AppColors.TEXT_LIGHT },
 });

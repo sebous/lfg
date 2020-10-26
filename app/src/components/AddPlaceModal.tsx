@@ -150,7 +150,12 @@ export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }
               onPress={takeImage}
             />
           </View>
-          {image && <Image source={{ uri: image?.uri }} style={{ height: 100, width: 100 }} />}
+          {image && (
+            <Image
+              source={{ uri: image?.uri }}
+              style={{ height: 100, width: 100, borderRadius: 3 }}
+            />
+          )}
         </View>
 
         <View style={ViewStyles.spacer} />

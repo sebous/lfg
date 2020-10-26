@@ -10,8 +10,8 @@ export const TextH2: React.FC = ({ children }) => {
   return <Text style={TextStyles.h2}>{children}</Text>;
 };
 
-export const TextP: React.FC = ({ children }) => {
-  return <Text style={TextStyles.p}>{children}</Text>;
+export const TextP: React.FC<{ color?: string }> = ({ children, color }) => {
+  return <Text style={{ ...TextStyles.p, color: color ?? TextStyles.p.color }}>{children}</Text>;
 };
 
 export const TextLight: React.FC = ({ children }) => {

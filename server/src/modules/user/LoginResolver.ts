@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Arg, Ctx, Query } from "type-graphql";
+import { Resolver, Mutation, Arg, Ctx, Query, Authorized } from "type-graphql";
 import { User } from "../../entity/User";
 import { ServerContext } from "../../types/context";
 import { FBLoginInput } from "./types/FBLoginInput";
@@ -7,12 +7,9 @@ import { checkIfTokenValid } from "../../common/util/fbUtils";
 @Resolver()
 export class LoginResolver {
   // login with existing cookie
+  @Authorized()
   @Query(() => User, { nullable: true })
   async loginViaCookie(@Ctx() ctx: ServerContext): Promise<User | undefined> {
-    // user not in session
-    if (!ctx.req.session!.userId) return;
-
-    // user no longer exists
     const user = await User.findOne(ctx.req.session!.userId);
     if (!user) return;
 

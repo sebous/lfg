@@ -1,15 +1,13 @@
 import { useApolloClient, useQuery } from "@apollo/client";
 import React from "react";
-import { ActivityIndicator, FlatList, ListRenderItem, View } from "react-native";
-import { Image } from "react-native-elements";
+import { ActivityIndicator, FlatList, View } from "react-native";
 import { GET_PLACES } from "../../gql/places.graphql";
 import { GetPlaces, GetPlaces_getPlaces } from "../../graphqlTypes";
-import { SERVER_URL } from "../../lib/apolloClient";
 import { AppColors } from "../../styles/colors";
-import { FeedStyles } from "../../styles/feed";
 import { PeopleInQueue } from "../peopleInQueue/PeopleInQueue";
 import { TextError, TextH2, TextP } from "../text/Text";
 import { Tile } from "../views/Tile";
+import { PlaceFeedItem } from "./PlaceFeedItem";
 
 interface PlacesFeedProps {
   goToDetail: (id: string) => void;
@@ -26,7 +24,7 @@ export const PlacesFeed: React.FC<PlacesFeedProps> = ({ goToDetail }) => {
       </Tile>
     );
   }
-  if (error) {
+  if (error && (!data?.getPlaces || data.getPlaces.length === 0)) {
     InfoTile = () => (
       <Tile>
         <TextError>error loading places</TextError>
@@ -41,33 +39,16 @@ export const PlacesFeed: React.FC<PlacesFeedProps> = ({ goToDetail }) => {
     );
   }
 
-  const renderItem: ListRenderItem<GetPlaces_getPlaces> = ({
-    item: { id, description, name, owner, image },
-  }) => (
-    <Tile>
-      <View style={FeedStyles.feedTileContainer}>
-        <View style={{ flex: 1 }}>
-          <Image source={{ uri: owner.avatar! }} style={FeedStyles.userAvatar} />
-        </View>
-        <View style={{ flex: 4 }}>
-          <TextH2>{name}</TextH2>
-          <TextP>{description}</TextP>
-        </View>
-      </View>
-      <Image
-        source={{ uri: `http://${SERVER_URL}${image}` }}
-        style={FeedStyles.feedTileImage}
-        PlaceholderContent={<ActivityIndicator />}
-      />
-    </Tile>
+  const sortedData = [...(data?.getPlaces ?? [])].sort(
+    (a, b) => a.joinedUsers!.length - b.joinedUsers!.length,
   );
 
   return (
     <View style={{ flex: 1 }}>
       {data?.getPlaces && (
         <FlatList
-          data={data?.getPlaces}
-          renderItem={renderItem}
+          data={sortedData}
+          renderItem={PlaceFeedItem}
           keyExtractor={(p) => p.id}
           nestedScrollEnabled={true}
           ListHeaderComponent={

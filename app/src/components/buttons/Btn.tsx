@@ -18,12 +18,32 @@ export const Btn: React.FC<BtnProps> = ({ onPress, children }) => {
 interface BtnIconProps {
   onPress: (e: GestureResponderEvent) => void;
   icon: Icon;
+  background?: string;
+  color?: string;
+  align?: "center" | "flex-start" | "flex-end";
 }
 
-export const BtnIcon: React.FC<BtnIconProps> = ({ onPress, children, icon }) => {
+export const BtnIcon: React.FC<BtnIconProps> = ({
+  onPress,
+  children,
+  icon,
+  background,
+  color,
+  align,
+}) => {
   return (
-    <TouchableOpacity style={ButtonStyles.btn} delayPressIn={0.05} onPress={onPress}>
-      <Text style={ButtonStyles.btnText}>{children}</Text>
+    <TouchableOpacity
+      style={{
+        ...ButtonStyles.btn,
+        backgroundColor: background ?? ButtonStyles.btn.backgroundColor,
+        justifyContent: align ?? ButtonStyles.btn.alignItems,
+      }}
+      delayPressIn={0.05}
+      onPress={onPress}
+    >
+      <Text style={{ ...ButtonStyles.btnText, color: color ?? ButtonStyles.btnText.color }}>
+        {children}
+      </Text>
       {icon}
     </TouchableOpacity>
   );

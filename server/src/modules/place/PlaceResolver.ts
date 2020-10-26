@@ -25,8 +25,7 @@ export class PlaceResolver {
   // get all places
   @Query(() => [Place])
   @Authorized()
-  async getPlaces(@Ctx() ctx: ServerContext): Promise<Place[]> {
-    console.log(ctx.req.session.userId);
+  async getPlaces(): Promise<Place[]> {
     const places = await Place.find();
     return places;
   }
