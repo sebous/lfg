@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { ScrollView, TextInput, View, Image } from "react-native";
+import { ScrollView, TextInput, View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { ReactNativeFile } from "apollo-upload-client";
-import { ModalStyles } from "../styles/modal";
-import { TextError, TextH1, TextLight } from "./text/Text";
-import { AppColors } from "../styles/colors";
-import { BtnIcon } from "./buttons/Btn";
-import { ViewStyles } from "../styles/view";
-import { RootNavProps } from "../navigation/rootStack/RootParamList";
-import { useApolloClient, useMutation } from "@apollo/client";
-import { AddPlace, AddPlaceVariables } from "../graphqlTypes";
-import { ADD_PLACE, GET_PLACES } from "../gql/places.graphql";
-import { stringify } from "querystring";
+import { ModalStyles } from "../../styles/modal";
+import { TextError, TextH1 } from "../text/Text";
+import { AppColors } from "../../styles/colors";
+import { BtnIcon } from "../buttons/Btn";
+import { ViewStyles } from "../../styles/view";
+import { RootNavProps } from "../../navigation/rootStack/RootParamList";
+import { useMutation } from "@apollo/client";
+import { AddPlace, AddPlaceVariables } from "../../graphqlTypes";
+import { ADD_PLACE, GET_PLACES } from "../../gql/places.graphql";
+import { ImageInputPreview } from "./ImageInputPreview";
 
 interface AddPlaceFormInput {
   name: string;
@@ -30,7 +30,7 @@ export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }
   >(ADD_PLACE);
 
   const onSubmit = (data: { name: string; description: string }) => {
-    console.log("submitting", data);
+    // console.log("submitting", data);
     const { name, description } = data;
     const imageFile = image;
     if (imageFile) {
@@ -132,31 +132,7 @@ export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }
           {errors?.description && <TextError>{errors?.description?.message}</TextError>}
         </View>
 
-        <View style={ModalStyles.imageInputGroup}>
-          <View style={ModalStyles.imageInputHeader}>
-            <TextLight>Image</TextLight>
-            <Ionicons
-              name="ios-image"
-              size={36}
-              color={AppColors.GREEN}
-              style={{ marginLeft: "auto" }}
-              onPress={pickImage}
-            />
-            <AntDesign
-              name="camera"
-              size={40}
-              color={AppColors.GREEN}
-              style={{ marginLeft: 20 }}
-              onPress={takeImage}
-            />
-          </View>
-          {image && (
-            <Image
-              source={{ uri: image?.uri }}
-              style={{ height: 100, width: 100, borderRadius: 3 }}
-            />
-          )}
-        </View>
+        <ImageInputPreview pickImage={pickImage} takeImage={takeImage} image={image} />
 
         <View style={ViewStyles.spacer} />
         <BtnIcon

@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import App from "../../../App";
-import { AddPlaceModal } from "../../components/AddPlaceModal";
+import { AddPlaceModal } from "../../components/addPlaceModal/AddPlaceModal";
 import { AppColors } from "../../styles/colors";
 import { AppTabs } from "../appTabs/AppTabs";
 
