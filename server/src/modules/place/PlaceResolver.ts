@@ -66,11 +66,7 @@ export class PlaceResolver {
 
   @Mutation(() => Place)
   @Authorized()
-  async joinPlace(
-    @Arg("placeId") placeId: string,
-    @Ctx() ctx: ServerContext,
-    @PubSub() pubSub: PubSubEngine
-  ): Promise<Place | undefined> {
+  async joinPlace(@Arg("placeId") placeId: string, @Ctx() ctx: ServerContext): Promise<Place | undefined> {
     const place = await Place.findOne(placeId);
     const user = await User.findOne(ctx.req.session!.userId);
     if (!place || !user) return;
@@ -78,26 +74,22 @@ export class PlaceResolver {
     place.joinedUsers.push(user);
     const updatedPlace = await place.save();
 
-    const notification = notificationFactory<Place>(updatedPlace, "UPDATE");
-    await pubSub.publish(SubscriptionTopic.PLACE, notification);
+    // const notification = notificationFactory<Place>(updatedPlace, "UPDATE");
+    // await pubSub.publish(SubscriptionTopic.PLACE, notification);
     return updatedPlace;
   }
 
   @Mutation(() => Place)
   @Authorized()
-  async leavePlace(
-    @Arg("placeId") placeId: string,
-    @Ctx() ctx: ServerContext,
-    @PubSub() pubSub: PubSubEngine
-  ): Promise<Place | undefined> {
+  async leavePlace(@Arg("placeId") placeId: string, @Ctx() ctx: ServerContext): Promise<Place | undefined> {
     const place = await Place.findOne(placeId);
     if (!place) return;
 
     place.joinedUsers = place.joinedUsers.filter(u => u.id !== ctx.req.session!.userId);
     const updatedPlace = await place.save();
 
-    const notification = notificationFactory<Place>(updatedPlace, "UPDATE");
-    await pubSub.publish(SubscriptionTopic.PLACE, notification);
+    // const notification = notificationFactory<Place>(updatedPlace, "UPDATE");
+    // await pubSub.publish(SubscriptionTopic.PLACE, notification);
     return updatedPlace;
   }
 

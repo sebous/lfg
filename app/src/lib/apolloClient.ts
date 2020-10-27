@@ -34,6 +34,9 @@ const cache = new InMemoryCache({
         getPlaces: {
           merge: false,
         },
+        joinedUsers: {
+          merge: false,
+        },
       },
     },
   },

@@ -48,7 +48,7 @@ export const PlacesFeed: React.FC<PlacesFeedProps> = ({ goToDetail }) => {
       {data?.getPlaces && (
         <FlatList
           data={sortedData}
-          renderItem={PlaceFeedItem}
+          renderItem={(props) => <PlaceFeedItem {...props} />}
           keyExtractor={(p) => p.id}
           nestedScrollEnabled={true}
           ListHeaderComponent={

@@ -15,11 +15,11 @@ import { FB_LOGIN, LOGIN_VIA_COOKIE } from "../gql/login.graphql";
 import { UserContext } from "../providers/UserProvider";
 
 export const USER_LOGGED = "USER_LOGGED";
-type User = FBlogin_FBlogin | LoginViaCookie_loginViaCookie;
+export type User = FBlogin_FBlogin | LoginViaCookie_loginViaCookie;
 
 export function useLogin() {
   const [auth, setAuth] = useState(false);
-  const { setQueuing } = useContext(UserContext);
+  const { setQueuing, setUserInfo } = useContext(UserContext);
 
   const { data: loginViaCookie, error: errorLoggingViaCookie } = useQuery<LoginViaCookie>(
     LOGIN_VIA_COOKIE,
@@ -33,6 +33,7 @@ export function useLogin() {
   const [authUser] = useAsyncCallback(async (user: User) => {
     await AsyncStorage.setItem(USER_LOGGED, JSON.stringify({ ...user }));
     setQueuing(user.queuing);
+    setUserInfo({...user});
     setAuth(true);
   }, []);
 
