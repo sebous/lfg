@@ -1,5 +1,5 @@
 FROM node:13-alpine
-WORKDIR /app
+WORKDIR /server
 COPY ./server/package*.json ./
 ENV NODE_ENV=production
 RUN npm install
