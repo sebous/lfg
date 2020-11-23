@@ -60,7 +60,7 @@ dotenv.config();
 
     app.use("/uploads", isAuth, express.static(path.join(__dirname, "../uploads")));
 
-    const { PORT } = process.env;
+    const PORT = 4000;
     httpServer.listen(PORT, () => console.log(`graphql server started on http://localhost:${PORT}/graphql`));
   } catch (err) {
     console.log(err);
