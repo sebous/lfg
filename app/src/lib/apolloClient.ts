@@ -3,7 +3,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "apollo-link-ws";
 import { createUploadLink } from "apollo-upload-client";
 
-export const SERVER_URL = "192.168.0.157:4000";
+export const SERVER_URL = "192.168.0.200:4000";
 
 const uploadLink = createUploadLink({
   credentials: "include",
@@ -26,15 +26,17 @@ const link = split(
 
 const cache = new InMemoryCache({
   typePolicies: {
+    Place: {
+      fields: {
+        joinedUsers: { merge: false },
+      },
+    },
     Query: {
       fields: {
         getPeopleInQueue: {
           merge: false,
         },
         getPlaces: {
-          merge: false,
-        },
-        joinedUsers: {
           merge: false,
         },
       },

@@ -1,4 +1,5 @@
 import React, { useContext, useMemo } from "react";
+import { useMutation } from "@apollo/client";
 import { ActivityIndicator, ListRenderItem, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Image } from "react-native-elements";
@@ -16,7 +17,6 @@ import { BtnIcon } from "../buttons/Btn";
 import { JoinedUsers } from "../info/JoinedUsers";
 import { TextH2, TextP } from "../text/Text";
 import { Tile } from "../views/Tile";
-import { useMutation } from "@apollo/client";
 import { GET_PLACES, JOIN_PLACE, LEAVE_PLACE } from "../../gql/places.graphql";
 import { UserContext } from "../../providers/UserProvider";
 
@@ -24,8 +24,6 @@ export const PlaceFeedItem: ListRenderItem<GetPlaces_getPlaces> = ({
   item: { id, description, name, owner, image, joinedUsers },
 }) => {
   const { userInfo } = useContext(UserContext);
-  if (!userInfo) throw Error("unauthorised");
-
   const [joinPlace, { data: joinPlaceResult, error: joinPlaceError }] = useMutation<
     JoinPlace,
     JoinPlaceVariables
@@ -35,7 +33,7 @@ export const PlaceFeedItem: ListRenderItem<GetPlaces_getPlaces> = ({
     LeavePlaceVariables
   >(LEAVE_PLACE);
 
-  const hasUserJoined = useMemo(() => !!joinedUsers?.find((u) => u.id === userInfo.id), [
+  const hasUserJoined = useMemo(() => !!joinedUsers?.find((u) => u.id === userInfo!.id), [
     joinedUsers,
   ]);
 

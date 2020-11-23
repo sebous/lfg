@@ -40,7 +40,7 @@ export const PlacesFeed: React.FC<PlacesFeedProps> = ({ goToDetail }) => {
   }
 
   const sortedData = [...(data?.getPlaces ?? [])].sort(
-    (a, b) => a.joinedUsers!.length - b.joinedUsers!.length,
+    (a, b) => b.joinedUsers!.length - a.joinedUsers!.length,
   );
 
   return (
@@ -50,7 +50,6 @@ export const PlacesFeed: React.FC<PlacesFeedProps> = ({ goToDetail }) => {
           data={sortedData}
           renderItem={(props) => <PlaceFeedItem {...props} />}
           keyExtractor={(p) => p.id}
-          nestedScrollEnabled={true}
           ListHeaderComponent={
             <>
               <PeopleInQueue />
