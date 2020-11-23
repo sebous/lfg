@@ -19,7 +19,7 @@ dotenv.config();
     // TypeORM + TypeGraphQL config
     await createTypeormConn();
     const schema = await buildSchema({
-      resolvers: [path.join(__dirname, "/modules/**/*.ts")],
+      resolvers: [path.join(__dirname, "/modules/**/*.{ts,js}")],
       pubSub: pubSubRedis,
       authChecker: GraphQLAuthChecker,
     });
