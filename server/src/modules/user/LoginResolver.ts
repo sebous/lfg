@@ -28,6 +28,7 @@ export class LoginResolver {
     if (!user) {
       if (process.env.NODE_ENV === "production") {
         const FBtokenValid = await checkIfTokenValid(accessToken);
+        console.log(FBtokenValid, "FBtokenValid");
         if (!FBtokenValid) return;
       }
 
