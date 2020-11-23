@@ -24,6 +24,7 @@ export async function saveUpload(upload: FileUpload): Promise<string> {
   const buffer = await streamToBuffer(createReadStream());
   const fileId = shortid.generate();
   const extension = mime.extension(mimetype);
+
   await ensureUploadFolderExists();
   await fs.writeFile(path.join(__dirname, `../../${UPLOAD_FOLDER_NAME}/${fileId}.${extension}`), buffer, {
     encoding: encoding === "7bit" ? "ascii" : encoding,
@@ -36,5 +37,9 @@ export async function saveUpload(upload: FileUpload): Promise<string> {
  * @param fileName full name with extension
  */
 export async function removeUpload(fileName: string) {
-  await fs.unlink(path.join(__dirname, `../../${UPLOAD_FOLDER_NAME}/${fileName}`));
+  try {
+    await fs.unlink(path.join(__dirname, `../../${UPLOAD_FOLDER_NAME}/${fileName}`));
+  } catch (err) {
+    console.log(`attempt to removeUpload: ${fileName} failed!`);
+  }
 }

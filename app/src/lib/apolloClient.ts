@@ -3,7 +3,11 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "apollo-link-ws";
 import { createUploadLink } from "apollo-upload-client";
 
-export const SERVER_URL = "192.168.0.200:4000";
+// TODO: create something like env.ts for handling environments
+export const LOCAL_SERVER_URL = "192.168.0.200:4000";
+export const PRODUCTION_SERVER_URL = "xxx";
+
+export const SERVER_URL = __DEV__ ? LOCAL_SERVER_URL : PRODUCTION_SERVER_URL;
 
 const uploadLink = createUploadLink({
   credentials: "include",
