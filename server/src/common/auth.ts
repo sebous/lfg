@@ -1,16 +1,25 @@
 import jwt from "jsonwebtoken";
 
-export async function createToken(userId: string) {
-  const token = await jwt.sign(userId, process.env.APP_SECRET || "abc", { expiresIn: "1d" });
+export function createToken(userId: string) {
+  const token = jwt.sign(userId, process.env.APP_SECRET as string, { expiresIn: "1d" });
   return token;
 }
 
-export async function validateToken(token: string) {
+export function validateToken(token: string) {
   try {
-    await jwt.verify(token, process.env.APP_SECRET || "abc");
+    jwt.verify(token, process.env.APP_SECRET as string);
     return true;
   } catch (err) {
     console.log(err);
     return false;
+  }
+}
+
+export async function decodeAndValidate(token: string) {
+  try {
+    const decoded = await jwt.verify(token, process.env.APP_SECRET as string);
+    return decoded as string;
+  } catch (err) {
+    console.log(err);
   }
 }

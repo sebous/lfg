@@ -1,9 +1,11 @@
-import { Resolver, Mutation, Arg, Ctx, Query, Authorized } from "type-graphql";
+import { Resolver, Mutation, Arg, Ctx, Query } from "type-graphql";
 import { User } from "../../entity/User";
 import { ServerContext } from "../../types/context";
 import { FBLoginInput } from "./types/FBLoginInput";
 import { checkIfTokenValid } from "../../common/util/fbUtils";
 import { redis } from "../../common/redis";
+import { LoginResponse } from "./types/LoginResponse";
+import * as auth from "../../common/auth";
 
 @Resolver()
 export class LoginResolver {
@@ -17,12 +19,23 @@ export class LoginResolver {
     return user;
   }
 
+  @Query(() => User, { nullable: true })
+  async checkToken(@Ctx() ctx: ServerContext): Promise<User | undefined> {
+    const token = ctx.req.header("authorization");
+    if (!token) return;
+
+    const userId = await auth.decodeAndValidate(token);
+    if (!userId) return;
+
+    const user = await User.findOne(userId);
+    if (!user) return;
+
+    return user;
+  }
+
   // FB login
-  @Mutation(() => User, { nullable: true })
-  async FBlogin(
-    @Arg("input") { fbId, name, avatar, accessToken }: FBLoginInput,
-    @Ctx() ctx: ServerContext
-  ): Promise<User | undefined> {
+  @Mutation(() => LoginResponse, { nullable: true })
+  async FBlogin(@Arg("input") { fbId, name, avatar, accessToken }: FBLoginInput): Promise<LoginResponse | undefined> {
     const user = await User.findOne({ where: { fbId } });
 
     // register user
@@ -34,27 +47,20 @@ export class LoginResolver {
         avatar,
       }).save();
 
-      console.log("user registered", newUser.id);
-
-      ctx.req.session!.userId = newUser.id;
-      return newUser;
+      const token = auth.createToken(newUser.id);
+      return { user: newUser, token };
     }
 
-    console.log("logging existing user");
-
-    await redis.set("A", "B");
-    const a = await redis.get("A");
-    console.log("REDIS", a);
-
     // login existing user
-    ctx.req.session!.userId = user.id;
 
     // also refresh avatar url from fb
     if (user.avatar !== avatar) {
       user.avatar = avatar;
       await user.save();
     }
-    return user;
+
+    const token = auth.createToken(user.id);
+    return { user, token };
   }
 
   // login user - no registration
