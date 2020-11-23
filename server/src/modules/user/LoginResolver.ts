@@ -3,13 +3,14 @@ import { User } from "../../entity/User";
 import { ServerContext } from "../../types/context";
 import { FBLoginInput } from "./types/FBLoginInput";
 import { checkIfTokenValid } from "../../common/util/fbUtils";
+import { redis } from "../../common/redis";
 
 @Resolver()
 export class LoginResolver {
   // login with existing cookie
-  @Authorized()
   @Query(() => User, { nullable: true })
   async loginViaCookie(@Ctx() ctx: ServerContext): Promise<User | undefined> {
+    console.log("loginViaCookie", ctx.req.session!);
     const user = await User.findOne(ctx.req.session!.userId);
     if (!user) return;
 
@@ -26,12 +27,6 @@ export class LoginResolver {
 
     // register user
     if (!user) {
-      if (process.env.NODE_ENV === "production") {
-        const FBtokenValid = await checkIfTokenValid(accessToken);
-        console.log(FBtokenValid, "FBtokenValid");
-        if (!FBtokenValid) return;
-      }
-
       const newUser = await User.create({
         username: name,
         name,
@@ -39,9 +34,17 @@ export class LoginResolver {
         avatar,
       }).save();
 
+      console.log("user registered", newUser.id);
+
       ctx.req.session!.userId = newUser.id;
       return newUser;
     }
+
+    console.log("logging existing user");
+
+    await redis.set("A", "B");
+    const a = await redis.get("A");
+    console.log("REDIS", a);
 
     // login existing user
     ctx.req.session!.userId = user.id;

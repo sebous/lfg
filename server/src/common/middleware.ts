@@ -9,9 +9,9 @@ export function applyMiddlewares(app: Express) {
   const RedisStore = connectRedis(session);
   app.use(
     session({
-      store: new RedisStore({
-        client: redis as any,
-      }),
+      // store: new RedisStore({
+      //   client: redis as any,
+      // }),
       name: "sess",
       secret: process.env.SESSION_SECRET || "qwerty",
       resave: false,

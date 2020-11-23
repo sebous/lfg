@@ -10,6 +10,7 @@ export class GetPeopleInQueue {
   // get users in queue
   @Query(() => [User])
   async getPeopleInQueue(): Promise<User[]> {
+    console.log("getPeopleInQueue");
     const queuingUsers = await User.find({ where: { queuing: true } });
     return queuingUsers;
   }

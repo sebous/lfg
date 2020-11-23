@@ -24,8 +24,9 @@ import * as uploadStorage from "../../common/uploadStorage";
 export class PlaceResolver {
   // get all places
   @Query(() => [Place])
-  @Authorized()
+  // @Authorized()
   async getPlaces(): Promise<Place[]> {
+    console.log("getPlaces");
     const places = await Place.find();
     return places;
   }
@@ -39,7 +40,7 @@ export class PlaceResolver {
 
   // add new place
   @Mutation(() => Place)
-  @Authorized()
+  // @Authorized()
   async addPlace(
     @Arg("placeInput") { name, description, imageUpload }: NewPlaceInput,
     @Ctx() ctx: ServerContext
@@ -65,7 +66,7 @@ export class PlaceResolver {
   }
 
   @Mutation(() => Place)
-  @Authorized()
+  // @Authorized()
   async joinPlace(@Arg("placeId") placeId: string, @Ctx() ctx: ServerContext): Promise<Place | undefined> {
     const place = await Place.findOne(placeId);
     const user = await User.findOne(ctx.req.session!.userId);
@@ -80,7 +81,7 @@ export class PlaceResolver {
   }
 
   @Mutation(() => Place)
-  @Authorized()
+  // @Authorized()
   async leavePlace(@Arg("placeId") placeId: string, @Ctx() ctx: ServerContext): Promise<Place | undefined> {
     const place = await Place.findOne(placeId);
     if (!place) return;
@@ -95,7 +96,7 @@ export class PlaceResolver {
 
   // remove place
   @Mutation(() => Boolean)
-  @Authorized()
+  // @Authorized()
   async removeOnePlace(
     @Arg("placeId") placeId: string,
     @Ctx() ctx: ServerContext,

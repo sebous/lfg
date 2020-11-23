@@ -21,7 +21,7 @@ dotenv.config();
     const schema = await buildSchema({
       resolvers: [path.join(__dirname, "/modules/**/*.{ts,js}")],
       pubSub: pubSubRedis,
-      authChecker: GraphQLAuthChecker,
+      // authChecker: GraphQLAuthChecker,
     });
 
     // cronjobs
@@ -43,7 +43,6 @@ dotenv.config();
 
     // cors
     const corsOptions: cors.CorsOptions = {
-      // TODO: limit this in production
       origin: true,
       credentials: true,
     };
