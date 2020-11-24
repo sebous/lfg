@@ -1,4 +1,3 @@
-import { Request } from "express";
 import jwt from "jsonwebtoken";
 import { HEADER_ACCESS_TOKEN } from "../constants/headers";
 import { User } from "../entity/User";

@@ -5,7 +5,6 @@ import { HEADER_ACCESS_TOKEN } from "../../constants/headers";
 import { ServerContext } from "../../types/context";
 
 function verifyAuthHeader(req: Request) {
-  console.log(req.headers);
   const accessToken = req.header(HEADER_ACCESS_TOKEN);
   if (!accessToken) return false;
   return auth.verifyAccessToken(accessToken);
@@ -16,7 +15,6 @@ export const GraphQLAuthChecker: AuthChecker<ServerContext> = async ({ context }
 };
 
 export async function routeAuthChecker(req: Request, res: Response, next: NextFunction) {
-  console.log("routeAuthChecker", verifyAuthHeader(req));
   if (!verifyAuthHeader(req)) return res.sendStatus(401);
   next();
 }
