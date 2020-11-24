@@ -29,6 +29,6 @@ export function applyMiddlewares(app: Express) {
     const accessToken = auth.refreshAccessToken(refreshToken);
     if (!accessToken) return res.status(500);
 
-    return res.send({ ok: true, accessToken });
+    return res.send({ ok: true, access_token: accessToken });
   });
 }

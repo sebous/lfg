@@ -1,5 +1,8 @@
+import { Request } from "express";
 import jwt from "jsonwebtoken";
+import { HEADER_ACCESS_TOKEN } from "../constants/headers";
 import { User } from "../entity/User";
+import { ServerContext } from "../types/context";
 
 interface Payload {
   userId: string;
@@ -40,8 +43,21 @@ export async function refreshAccessToken(token: string) {
 
 export async function decodeAndValidateAccessToken(token: string) {
   try {
-    const payload = await jwt.verify(token, process.env.APP_SECRET as string);
+    const payload = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     return payload as Payload;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function getUserIdFromContext(ctx: ServerContext) {
+  try {
+    const accessToken = ctx.req.header(HEADER_ACCESS_TOKEN);
+    if (!accessToken) return;
+
+    const payload = jwt.decode(accessToken);
+    const { userId } = payload as Payload;
+    return userId;
   } catch (err) {
     console.log(err);
   }

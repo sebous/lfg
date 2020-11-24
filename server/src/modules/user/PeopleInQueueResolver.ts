@@ -1,14 +1,16 @@
-import { Resolver, Query, Subscription, Root, Mutation, Ctx, PubSub, PubSubEngine } from "type-graphql";
+import { Resolver, Query, Subscription, Root, Mutation, Ctx, PubSub, PubSubEngine, Authorized } from "type-graphql";
 import { User } from "../../entity/User";
 import { UserNotificationType } from "./types/UserNotification";
 import { SubscriptionTopic, Notification } from "../../types/notifications";
 import { ServerContext } from "../../types/context";
 import { notificationFactory } from "../../common/factories";
+import { getUserIdFromContext } from "../../common/auth";
 
 @Resolver()
 export class GetPeopleInQueue {
   // get users in queue
   @Query(() => [User])
+  @Authorized()
   async getPeopleInQueue(): Promise<User[]> {
     console.log("getPeopleInQueue");
     const queuingUsers = await User.find({ where: { queuing: true } });
@@ -25,8 +27,9 @@ export class GetPeopleInQueue {
 
   // add to queue
   @Mutation(() => Boolean)
+  @Authorized()
   async queueSelf(@Ctx() ctx: ServerContext, @PubSub() pubSub: PubSubEngine) {
-    const { userId } = ctx.req.session;
+    const userId = await getUserIdFromContext(ctx);
     if (!userId) return false;
 
     const user = await User.findOne(userId);
@@ -41,8 +44,9 @@ export class GetPeopleInQueue {
 
   // remove from queue
   @Mutation(() => Boolean)
+  @Authorized()
   async leaveQueue(@Ctx() ctx: ServerContext, @PubSub() pubSub: PubSubEngine) {
-    const { userId } = ctx.req.session;
+    const userId = await getUserIdFromContext(ctx);
     if (!userId) return false;
 
     const user = await User.findOne(userId);

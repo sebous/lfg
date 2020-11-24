@@ -1,8 +1,9 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { ActivityIndicator, ListRenderItem, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Image } from "react-native-elements";
+import * as SecureStore from "expo-secure-store";
 import {
   GetPlaces_getPlaces,
   JoinPlace,
@@ -19,6 +20,7 @@ import { TextH2, TextP } from "../text/Text";
 import { Tile } from "../views/Tile";
 import { GET_PLACES, JOIN_PLACE, LEAVE_PLACE } from "../../gql/places.graphql";
 import { UserContext } from "../../providers/UserProvider";
+import { ACCESS_TOKEN } from "../../hooks/useLogin";
 
 export const PlaceFeedItem: ListRenderItem<GetPlaces_getPlaces> = ({
   item: { id, description, name, owner, image, joinedUsers },
@@ -36,6 +38,15 @@ export const PlaceFeedItem: ListRenderItem<GetPlaces_getPlaces> = ({
   const hasUserJoined = useMemo(() => !!joinedUsers?.find((u) => u.id === userInfo!.id), [
     joinedUsers,
   ]);
+
+  const [token, setToken] = useState<string>();
+  useEffect(() => {
+    async function getToken() {
+      const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN);
+      if (accessToken) setToken(accessToken);
+    }
+    getToken();
+  }, [userInfo]);
 
   const joinBtnClick = () => {
     if (!hasUserJoined) {
@@ -58,11 +69,13 @@ export const PlaceFeedItem: ListRenderItem<GetPlaces_getPlaces> = ({
       </View>
       <View style={{ flexDirection: "row" }}>
         <View style={{ flex: 1 }}>
-          <Image
-            source={{ uri: `http://${SERVER_URL}${image}` }}
-            style={FeedStyles.feedTileImage}
-            PlaceholderContent={<ActivityIndicator />}
-          />
+          {token && (
+            <Image
+              source={{ uri: `http://${SERVER_URL}${image}`, headers: { authorization: token } }}
+              style={FeedStyles.feedTileImage}
+              PlaceholderContent={<ActivityIndicator />}
+            />
+          )}
         </View>
         <View style={{ flex: 1 }}>
           <JoinedUsers count={joinedUsers?.length ?? 0} />

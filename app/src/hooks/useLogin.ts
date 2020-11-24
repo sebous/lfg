@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import * as Facebook from "expo-facebook";
 import Constants from "expo-constants";
 import { useMutation, useQuery } from "@apollo/client";
-import SecureStore from "expo-secure-store";
+import * as SecureStore from "expo-secure-store";
 import { useAsyncCallback } from "react-use-async-callback";
 import {
   FBlogin,

@@ -19,6 +19,7 @@ import { User } from "../../entity/User";
 import { ServerContext } from "../../types/context";
 import { clearAllPlaces } from "../../common/util/placeUtil";
 import * as uploadStorage from "../../common/uploadStorage";
+import { getUserIdFromContext } from "../../common/auth";
 
 @Resolver()
 export class PlaceResolver {
@@ -45,7 +46,8 @@ export class PlaceResolver {
     @Arg("placeInput") { name, description, imageUpload }: NewPlaceInput,
     @Ctx() ctx: ServerContext
   ): Promise<Place> {
-    const user = await User.findOne(ctx.req.session!.userId);
+    const userId = await getUserIdFromContext(ctx);
+    const user = await User.findOne(userId);
     if (!user) throw Error("invalid user");
 
     const extractImage = async () => {
@@ -69,8 +71,11 @@ export class PlaceResolver {
   @Authorized()
   async joinPlace(@Arg("placeId") placeId: string, @Ctx() ctx: ServerContext): Promise<Place | undefined> {
     const place = await Place.findOne(placeId);
-    const user = await User.findOne(ctx.req.session!.userId);
-    if (!place || !user) return;
+    const userId = await getUserIdFromContext(ctx);
+    if (!place || !userId) return;
+
+    const user = await User.findOne(userId);
+    if (!user) return;
 
     place.joinedUsers.push(user);
     const updatedPlace = await place.save();
@@ -86,7 +91,10 @@ export class PlaceResolver {
     const place = await Place.findOne(placeId);
     if (!place) return;
 
-    place.joinedUsers = place.joinedUsers.filter(u => u.id !== ctx.req.session!.userId);
+    const userId = await getUserIdFromContext(ctx);
+    if (!userId) return;
+
+    place.joinedUsers = place.joinedUsers.filter(u => u.id !== userId);
     const updatedPlace = await place.save();
 
     // const notification = notificationFactory<Place>(updatedPlace, "UPDATE");
