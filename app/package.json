@@ -41,7 +41,8 @@
     "react-native-web": "~0.13.7",
     "react-use-async-callback": "^2.1.0",
     "shortid": "^2.2.15",
-    "subscriptions-transport-ws": "^0.9.18"
+    "subscriptions-transport-ws": "^0.9.18",
+    "expo-secure-store": "~9.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

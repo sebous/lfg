@@ -1,39 +1,42 @@
 import { useContext, useEffect, useState } from "react";
 import * as Facebook from "expo-facebook";
 import Constants from "expo-constants";
-import { AsyncStorage } from "react-native";
 import { useMutation, useQuery } from "@apollo/client";
+import SecureStore from "expo-secure-store";
 import { useAsyncCallback } from "react-use-async-callback";
 import {
   FBlogin,
+  FBlogin_FBlogin_user,
   FBloginVariables,
-  FBlogin_FBlogin,
-  LoginViaCookie,
-  LoginViaCookie_loginViaCookie,
+  CheckToken,
+  CheckToken_checkToken,
 } from "../graphqlTypes";
-import { FB_LOGIN, LOGIN_VIA_COOKIE } from "../gql/login.graphql";
+import { FB_LOGIN, CHECK_TOKEN } from "../gql/login.graphql";
 import { UserContext } from "../providers/UserProvider";
 
 export const USER_LOGGED = "USER_LOGGED";
-export type User = FBlogin_FBlogin | LoginViaCookie_loginViaCookie;
+export const API_TOKEN = "API_TOKEN";
+export type User = FBlogin_FBlogin_user | CheckToken_checkToken;
 
 export function useLogin() {
   const [auth, setAuth] = useState(false);
   const { setQueuing, setUserInfo } = useContext(UserContext);
 
-  const { data: loginViaCookie, error: errorLoggingViaCookie } = useQuery<LoginViaCookie>(
-    LOGIN_VIA_COOKIE,
-  );
-  const [loginToApi, { data: userFromApi, error: loginApiError }] = useMutation<
+  const { data: checkTokenResult, error: checkTokenError } = useQuery<CheckToken>(CHECK_TOKEN);
+
+  const [fbLoginToApi, { data: fbLoginResult, error: fbLoginError }] = useMutation<
     FBlogin,
     FBloginVariables
   >(FB_LOGIN);
 
   // save local auth state
-  const [authUser] = useAsyncCallback(async (user: User) => {
-    await AsyncStorage.setItem(USER_LOGGED, JSON.stringify({ ...user }));
+  const [authUser] = useAsyncCallback(async (user: User, token?: string) => {
+    if (token) {
+      await SecureStore.setItemAsync(API_TOKEN, token);
+    }
+
     setQueuing(user.queuing);
-    setUserInfo({...user});
+    setUserInfo({ ...user });
     setAuth(true);
   }, []);
 
@@ -55,7 +58,7 @@ export function useLogin() {
       // console.log("userData", fbUserData);
       const { id, name, email, picture } = fbUserData;
 
-      loginToApi({
+      fbLoginToApi({
         variables: {
           input: {
             fbId: id,
@@ -70,25 +73,26 @@ export function useLogin() {
     }
   }, []);
 
-  // handle results of login via cookie
+  // handle checkTokenResult
   useEffect(() => {
-    if (loginViaCookie?.loginViaCookie === null || errorLoggingViaCookie) {
+    if (checkTokenResult?.checkToken === null || checkTokenError) {
       fbLogin();
     }
-    if (loginViaCookie?.loginViaCookie) {
-      authUser(loginViaCookie.loginViaCookie);
+    if (checkTokenResult?.checkToken) {
+      authUser(checkTokenResult.checkToken);
     }
-  }, [loginViaCookie, errorLoggingViaCookie, loginToApi, authUser, fbLogin]);
+  }, [checkTokenResult, checkTokenError]);
 
   // handle results of login via FB
   useEffect(() => {
-    if (userFromApi?.FBlogin) {
-      authUser(userFromApi.FBlogin);
+    if (fbLoginResult?.FBlogin) {
+      const { user, token } = fbLoginResult.FBlogin;
+      authUser(user, token);
     }
-    if (loginApiError) {
-      console.log("error logging to api", loginApiError);
+    if (fbLoginError) {
+      console.log("error logging to api", fbLoginError);
     }
-  }, [userFromApi, loginApiError, authUser]);
+  }, [fbLoginResult, fbLoginError]);
 
   return { auth };
 }

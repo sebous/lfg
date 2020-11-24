@@ -63,10 +63,10 @@ export interface ChatSubscription {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: LoginViaCookie
+// GraphQL query operation: CheckToken
 // ====================================================
 
-export interface LoginViaCookie_loginViaCookie {
+export interface CheckToken_checkToken {
   __typename: "User";
   id: string;
   username: string;
@@ -76,8 +76,8 @@ export interface LoginViaCookie_loginViaCookie {
   queuing: boolean;
 }
 
-export interface LoginViaCookie {
-  loginViaCookie: LoginViaCookie_loginViaCookie | null;
+export interface CheckToken {
+  checkToken: CheckToken_checkToken | null;
 }
 
 /* tslint:disable */
@@ -89,7 +89,7 @@ export interface LoginViaCookie {
 // GraphQL mutation operation: FBlogin
 // ====================================================
 
-export interface FBlogin_FBlogin {
+export interface FBlogin_FBlogin_user {
   __typename: "User";
   id: string;
   username: string;
@@ -97,6 +97,12 @@ export interface FBlogin_FBlogin {
   fbId: string | null;
   avatar: string | null;
   queuing: boolean;
+}
+
+export interface FBlogin_FBlogin {
+  __typename: "LoginResponse";
+  token: string;
+  user: FBlogin_FBlogin_user;
 }
 
 export interface FBlogin {

@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const LOGIN_VIA_COOKIE = gql`
-  query LoginViaCookie {
-    loginViaCookie {
+export const CHECK_TOKEN = gql`
+  query CheckToken {
+    checkToken {
       id
       username
       name
@@ -16,12 +16,15 @@ export const LOGIN_VIA_COOKIE = gql`
 export const FB_LOGIN = gql`
   mutation FBlogin($input: FBLoginInput!) {
     FBlogin(input: $input) {
-      id
-      username
-      name
-      fbId
-      avatar
-      queuing
+      token
+      user {
+        id
+        username
+        name
+        fbId
+        avatar
+        queuing
+      }
     }
   }
 `;
