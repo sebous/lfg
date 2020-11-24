@@ -6,11 +6,11 @@ import http from "http";
 import { ApolloServer, CorsOptions } from "apollo-server-express";
 import cors from "cors";
 import { buildSchema } from "type-graphql";
-import { applyMiddlewares, isAuth } from "./common/middleware";
+import { applyMiddlewares } from "./common/middleware";
 import { pubSubRedis } from "./common/redis";
 import { scheduleCronJobs } from "./common/cronjobs";
 import { createTypeormConn } from "./common/dbConnection";
-import { GraphQLAuthChecker } from "./modules/user/AuthChecker";
+import { GraphQLAuthChecker, routeAuthChecker } from "./modules/user/AuthChecker";
 
 dotenv.config();
 
@@ -21,7 +21,7 @@ dotenv.config();
     const schema = await buildSchema({
       resolvers: [path.join(__dirname, "/modules/**/*.{ts,js}")],
       pubSub: pubSubRedis,
-      // authChecker: GraphQLAuthChecker,
+      authChecker: GraphQLAuthChecker,
     });
 
     // cronjobs
@@ -57,7 +57,7 @@ dotenv.config();
     const httpServer = http.createServer(app);
     apolloServer.installSubscriptionHandlers(httpServer);
 
-    app.use("/uploads", isAuth, express.static(path.join(__dirname, "../uploads")));
+    app.use("/uploads", routeAuthChecker, express.static(path.join(__dirname, "../uploads")));
 
     const PORT = 4000;
     httpServer.listen(PORT, () => console.log(`graphql server started on http://localhost:${PORT}/graphql`));

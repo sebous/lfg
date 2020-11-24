@@ -16,7 +16,8 @@ export const CHECK_TOKEN = gql`
 export const FB_LOGIN = gql`
   mutation FBlogin($input: FBLoginInput!) {
     FBlogin(input: $input) {
-      token
+      refreshToken
+      accessToken
       user {
         id
         username

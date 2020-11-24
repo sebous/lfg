@@ -1,8 +1,5 @@
-import session from "express-session";
-import connectRedis from "connect-redis";
-import { Express, Request, Response, NextFunction } from "express";
-import { redis } from "./redis";
-import { User } from "../entity/User";
+import { Express } from "express";
+import * as auth from "./auth";
 
 export function applyMiddlewares(app: Express) {
   // session
@@ -24,11 +21,14 @@ export function applyMiddlewares(app: Express) {
   //     },
   //   })
   // );
-}
 
-export async function isAuth(req: Request, res: Response, next: NextFunction) {
-  const user = await User.findOne({ where: { id: req.session!.userId } });
-  if (!user) return res.sendStatus(401);
+  app.post("/refresh_token", async (req, res) => {
+    const { refreshToken } = req.body;
+    if (!refreshToken) return res.status(500);
 
-  next();
+    const accessToken = auth.refreshAccessToken(refreshToken);
+    if (!accessToken) return res.status(500);
+
+    return res.send({ ok: true, accessToken });
+  });
 }

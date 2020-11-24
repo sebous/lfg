@@ -15,7 +15,8 @@ import { FB_LOGIN, CHECK_TOKEN } from "../gql/login.graphql";
 import { UserContext } from "../providers/UserProvider";
 
 export const USER_LOGGED = "USER_LOGGED";
-export const API_TOKEN = "API_TOKEN";
+export const REFRESH_TOKEN = "REFRESH_TOKEN";
+export const ACCESS_TOKEN = "ACCESS_TOKEN";
 export type User = FBlogin_FBlogin_user | CheckToken_checkToken;
 
 export function useLogin() {
@@ -30,15 +31,21 @@ export function useLogin() {
   >(FB_LOGIN);
 
   // save local auth state
-  const [authUser] = useAsyncCallback(async (user: User, token?: string) => {
-    if (token) {
-      await SecureStore.setItemAsync(API_TOKEN, token);
-    }
+  const [authUser] = useAsyncCallback(
+    async (user: User, refreshToken?: string, accessToken?: string) => {
+      if (refreshToken) {
+        await SecureStore.setItemAsync(REFRESH_TOKEN, refreshToken);
+      }
+      if (accessToken) {
+        await SecureStore.setItemAsync(ACCESS_TOKEN, accessToken);
+      }
 
-    setQueuing(user.queuing);
-    setUserInfo({ ...user });
-    setAuth(true);
-  }, []);
+      setQueuing(user.queuing);
+      setUserInfo({ ...user });
+      setAuth(true);
+    },
+    [],
+  );
 
   // authenticate user via FB SDK, creates new user or logs existing
   const [fbLogin] = useAsyncCallback(async () => {
@@ -86,8 +93,8 @@ export function useLogin() {
   // handle results of login via FB
   useEffect(() => {
     if (fbLoginResult?.FBlogin) {
-      const { user, token } = fbLoginResult.FBlogin;
-      authUser(user, token);
+      const { user, refreshToken, accessToken } = fbLoginResult.FBlogin;
+      authUser(user, refreshToken, accessToken);
     }
     if (fbLoginError) {
       console.log("error logging to api", fbLoginError);

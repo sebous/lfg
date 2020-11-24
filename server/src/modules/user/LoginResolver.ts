@@ -6,6 +6,7 @@ import { checkIfTokenValid } from "../../common/util/fbUtils";
 import { redis } from "../../common/redis";
 import { LoginResponse } from "./types/LoginResponse";
 import * as auth from "../../common/auth";
+import { HEADER_ACCESS_TOKEN } from "../../constants/headers";
 
 @Resolver()
 export class LoginResolver {
@@ -21,13 +22,13 @@ export class LoginResolver {
 
   @Query(() => User, { nullable: true })
   async checkToken(@Ctx() ctx: ServerContext): Promise<User | undefined> {
-    const token = ctx.req.header("authorization");
+    const token = ctx.req.header(HEADER_ACCESS_TOKEN);
     if (!token) return;
 
-    const userId = await auth.decodeAndValidate(token);
-    if (!userId) return;
+    const payload = await auth.decodeAndValidateAccessToken(token);
+    if (!payload) return;
 
-    const user = await User.findOne(userId);
+    const user = await User.findOne(payload.userId);
     if (!user) return;
 
     return user;
@@ -35,31 +36,27 @@ export class LoginResolver {
 
   // FB login
   @Mutation(() => LoginResponse, { nullable: true })
-  async FBlogin(@Arg("input") { fbId, name, avatar, accessToken }: FBLoginInput): Promise<LoginResponse | undefined> {
-    const user = await User.findOne({ where: { fbId } });
+  async FBlogin(@Arg("input") { fbId, name, avatar }: FBLoginInput): Promise<LoginResponse | undefined> {
+    let user = await User.findOne({ where: { fbId } });
 
     // new user
     if (!user) {
-      const newUser = await User.create({
+      user = await User.create({
         username: name,
         name,
         fbId,
         avatar,
       }).save();
-
-      const token = auth.createToken(newUser.id);
-      return { user: newUser, token };
     }
 
-    // existing user
-
-    // also refresh avatar url from fb
+    // try to refresh avatar for existing user
     if (user.avatar !== avatar) {
       user.avatar = avatar;
       await user.save();
     }
 
-    const token = auth.createToken(user.id);
-    return { user, token };
+    const accessToken = auth.createAccessToken(user);
+    const refreshToken = auth.createRefreshToken(user);
+    return { user, accessToken, refreshToken };
   }
 }

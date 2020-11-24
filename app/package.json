@@ -18,6 +18,7 @@
     "@react-navigation/stack": "^5.9.0",
     "apollo-link": "^1.2.14",
     "apollo-link-retry": "^2.2.16",
+    "apollo-link-token-refresh": "^0.3.2",
     "apollo-link-ws": "^1.0.20",
     "apollo-upload-client": "^14.1.2",
     "dotenv": "^8.2.0",
@@ -26,6 +27,7 @@
     "expo-facebook": "~9.0.0",
     "expo-image-picker": "~9.1.0",
     "expo-permissions": "~9.3.0",
+    "expo-secure-store": "~9.2.0",
     "expo-status-bar": "~1.0.2",
     "graphql": "^15.3.0",
     "lodash": "^4.17.20",
@@ -41,8 +43,7 @@
     "react-native-web": "~0.13.7",
     "react-use-async-callback": "^2.1.0",
     "shortid": "^2.2.15",
-    "subscriptions-transport-ws": "^0.9.18",
-    "expo-secure-store": "~9.2.0"
+    "subscriptions-transport-ws": "^0.9.18"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

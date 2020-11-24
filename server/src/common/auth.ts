@@ -1,13 +1,21 @@
 import jwt from "jsonwebtoken";
+import { User } from "../entity/User";
 
-export function createToken(userId: string) {
-  const token = jwt.sign(userId, process.env.APP_SECRET as string, { expiresIn: "1d" });
-  return token;
+interface Payload {
+  userId: string;
 }
 
-export function validateToken(token: string) {
+export function createAccessToken(user: User) {
+  return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+}
+
+export function createRefreshToken(user: User) {
+  return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
+}
+
+export function verifyAccessToken(token: string) {
   try {
-    jwt.verify(token, process.env.APP_SECRET as string);
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     return true;
   } catch (err) {
     console.log(err);
@@ -15,10 +23,25 @@ export function validateToken(token: string) {
   }
 }
 
-export async function decodeAndValidate(token: string) {
+export async function refreshAccessToken(token: string) {
   try {
-    const decoded = await jwt.verify(token, process.env.APP_SECRET as string);
-    return decoded as string;
+    const payload = await jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+    const { userId } = payload as Payload;
+
+    const user = await User.findOne(userId);
+    if (!user) throw Error("invalid refresh token");
+
+    const accessToken = createAccessToken(user);
+    return accessToken;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function decodeAndValidateAccessToken(token: string) {
+  try {
+    const payload = await jwt.verify(token, process.env.APP_SECRET as string);
+    return payload as Payload;
   } catch (err) {
     console.log(err);
   }

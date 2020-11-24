@@ -101,7 +101,8 @@ export interface FBlogin_FBlogin_user {
 
 export interface FBlogin_FBlogin {
   __typename: "LoginResponse";
-  token: string;
+  refreshToken: string;
+  accessToken: string;
   user: FBlogin_FBlogin_user;
 }
 
