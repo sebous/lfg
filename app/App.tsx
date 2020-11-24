@@ -8,13 +8,13 @@ import { UserProvider } from "./src/providers/UserProvider";
 
 export default function App() {
   return (
-    <ApolloProvider client={apolloClient}>
-      <UserProvider>
+    <UserProvider>
+      <ApolloProvider client={apolloClient}>
         <NavigationContainer>
           <StatusBar style="light" />
           <Routes />
         </NavigationContainer>
-      </UserProvider>
-    </ApolloProvider>
+      </ApolloProvider>
+    </UserProvider>
   );
 }

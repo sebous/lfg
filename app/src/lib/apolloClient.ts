@@ -4,9 +4,10 @@ import { WebSocketLink } from "apollo-link-ws";
 import { onError } from "apollo-link-error";
 import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from "apollo-upload-client";
-import { TokenRefreshLink } from "apollo-link-token-refresh";
+import { RetryLink } from "apollo-link-retry";
 import * as SecureStore from "expo-secure-store";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../hooks/useLogin";
+import { UserContextRef } from "../providers/UserProvider";
 
 // TODO: create something like env.ts for handling environments
 export const LOCAL_SERVER_URL = "192.168.0.200:4000";
@@ -36,13 +37,60 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
+interface ResponseError {
+  statusCode: number;
+  bodyText: string;
+}
+const retryLink = new RetryLink({
+  delay: {
+    initial: 0,
+  },
+  attempts: {
+    max: 5,
+    retryIf: (error: ResponseError, operation) => {
+      if (error.statusCode === 401) {
+        return new Promise((resolve, reject) => {
+          SecureStore.getItemAsync(REFRESH_TOKEN)
+            .then((refreshToken) => {
+              if (!refreshToken) {
+                // if (UserContextRef && UserContextRef.current && UserContextRef.current.setIsAuth) {
+                //   UserContextRef.current?.setIsAuth(false);
+                //   return reject(false);
+                // }
+              } else {
+                fetch(`${SERVER_URL}/refresh_token`, {
+                  body: JSON.stringify({ refreshToken }),
+                })
+                  .then((res) => res.json())
+                  .then((data) => SecureStore.setItemAsync(ACCESS_TOKEN, data.access_token))
+                  .then(() => resolve(true))
+                  .catch((err) => {
+                    console.log("retryLink error: ", err);
+                    reject(false);
+                  });
+              }
+            })
+            .catch((err) => {
+              console.log("retryLink error: ", err);
+              reject(false);
+            });
+        });
+      }
+      return false;
+    },
+  },
+});
+
+const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   if (graphQLErrors) {
-    graphQLErrors.forEach(({ message, name }) => {
+    graphQLErrors.forEach(({ message, name, path }) => {
       console.log("graphqlerror from apollo", message, name);
     });
   }
   if (networkError) console.log("apollo network error", networkError);
+  const { response } = operation.getContext();
+  console.log(response);
+  if (response.status === 401) console.log("401!!!");
 });
 
 const link = split(
@@ -76,5 +124,5 @@ const cache = new InMemoryCache({
 
 export const apolloClient = new ApolloClient({
   cache,
-  link: ApolloLink.from([authLink, errorLink as any, link]),
+  link: ApolloLink.from([retryLink, authLink, errorLink as any, link]),
 });

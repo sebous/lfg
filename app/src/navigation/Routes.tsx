@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, SafeAreaView, Text, View } from "react-native";
 import { CenterView } from "../components/views/CenterView";
 import { useLogin } from "../hooks/useLogin";
+import { UserContextType } from "../providers/UserProvider";
 import { AppColors } from "../styles/colors";
 import { AppTabs } from "./appTabs/AppTabs";
 import { RootStack } from "./rootStack/RootStack";
