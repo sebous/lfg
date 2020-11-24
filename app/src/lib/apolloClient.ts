@@ -88,9 +88,6 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
     });
   }
   if (networkError) console.log("apollo network error", networkError);
-  const { response } = operation.getContext();
-  console.log(response);
-  if (response.status === 401) console.log("401!!!");
 });
 
 const link = split(

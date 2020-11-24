@@ -46,15 +46,18 @@ export class PlaceResolver {
     @Arg("placeInput") { name, description, imageUpload }: NewPlaceInput,
     @Ctx() ctx: ServerContext
   ): Promise<Place> {
+    console.log("addPlace", ctx);
     const userId = await getUserIdFromContext(ctx);
     const user = await User.findOne(userId);
     if (!user) throw Error("invalid user");
 
     const extractImage = async () => {
       const img = await imageUpload;
+      console.log("extractImage", img);
       if (!img) return;
 
       const fileUrl = await uploadStorage.saveUpload(img);
+      console.log("fileUrl", fileUrl);
       return fileUrl;
     };
 
