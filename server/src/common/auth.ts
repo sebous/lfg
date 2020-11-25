@@ -8,16 +8,16 @@ interface Payload {
 }
 
 export function createAccessToken(user: User) {
-  return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+  return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: "15m" });
 }
 
 export function createRefreshToken(user: User) {
-  return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
+  return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: "1d" });
 }
 
 export function verifyAccessToken(token: string) {
   try {
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string);
     return true;
   } catch (err) {
     console.log(err);
@@ -27,7 +27,7 @@ export function verifyAccessToken(token: string) {
 
 export async function refreshAccessToken(token: string) {
   try {
-    const payload = await jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+    const payload = await jwt.verify(token, process.env.REFRESH_TOKEN_SECRET as string);
     const { userId } = payload as Payload;
 
     const user = await User.findOne(userId);
@@ -42,7 +42,7 @@ export async function refreshAccessToken(token: string) {
 
 export async function decodeAndValidateAccessToken(token: string) {
   try {
-    const payload = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const payload = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string);
     return payload as Payload;
   } catch (err) {
     console.log(err);
