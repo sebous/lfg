@@ -7,7 +7,7 @@ import { createUploadLink } from "apollo-upload-client";
 import { RetryLink } from "apollo-link-retry";
 import * as SecureStore from "expo-secure-store";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../hooks/useLogin";
-import { apolloCache, isAuthVar } from "./apolloCache";
+import { apolloCache, isAuthVar, userInfoVar } from "./apolloCache";
 
 // TODO: create something like env.ts for handling environments
 
@@ -37,52 +37,51 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 
-interface ResponseError {
-  statusCode: number;
-  bodyText: string;
-}
 const retryLink = new RetryLink({
   delay: {
-    initial: 0,
-  },
-  attempts: {
-    max: 5,
-    retryIf: (error: ResponseError, operation) => {
-      if (error.statusCode === 401) {
-        return new Promise((resolve, reject) => {
-          SecureStore.getItemAsync(REFRESH_TOKEN)
-            .then((refreshToken) => {
-              if (!refreshToken) {
-                isAuthVar(false);
-                reject(false);
-              } else {
-                fetch(`${SERVER_URL}/refresh_token`, {
-                  body: JSON.stringify({ refreshToken }),
-                })
-                  .then((res) => res.json())
-                  .then((data) => SecureStore.setItemAsync(ACCESS_TOKEN, data.access_token))
-                  .then(() => resolve(true))
-                  .catch((err) => {
-                    console.log("retryLink error: ", err);
-                    reject(false);
-                  });
-              }
-            })
-            .catch((err) => {
-              console.log("retryLink error: ", err);
-              reject(false);
-            });
-        });
-      }
-      return false;
-    },
+    initial: 300,
+    max: Infinity,
   },
 });
 
-const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
+let isRefreshing = false;
+
+const errorLink = onError(({ graphQLErrors, networkError, operation, response, forward }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, name, path }) => {
-      console.log("graphqlerror from apollo", message, name);
+      if (message === "401") {
+        (async () => {
+          try {
+            if (isRefreshing) return;
+            isAuthVar(false);
+            console.log("401 executing");
+            const refreshToken = await SecureStore.getItemAsync(REFRESH_TOKEN);
+            if (!refreshToken) return;
+
+            isRefreshing = true;
+            const response = await fetch(`http://${SERVER_URL}/refresh_token`, {
+              method: "POST",
+              body: JSON.stringify({ refreshToken }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+            const data = await response.json();
+            if (data.access_token) {
+              console.log("setting ACCESS_TOKEN", data);
+              await SecureStore.setItemAsync(ACCESS_TOKEN, data.access_token);
+              isRefreshing = false;
+              isAuthVar(true);
+            }
+          } catch (err) {
+            isRefreshing = false;
+            console.log(err);
+            userInfoVar(undefined);
+            isAuthVar(false);
+          }
+        })();
+      }
+      console.log("graphqlerror from apollo", message);
     });
   }
   if (networkError) console.log("apollo network error", networkError);
@@ -99,5 +98,5 @@ const link = split(
 
 export const apolloClient = new ApolloClient({
   cache: apolloCache,
-  link: ApolloLink.from([authLink, errorLink as any, link]),
+  link: ApolloLink.from([retryLink, authLink, errorLink as any, link]),
 });

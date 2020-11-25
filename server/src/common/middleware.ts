@@ -1,4 +1,4 @@
-import { Express } from "express";
+import { Express, json } from "express";
 import { graphqlUploadExpress } from "graphql-upload";
 
 import * as auth from "./auth";
@@ -24,13 +24,13 @@ export function applyMiddlewares(app: Express) {
   //     },
   //   })
   // );
-
+  app.use(json());
   app.post("/refresh_token", async (req, res) => {
     const { refreshToken } = req.body;
-    if (!refreshToken) return res.status(500);
+    if (!refreshToken) return res.sendStatus(401);
 
-    const accessToken = auth.refreshAccessToken(refreshToken);
-    if (!accessToken) return res.status(500);
+    const accessToken = await auth.refreshAccessToken(refreshToken);
+    if (!accessToken) return res.sendStatus(401);
 
     return res.send({ ok: true, access_token: accessToken });
   });

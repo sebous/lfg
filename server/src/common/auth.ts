@@ -8,11 +8,11 @@ interface Payload {
 }
 
 export function createAccessToken(user: User) {
-  return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: "15m" });
+  return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: "30m" });
 }
 
 export function createRefreshToken(user: User) {
-  return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: "1d" });
+  return jwt.sign({ userId: user.id }, process.env.REFRESH_TOKEN_SECRET as string, { expiresIn: "1d" });
 }
 
 export function verifyAccessToken(token: string) {

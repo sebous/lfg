@@ -13,19 +13,17 @@ import { ServerContext } from "../../types/context";
 
 export const GraphQLAuthChecker: AuthChecker<ServerContext> = async ({ context }) => {
   const accessToken = context.req.header(HEADER_ACCESS_TOKEN);
-  if (!accessToken) return false;
+  if (!accessToken || !auth.verifyAccessToken(accessToken)) throw Error("401");
 
-  return auth.verifyAccessToken(accessToken);
+  return true;
 };
 
 export async function routeAuthChecker(req: Request, res: Response, next: NextFunction) {
-  console.log("logging");
   const accessToken = req.query[HEADER_ACCESS_TOKEN];
 
   if (!accessToken || !auth.verifyAccessToken(accessToken as string)) {
     console.log("401: bad token on /uploads", req.path);
     return res.sendStatus(401);
   }
-  console.log("success");
   next();
 }

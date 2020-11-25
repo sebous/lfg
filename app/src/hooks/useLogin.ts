@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import * as Facebook from "expo-facebook";
 import Constants from "expo-constants";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
 import * as SecureStore from "expo-secure-store";
 import { useAsyncCallback } from "react-use-async-callback";
 import {
@@ -20,6 +20,7 @@ export const ACCESS_TOKEN = "ACCESS_TOKEN";
 export type User = FBlogin_FBlogin_user | CheckToken_checkToken;
 
 export function useLogin() {
+  const [firstLogin, setFirstLogin] = useState(true);
   const { data: checkTokenResult, error: checkTokenError } = useQuery<CheckToken>(CHECK_TOKEN);
 
   const [fbLoginToApi, { data: fbLoginResult, error: fbLoginError }] = useMutation<
@@ -40,6 +41,7 @@ export function useLogin() {
       queuingVar(user.queuing);
       userInfoVar({ ...user });
       isAuthVar(true);
+      setFirstLogin(false);
     },
     [],
   );
@@ -97,4 +99,13 @@ export function useLogin() {
       console.log("error logging to api", fbLoginError);
     }
   }, [fbLoginResult, fbLoginError]);
+
+  const userInfo = useReactiveVar(userInfoVar);
+  const isAuth = useReactiveVar(isAuthVar);
+
+  useEffect(() => {
+    if (!userInfo && !isAuth && !firstLogin) {
+      fbLogin();
+    }
+  }, [userInfo]);
 }

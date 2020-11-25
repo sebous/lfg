@@ -46,7 +46,7 @@ export class Place extends BaseEntity {
   @ManyToMany(
     () => User,
     user => user.placesJoined,
-    { eager: true }
+    { eager: true, cascade: true }
   )
   @JoinTable()
   joinedUsers!: User[];
