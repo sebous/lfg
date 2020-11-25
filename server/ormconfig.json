@@ -16,6 +16,6 @@
     "type": "postgres",
     "synchronize": true,
     "logging": true,
-    "entities": ["dist/entity/*.*"]
+    "entities": ["src/entity/*.*"]
   }
 ]
