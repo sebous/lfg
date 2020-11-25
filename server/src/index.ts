@@ -18,7 +18,7 @@ dotenv.config();
   try {
     // TypeORM + TypeGraphQL config
     console.log("beforeCreateTypeormConn");
-    // await createTypeormConn();
+    await createTypeormConn();
     const schema = await buildSchema({
       resolvers: [path.join(__dirname, "/modules/**/*.{ts,js}")],
       pubSub: pubSubRedis,
