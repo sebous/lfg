@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { useMutation } from "@apollo/client";
+import React, { useEffect, useMemo, useState } from "react";
+import { useMutation, useReactiveVar } from "@apollo/client";
 import { ActivityIndicator, ListRenderItem, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Image } from "react-native-elements";
@@ -19,13 +19,13 @@ import { JoinedUsers } from "../info/JoinedUsers";
 import { TextH2, TextP } from "../text/Text";
 import { Tile } from "../views/Tile";
 import { GET_PLACES, JOIN_PLACE, LEAVE_PLACE } from "../../gql/places.graphql";
-import { UserContext } from "../../providers/UserProvider";
 import { ACCESS_TOKEN } from "../../hooks/useLogin";
+import { userInfoVar } from "../../lib/apolloCache";
 
 export const PlaceFeedItem: ListRenderItem<GetPlaces_getPlaces> = ({
   item: { id, description, name, owner, image, joinedUsers },
 }) => {
-  const { userInfo } = useContext(UserContext);
+  const userInfo = useReactiveVar(userInfoVar);
   const [joinPlace, { data: joinPlaceResult, error: joinPlaceError }] = useMutation<
     JoinPlace,
     JoinPlaceVariables

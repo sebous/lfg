@@ -1,4 +1,13 @@
-import { ApolloClient, createHttpLink, InMemoryCache, split, ApolloLink } from "@apollo/client";
+import {
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache,
+  split,
+  ApolloLink,
+  Resolvers,
+  gql,
+  makeVar,
+} from "@apollo/client";
 import { getMainDefinition, Observable } from "@apollo/client/utilities";
 import { WebSocketLink } from "apollo-link-ws";
 import { onError } from "apollo-link-error";
@@ -9,6 +18,7 @@ import * as SecureStore from "expo-secure-store";
 import Constants from "expo-constants";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../hooks/useLogin";
 import { Platform } from "react-native";
+import { apolloCache } from "./apolloCache";
 
 // TODO: create something like env.ts for handling environments
 
@@ -100,27 +110,7 @@ const link = split(
   uploadLink,
 );
 
-const cache = new InMemoryCache({
-  typePolicies: {
-    Place: {
-      fields: {
-        joinedUsers: { merge: false },
-      },
-    },
-    Query: {
-      fields: {
-        getPeopleInQueue: {
-          merge: false,
-        },
-        getPlaces: {
-          merge: false,
-        },
-      },
-    },
-  },
-});
-
 export const apolloClient = new ApolloClient({
-  cache,
+  cache: apolloCache,
   link: ApolloLink.from([authLink, errorLink as any, link]),
 });

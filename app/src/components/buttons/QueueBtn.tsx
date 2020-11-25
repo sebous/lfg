@@ -1,17 +1,17 @@
 import React, { useContext } from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { UserContext } from "../../providers/UserProvider";
-import { useMutation } from "@apollo/client";
+import { useMutation, useReactiveVar } from "@apollo/client";
 import { LeaveQueue, QueueSelf } from "../../graphqlTypes";
 import { LEAVE_QUEUE, QUEUE_SELF } from "../../gql/peopleQueue.graphql";
 import { AppColors } from "../../styles/colors";
 import { ButtonStyles } from "../../styles/button";
+import { queuingVar } from "../../lib/apolloCache";
 
 interface QueueBtnProps {}
 
 export const QueueBtn: React.FC<QueueBtnProps> = ({}) => {
-  const { queuing, setQueuing } = useContext(UserContext);
+  const queuing = useReactiveVar(queuingVar);
   const [queueSelf, { error: queueSelfError }] = useMutation<QueueSelf>(QUEUE_SELF);
   const [leaveQueue, { error: leaveQueueError }] = useMutation<LeaveQueue>(LEAVE_QUEUE);
 
@@ -21,10 +21,10 @@ export const QueueBtn: React.FC<QueueBtnProps> = ({}) => {
   const queueFn = () => {
     if (!queuing) {
       queueSelf();
-      setQueuing(true);
+      queuingVar(true);
     } else {
       leaveQueue();
-      setQueuing(false);
+      queuingVar(false);
     }
   };
 

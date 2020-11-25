@@ -12,7 +12,7 @@ import {
   CheckToken_checkToken,
 } from "../graphqlTypes";
 import { FB_LOGIN, CHECK_TOKEN } from "../gql/login.graphql";
-import { UserContext } from "../providers/UserProvider";
+import { isAuthVar, userInfoVar, queuingVar } from "../lib/apolloCache";
 
 export const USER_LOGGED = "USER_LOGGED";
 export const REFRESH_TOKEN = "REFRESH_TOKEN";
@@ -20,9 +20,6 @@ export const ACCESS_TOKEN = "ACCESS_TOKEN";
 export type User = FBlogin_FBlogin_user | CheckToken_checkToken;
 
 export function useLogin() {
-  const [auth, setAuth] = useState(false);
-  const { setQueuing, setUserInfo } = useContext(UserContext);
-
   const { data: checkTokenResult, error: checkTokenError } = useQuery<CheckToken>(CHECK_TOKEN);
 
   const [fbLoginToApi, { data: fbLoginResult, error: fbLoginError }] = useMutation<
@@ -40,9 +37,10 @@ export function useLogin() {
         await SecureStore.setItemAsync(ACCESS_TOKEN, accessToken);
       }
 
-      setQueuing(user.queuing);
-      setUserInfo({ ...user });
-      setAuth(true);
+      console.log("here");
+      queuingVar(user.queuing);
+      userInfoVar({ ...user });
+      isAuthVar(true);
     },
     [],
   );
@@ -100,6 +98,4 @@ export function useLogin() {
       console.log("error logging to api", fbLoginError);
     }
   }, [fbLoginResult, fbLoginError]);
-
-  return { auth };
 }
