@@ -1,6 +1,5 @@
 import { InputType, Field } from "type-graphql";
-import { GraphQLUpload } from "apollo-server-express";
-import { FileUpload } from "graphql-upload";
+import { FileUpload, GraphQLUpload } from "graphql-upload";
 
 @InputType()
 export class NewPlaceInput {

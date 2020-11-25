@@ -1,7 +1,10 @@
 import { Express } from "express";
+import { graphqlUploadExpress } from "graphql-upload";
+
 import * as auth from "./auth";
 
 export function applyMiddlewares(app: Express) {
+  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
   // session
   // const RedisStore = connectRedis(session);
   // app.use(

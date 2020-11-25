@@ -46,7 +46,6 @@ export class PlaceResolver {
     @Arg("placeInput") { name, description, imageUpload }: NewPlaceInput,
     @Ctx() ctx: ServerContext
   ): Promise<Place> {
-    console.log("addPlace", ctx);
     const userId = await getUserIdFromContext(ctx);
     const user = await User.findOne(userId);
     if (!user) throw Error("invalid user");

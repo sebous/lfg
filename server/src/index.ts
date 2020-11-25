@@ -36,11 +36,7 @@ dotenv.config();
         onDisconnect: () => console.log("client disconnected"),
         path: "/subscriptions",
       },
-      uploads: {
-        maxFieldSize: 10000000,
-        maxFiles: 5,
-        maxFileSize: 10000000,
-      },
+      uploads: false,
     });
 
     // express config
