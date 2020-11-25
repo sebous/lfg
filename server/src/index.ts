@@ -11,6 +11,7 @@ import { pubSubRedis } from "./common/redis";
 import { scheduleCronJobs } from "./common/cronjobs";
 import { createTypeormConn } from "./common/dbConnection";
 import { GraphQLAuthChecker, routeAuthChecker } from "./modules/user/AuthChecker";
+import { LogPlugin } from "./common/apolloLogger";
 
 dotenv.config();
 
@@ -37,6 +38,8 @@ dotenv.config();
         path: "/subscriptions",
       },
       uploads: false,
+
+      plugins: [LogPlugin],
     });
 
     // express config
@@ -58,7 +61,8 @@ dotenv.config();
     const httpServer = http.createServer(app);
     apolloServer.installSubscriptionHandlers(httpServer);
 
-    app.use("/uploads", routeAuthChecker, express.static(path.join(__dirname, "../uploads")));
+    // TODO: add routeAuthChecker when its fixed on android
+    app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
     const PORT = 4000;
     httpServer.listen(PORT, () => console.log(`graphql server started on http://localhost:${PORT}/graphql`));

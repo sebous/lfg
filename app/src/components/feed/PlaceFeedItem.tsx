@@ -39,6 +39,7 @@ export const PlaceFeedItem: ListRenderItem<GetPlaces_getPlaces> = ({
     joinedUsers,
   ]);
 
+  // TODO: token should be fetched from state
   const [token, setToken] = useState<string>();
   useEffect(() => {
     async function getToken() {

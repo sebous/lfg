@@ -12,7 +12,6 @@ export class GetPeopleInQueue {
   @Query(() => [User])
   @Authorized()
   async getPeopleInQueue(): Promise<User[]> {
-    console.log("getPeopleInQueue");
     const queuingUsers = await User.find({ where: { queuing: true } });
     return queuingUsers;
   }

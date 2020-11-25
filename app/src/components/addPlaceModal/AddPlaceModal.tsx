@@ -35,6 +35,7 @@ export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }
     const imageFile = image;
     if (imageFile) {
       imageFile.name = name;
+      console.log("imageFile to submit", imageFile);
     }
     addPlaceMutation({
       variables: { placeInput: { name, description, imageUpload: imageFile } },
@@ -58,7 +59,7 @@ export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }
     const { uri, type } = pickerResult;
     const imageFile = new ReactNativeFile({
       uri,
-      type,
+      type: type === "image" ? "image/jpeg" : type,
     });
     setImage(imageFile);
   };

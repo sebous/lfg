@@ -27,7 +27,6 @@ export class PlaceResolver {
   @Query(() => [Place])
   @Authorized()
   async getPlaces(): Promise<Place[]> {
-    console.log("getPlaces");
     const places = await Place.find();
     return places;
   }

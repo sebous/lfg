@@ -4,7 +4,7 @@ import { AppColors } from "./colors";
 export const FeedStyles = StyleSheet.create({
   feedTileImage: {
     height: 100,
-    resizeMode: "center",
+    resizeMode: "cover",
     borderRadius: 8,
     flex: 1,
   },
