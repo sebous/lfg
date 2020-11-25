@@ -1,13 +1,4 @@
-import {
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache,
-  split,
-  ApolloLink,
-  Resolvers,
-  gql,
-  makeVar,
-} from "@apollo/client";
+import { ApolloClient, split, ApolloLink } from "@apollo/client";
 import { getMainDefinition, Observable } from "@apollo/client/utilities";
 import { WebSocketLink } from "apollo-link-ws";
 import { onError } from "apollo-link-error";
@@ -15,9 +6,7 @@ import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from "apollo-upload-client";
 import { RetryLink } from "apollo-link-retry";
 import * as SecureStore from "expo-secure-store";
-import Constants from "expo-constants";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../hooks/useLogin";
-import { Platform } from "react-native";
 import { apolloCache, isAuthVar } from "./apolloCache";
 
 // TODO: create something like env.ts for handling environments

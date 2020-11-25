@@ -72,7 +72,7 @@ export const PlaceFeedItem: ListRenderItem<GetPlaces_getPlaces> = ({
         <View style={{ flex: 1 }}>
           {token && (
             <Image
-              source={{ uri: `http://${SERVER_URL}${image}`, headers: { authorization: token } }}
+              source={{ uri: `http://${SERVER_URL}${image}?authorization=${token}` }}
               style={FeedStyles.feedTileImage}
               PlaceholderContent={<ActivityIndicator />}
             />

@@ -4,20 +4,25 @@ import * as auth from "../../common/auth";
 import { HEADER_ACCESS_TOKEN } from "../../constants/headers";
 import { ServerContext } from "../../types/context";
 
-function verifyAuthHeader(req: Request) {
-  const accessToken = req.header(HEADER_ACCESS_TOKEN);
-  // console.log("accessToken", accessToken);
-  if (!accessToken) return false;
-  return auth.verifyAccessToken(accessToken);
-}
+// function verifyAuthHeader(req: Request) {
+//   const accessToken = req.header(HEADER_ACCESS_TOKEN);
+//   // console.log("accessToken", accessToken);
+//   if (!accessToken) return false;
+//   return auth.verifyAccessToken(accessToken);
+// }
 
 export const GraphQLAuthChecker: AuthChecker<ServerContext> = async ({ context }) => {
-  return verifyAuthHeader(context.req);
+  const accessToken = context.req.header(HEADER_ACCESS_TOKEN);
+  if (!accessToken) return false;
+
+  return auth.verifyAccessToken(accessToken);
 };
 
 export async function routeAuthChecker(req: Request, res: Response, next: NextFunction) {
   console.log("logging");
-  if (!verifyAuthHeader(req)) {
+  const accessToken = req.query[HEADER_ACCESS_TOKEN];
+
+  if (!accessToken || !auth.verifyAccessToken(accessToken as string)) {
     console.log("401: bad token on /uploads", req.path);
     return res.sendStatus(401);
   }

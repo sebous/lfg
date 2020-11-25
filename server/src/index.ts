@@ -61,8 +61,7 @@ dotenv.config();
     const httpServer = http.createServer(app);
     apolloServer.installSubscriptionHandlers(httpServer);
 
-    // TODO: add routeAuthChecker when its fixed on android
-    app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+    app.use("/uploads", routeAuthChecker, express.static(path.join(__dirname, "../uploads")));
 
     const PORT = 4000;
     httpServer.listen(PORT, () => console.log(`graphql server started on http://localhost:${PORT}/graphql`));

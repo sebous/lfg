@@ -1,4 +1,4 @@
-import { gql, makeVar, InMemoryCache } from "@apollo/client";
+import { makeVar, InMemoryCache } from "@apollo/client";
 
 export const isAuthVar = makeVar(false);
 
