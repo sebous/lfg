@@ -124,10 +124,10 @@ export class PlaceResolver {
   //     return true;
   //   }
 
-  //   // clear Place entity table
-  //   @Mutation(() => Boolean)
-  //   async clearPlaces(): Promise<boolean> {
-  //     await clearAllPlaces();
-  //     return true;
-  //   }
+  // clear Place entity table
+  @Mutation(() => Boolean)
+  async clearPlaces(): Promise<boolean> {
+    await clearAllPlaces();
+    return true;
+  }
 }
