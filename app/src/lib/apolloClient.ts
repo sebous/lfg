@@ -12,14 +12,10 @@ import { Platform } from "react-native";
 
 // TODO: create something like env.ts for handling environments
 
-export const LOCAL_SERVER_URL = `${Constants.manifest
-  .debuggerHost!.split(":")
-  .shift()
-  ?.concat(":4000")}`;
+export const LOCAL_SERVER_URL = "192.168.0.200:4000";
 export const PRODUCTION_SERVER_URL = "68.183.213.48";
 
 export const SERVER_URL = __DEV__ ? LOCAL_SERVER_URL : PRODUCTION_SERVER_URL;
-
 // export const SERVER_URL = PRODUCTION_SERVER_URL;
 
 const uploadLink = createUploadLink({

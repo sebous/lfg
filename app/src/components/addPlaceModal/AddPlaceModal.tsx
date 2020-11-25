@@ -79,7 +79,7 @@ export const AddPlaceModal: React.FC<RootNavProps<"AddPlace">> = ({ navigation }
     const { uri, type } = cameraResult;
     const imageFile = new ReactNativeFile({
       uri,
-      type,
+      type: type === "image" ? "image/jpeg" : type,
     });
     setImage(imageFile);
   };
