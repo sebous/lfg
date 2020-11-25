@@ -1,13 +1,19 @@
-import Redis from "ioredis";
+import Redis, { RedisOptions } from "ioredis";
 import { RedisPubSub } from "graphql-redis-subscriptions";
 import { dateReviver } from "./util/redisPubSubUtil";
 
 const url = process.env.NODE_ENV === "production" ? process.env.REDIS_URL : undefined;
 
-export const redis = new Redis(url, { connectTimeout: 10000 });
+const opts: RedisOptions = {
+  connectTimeout: 10000,
+  reconnectOnError: () => 1,
+};
+
+export const redis = new Redis(url, opts);
 
 export const pubSubRedis = new RedisPubSub({
-  publisher: new Redis(url),
-  subscriber: new Redis(url),
+  connection: opts,
+  publisher: new Redis(url, opts),
+  subscriber: new Redis(url, opts),
   reviver: dateReviver,
 });
