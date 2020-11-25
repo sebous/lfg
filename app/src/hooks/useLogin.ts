@@ -37,7 +37,6 @@ export function useLogin() {
         await SecureStore.setItemAsync(ACCESS_TOKEN, accessToken);
       }
 
-      console.log("here");
       queuingVar(user.queuing);
       userInfoVar({ ...user });
       isAuthVar(true);

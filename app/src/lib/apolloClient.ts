@@ -18,7 +18,7 @@ import * as SecureStore from "expo-secure-store";
 import Constants from "expo-constants";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../hooks/useLogin";
 import { Platform } from "react-native";
-import { apolloCache } from "./apolloCache";
+import { apolloCache, isAuthVar } from "./apolloCache";
 
 // TODO: create something like env.ts for handling environments
 
@@ -64,10 +64,8 @@ const retryLink = new RetryLink({
           SecureStore.getItemAsync(REFRESH_TOKEN)
             .then((refreshToken) => {
               if (!refreshToken) {
-                // if (UserContextRef && UserContextRef.current && UserContextRef.current.setIsAuth) {
-                //   UserContextRef.current?.setIsAuth(false);
-                //   return reject(false);
-                // }
+                isAuthVar(false);
+                reject(false);
               } else {
                 fetch(`${SERVER_URL}/refresh_token`, {
                   body: JSON.stringify({ refreshToken }),
