@@ -105,30 +105,29 @@ export class PlaceResolver {
   }
 
   // remove place
-  @Mutation(() => Boolean)
-  @Authorized()
-  async removeOnePlace(
-    @Arg("placeId") placeId: string,
-    @Ctx() ctx: ServerContext,
-    @PubSub() pubSub: PubSubEngine
-  ): Promise<boolean> {
-    const place = await Place.findOne(placeId);
-    if (!place) return false;
+  //   @Mutation(() => Boolean)
+  //   @Authorized()
+  //   async removeOnePlace(
+  //     @Arg("placeId") placeId: string,
+  //     @Ctx() ctx: ServerContext,
+  //     @PubSub() pubSub: PubSubEngine
+  //   ): Promise<boolean> {
+  //     const place = await Place.findOne(placeId);
+  //     if (!place) return false;
 
-    // user can delete only his places
-    // TODO: admin can delete others
-    if (place.owner.id !== ctx.req.session!.userId) return false;
+  //     // user can delete only his places
+  //     // TODO: admin can delete others
 
-    const notification = notificationFactory<Place>(place, "DELETE");
-    await Place.remove(place);
-    await pubSub.publish(SubscriptionTopic.PLACE, notification);
-    return true;
-  }
+  //     const notification = notificationFactory<Place>(place, "DELETE");
+  //     await Place.remove(place);
+  //     await pubSub.publish(SubscriptionTopic.PLACE, notification);
+  //     return true;
+  //   }
 
-  // clear Place entity table
-  @Mutation(() => Boolean)
-  async clearPlaces(): Promise<boolean> {
-    await clearAllPlaces();
-    return true;
-  }
+  //   // clear Place entity table
+  //   @Mutation(() => Boolean)
+  //   async clearPlaces(): Promise<boolean> {
+  //     await clearAllPlaces();
+  //     return true;
+  //   }
 }

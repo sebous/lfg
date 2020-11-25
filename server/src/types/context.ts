@@ -1,10 +1,6 @@
-import { Request, Response, Express } from "express";
-
-interface LfgRequest extends Request {
-  session: Express.Session & { userId?: string };
-}
+import { Request, Response } from "express";
 
 export interface ServerContext {
-  req: LfgRequest;
+  req: Request;
   res: Response;
 }
