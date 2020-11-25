@@ -17,7 +17,6 @@ dotenv.config();
 (async () => {
   try {
     // TypeORM + TypeGraphQL config
-    console.log("beforeCreateTypeormConn");
     await createTypeormConn();
     const schema = await buildSchema({
       resolvers: [path.join(__dirname, "/modules/**/*.{ts,js}")],
