@@ -4,7 +4,7 @@ import { dateReviver } from "./util/redisPubSubUtil";
 
 const url = process.env.NODE_ENV === "production" ? process.env.REDIS_URL : undefined;
 
-export const redis = new Redis(url);
+export const redis = new Redis(url, { connectTimeout: 10000 });
 
 export const pubSubRedis = new RedisPubSub({
   publisher: new Redis(url),
