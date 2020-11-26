@@ -1,18 +1,6 @@
-import {
-  Resolver,
-  Mutation,
-  Arg,
-  PubSub,
-  PubSubEngine,
-  Subscription,
-  Root,
-  Query,
-  Ctx,
-  Authorized,
-} from "type-graphql";
+import { Resolver, Mutation, Arg, Subscription, Root, Query, Ctx, Authorized, UseMiddleware } from "type-graphql";
 import { Place } from "../../entity/Place";
 import { SubscriptionTopic, Notification } from "../../types/notifications";
-import { notificationFactory } from "../../common/factories";
 import { PlaceNotificationType } from "./types/PlaceNotification";
 import { NewPlaceInput } from "./types/NewPlaceInput";
 import { User } from "../../entity/User";
@@ -20,6 +8,7 @@ import { ServerContext } from "../../types/context";
 import { clearAllPlaces } from "../../common/util/placeUtil";
 import * as uploadStorage from "../../common/uploadStorage";
 import { getUserIdFromContext } from "../../common/auth";
+import { IsAdmin } from "../../common/middleware/IsAdmin";
 
 @Resolver()
 export class PlaceResolver {
@@ -123,10 +112,12 @@ export class PlaceResolver {
   //     return true;
   //   }
 
-  // clear Place entity table
-  @Mutation(() => Boolean)
+  // clear Place entity table and all its relations
+  @Mutation(() => Boolean, { nullable: true })
+  @UseMiddleware(IsAdmin)
   async clearPlaces(): Promise<boolean> {
     await clearAllPlaces();
+    console.log("cleared lol");
     return true;
   }
 }

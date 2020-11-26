@@ -16,3 +16,5 @@ native/web-build/
 
 # macOS
 .DS_Store
+
+server_scripts/
