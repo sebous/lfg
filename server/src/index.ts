@@ -12,6 +12,7 @@ import { scheduleCronJobs } from "./common/cronjobs";
 import { createTypeormConn } from "./common/dbConnection";
 import { GraphQLAuthChecker, routeAuthChecker } from "./modules/user/AuthChecker";
 import { LogPlugin } from "./common/apolloLogger";
+import { executor } from "./common/graphqlJitExecutor";
 
 dotenv.config();
 
@@ -26,7 +27,8 @@ dotenv.config();
     });
 
     // cronjobs
-    if (process.env.NODE_ENV === "production") scheduleCronJobs();
+    // if (process.env.NODE_ENV === "production")
+    scheduleCronJobs();
 
     // apollo config
     const apolloServer = new ApolloServer({
@@ -37,8 +39,8 @@ dotenv.config();
         onDisconnect: () => console.log("client disconnected"),
         path: "/subscriptions",
       },
+      executor: executor(schema),
       uploads: false,
-
       plugins: [LogPlugin],
     });
 

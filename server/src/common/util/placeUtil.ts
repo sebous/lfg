@@ -7,7 +7,11 @@ import { removeUpload } from "../uploadStorage";
  */
 export async function clearAllPlaces() {
   const places = await Place.find();
+  if (places.length === 0) return;
+
   const placesIds = places.map(p => p.id);
+
+  // remove rows from jointable
   await getConnection()
     .createQueryBuilder()
     .delete()
@@ -15,8 +19,10 @@ export async function clearAllPlaces() {
     .where("placeId IN (:...ids)", { ids: placesIds })
     .execute();
 
+  // remove attached uploads
   const uploadsToRemove = places.filter(p => p.imageUrl).map(p => p.imageUrl);
   await Promise.all(uploadsToRemove.map(async fileName => removeUpload(fileName!)));
 
+  // remove places
   await Place.delete(placesIds);
 }
