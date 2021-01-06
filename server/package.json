@@ -17,7 +17,7 @@
     "apollo-server-express": "^2.19.0",
     "apollo-server-plugin-base": "^0.10.2",
     "apollo-server-types": "^0.6.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bcryptjs": "2.4.3",
     "class-validator": "^0.9.1",
     "concat-stream": "^2.0.0",
